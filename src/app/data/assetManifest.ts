@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Global Asset Manifest — semantic keys for every replaceable site image.
 // This file is the source of truth for keys and bundled fallback URLs.
-// Supabase global_assets overrides these at runtime for published content.
+// Static public slots resolve to bundled files. Dynamic profile records may
+// provide a remote portrait URL, with the matching local slot as their fallback.
 //
 // Required Supabase tables:
 //   global_assets (key TEXT PK, name TEXT, draft_url TEXT, published_url TEXT,

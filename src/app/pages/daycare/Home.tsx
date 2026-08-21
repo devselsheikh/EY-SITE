@@ -35,7 +35,6 @@ import { Link } from "react-router";
 import DaycareNav from "../../components/DaycareNav";
 import DaycareFooter from "../../components/DaycareFooter";
 import { SitePopup } from "../../components/SitePopup";
-import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import ManagedImage from "../../components/ManagedImage";
 import FAQSection from "../../components/daycare/FAQSection";
 import Testimonials from "../../components/daycare/Testimonials";
@@ -332,6 +331,17 @@ const DAY_TIMELINE = [
   },
 ];
 
+const DAY_TIMELINE_IMAGE_KEYS = [
+  'daycare.hero',
+  'daycare.about.mission',
+  'daycare.gallery.classroom',
+  'daycare.gallery.playground',
+  'daycare.gallery.sensory',
+  'daycare.gallery.dining',
+  'daycare.gallery.reading',
+  'daycare.section.classroom-2',
+] as const;
+
 // ─── Educator Profiles ──────────────────────────────────────────
 const EDUCATORS = [
   {
@@ -612,7 +622,8 @@ function DaySection() {
                           {/* Photo panel */}
                           {step.photo && (
                             <div className="md:col-span-2 relative min-h-[160px]">
-                              <ImageWithFallback
+                              <ManagedImage
+                                assetKey={DAY_TIMELINE_IMAGE_KEYS[i]}
                                 src={step.photo}
                                 alt={step.label}
                                 className="w-full h-full object-cover min-h-[160px]"

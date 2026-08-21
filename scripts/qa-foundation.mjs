@@ -19,6 +19,15 @@ for (const key of keys) {
 const imageSlots = read('src/app/data/imageSlots.ts');
 requireCheck(imageSlots.includes("'daycare.educator.'") && imageSlots.includes("'eduhub.alumni.'"), 'dynamic profiles remain explicitly scoped');
 requireCheck(imageSlots.includes('/images/slots/'), 'static image slots use local public paths');
+for (const page of [
+  'src/app/pages/daycare/About.tsx',
+  'src/app/pages/daycare/Home.tsx',
+  'src/app/pages/eduhub/About.tsx',
+  'src/app/pages/eduhub/Programs.tsx',
+]) {
+  const content = read(page);
+  requireCheck(!content.includes('ImageWithFallback'), `${page} uses the semantic image system`);
+}
 
 const workspace = read('src/app/pages/Workspace.tsx');
 requireCheck(['owner', 'admin', 'teacher', 'parent'].every(role => workspace.includes(`${role}:`)), 'all four workspace roles are present');
@@ -60,6 +69,20 @@ requireCheck(existsSync(join(root, 'public', 'favicon.png')), 'brand favicon exi
 requireCheck(existsSync(join(root, 'dist', 'index.html')), 'production build exists');
 requireCheck(existsSync(join(root, 'playwright.config.ts')) && existsSync(join(root, 'tests', 'public-foundation.spec.ts')), 'cross-browser accessibility and responsive QA suite exists');
 requireCheck(existsSync(join(root, '.github', 'workflows', 'quality.yml')), 'continuous quality workflow exists');
+
+for (const page of [
+  'src/app/pages/Blog.tsx',
+  'src/app/pages/BlogPost.tsx',
+  'src/app/pages/daycare/About.tsx',
+  'src/app/pages/daycare/Calendar.tsx',
+  'src/app/pages/daycare/ParentInfo.tsx',
+  'src/app/pages/daycare/Programs.tsx',
+  'src/app/pages/eduhub/About.tsx',
+  'src/app/pages/eduhub/ProgramDetail.tsx',
+  'src/app/pages/eduhub/Programs.tsx',
+]) {
+  requireCheck(read(page).includes('<main>'), `${page} has a main-content landmark`);
+}
 
 const sourceFiles = [];
 const walk = directory => {
