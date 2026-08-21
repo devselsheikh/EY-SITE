@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../utils/supabase/client';
-import { loadCloudWorkspace, saveCloudAttendance, saveCloudConsent, saveCloudMessage, saveCloudUpdate } from './workspaceCloud';
+import { loadCloudWorkspace, saveCloudAttendance, saveCloudConsent, saveCloudDailyCare, saveCloudMessage, saveCloudUpdate } from './workspaceCloud';
 
 export type AttendanceState = 'present' | 'absent' | 'pending';
 
@@ -14,6 +14,26 @@ export interface ChildRecord {
   attendance: AttendanceState;
   arrival?: string;
   allergies: string[];
+  classroomId?: string;
+}
+
+export type MealAmount = 'not_offered' | 'none' | 'some' | 'half' | 'most' | 'all';
+
+export interface DailyCareRecord {
+  id?: string;
+  childId: string;
+  reportDate: string;
+  breakfast: MealAmount;
+  lunch: MealAmount;
+  snack: MealAmount;
+  mealNotes: string;
+  waterRefills: number;
+  wetChanges: number;
+  soiledChanges: number;
+  diaperRequest: boolean;
+  careNotes: string;
+  publishedAt?: string;
+  updatedAt: string;
 }
 
 export interface FamilyUpdate {
@@ -39,6 +59,7 @@ export interface WorkspaceData {
   updates: FamilyUpdate[];
   messages: FamilyMessage[];
   consents: Record<string, Record<string, boolean>>;
+  dailyReports: DailyCareRecord[];
   savedAt: string;
 }
 
@@ -46,9 +67,9 @@ const STORAGE_KEY = 'early-years.workspace.v1';
 
 const seedData: WorkspaceData = {
   children: [
-    { id: 'child-amira', name: 'Amira Hassan', room: 'Sunflowers', age: '3 years, 8 months', keyPerson: 'Sarah Al-Masri', guardian: 'Mariam Hassan', attendance: 'present', arrival: '8:14 AM', allergies: ['Peanuts'] },
-    { id: 'child-youssef', name: 'Youssef Karim', room: 'Sunflowers', age: '4 years, 1 month', keyPerson: 'Sarah Al-Masri', guardian: 'Karim Ali', attendance: 'pending', allergies: [] },
-    { id: 'child-lina', name: 'Lina Mostafa', room: 'Butterflies', age: '2 years, 11 months', keyPerson: 'Nadia Hassan', guardian: 'Noha Ibrahim', attendance: 'absent', allergies: ['Dairy'] },
+    { id: 'child-amira', name: 'Amira Hassan', room: 'Sunflowers', classroomId: 'class-sunflowers', age: '3 years, 8 months', keyPerson: 'Sarah Al-Masri', guardian: 'Mariam Hassan', attendance: 'present', arrival: '8:14 AM', allergies: ['Peanuts'] },
+    { id: 'child-youssef', name: 'Youssef Karim', room: 'Sunflowers', classroomId: 'class-sunflowers', age: '4 years, 1 month', keyPerson: 'Sarah Al-Masri', guardian: 'Karim Ali', attendance: 'pending', allergies: [] },
+    { id: 'child-lina', name: 'Lina Mostafa', room: 'Butterflies', classroomId: 'class-butterflies', age: '2 years, 11 months', keyPerson: 'Nadia Hassan', guardian: 'Noha Ibrahim', attendance: 'absent', allergies: ['Dairy'] },
   ],
   updates: [
     { id: 'update-1', childId: 'child-amira', author: 'Sarah Al-Masri', body: 'Amira confidently counted eight shells during today’s sensory activity.', createdAt: new Date(Date.now() - 55 * 60_000).toISOString(), kind: 'learning' },
@@ -58,9 +79,10 @@ const seedData: WorkspaceData = {
     { id: 'message-1', childId: 'child-amira', sender: 'family', body: 'Amira slept well and is excited for music time today.', createdAt: new Date(Date.now() - 3 * 60 * 60_000).toISOString(), read: true },
   ],
   consents: { 'child-amira': { photos: true, localTrips: true, emergencyCare: true } },
+  dailyReports: [{ childId: 'child-amira', reportDate: new Date().toISOString().slice(0, 10), breakfast: 'all', lunch: 'most', snack: 'half', mealNotes: 'Enjoyed fruit and vegetable pasta.', waterRefills: 2, wetChanges: 2, soiledChanges: 1, diaperRequest: false, careNotes: 'Happy and engaged throughout the morning.', updatedAt: new Date().toISOString() }],
   savedAt: new Date().toISOString(),
 };
-const emptyCloudData = (): WorkspaceData => ({ children: [], updates: [], messages: [], consents: {}, savedAt: new Date().toISOString() });
+const emptyCloudData = (): WorkspaceData => ({ children: [], updates: [], messages: [], consents: {}, dailyReports: [], savedAt: new Date().toISOString() });
 
 function readStore(): WorkspaceData {
   try {
@@ -129,5 +151,16 @@ export function useWorkspaceStore({ cloud = false, userId = '' }: { cloud?: bool
     apply(); setNotice('Permission preference saved on this device.');
   }, [cloud, userId]);
 
-  return { data, loading, notice, setNotice, updateAttendance, addUpdate, sendMessage, setConsent };
+  const saveDailyCare = useCallback((childId: string, classroomId: string, report: DailyCareRecord, publish = false) => {
+    const next: DailyCareRecord = { ...report, childId, reportDate: new Date().toISOString().slice(0, 10), updatedAt: new Date().toISOString(), publishedAt: publish ? new Date().toISOString() : report.publishedAt };
+    const apply = () => setData(current => ({ ...current, dailyReports: [next, ...current.dailyReports.filter(item => !(item.childId === childId && item.reportDate === next.reportDate))], savedAt: new Date().toISOString() }));
+    if (cloud && userId) {
+      if (!classroomId) { setNotice('This child needs a current classroom assignment before a daily report can be saved.'); return; }
+      void saveCloudDailyCare(supabase, userId, classroomId, next, publish).then(() => { apply(); setNotice(publish ? 'Daily report published securely to the family.' : 'Daily care draft saved securely.'); }).catch(() => setNotice('The daily report was not saved. No local fallback was used; please retry.'));
+      return;
+    }
+    apply(); setNotice(publish ? 'Daily report published in local preview.' : 'Daily care draft saved on this device.');
+  }, [cloud, userId]);
+
+  return { data, loading, notice, setNotice, updateAttendance, addUpdate, sendMessage, setConsent, saveDailyCare };
 }

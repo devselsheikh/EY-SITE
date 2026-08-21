@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { AppRole } from '../auth/roles';
-import type { AttendanceState, WorkspaceData } from './workspaceStore';
+import type { AttendanceState, DailyCareRecord, WorkspaceData } from './workspaceStore';
 
 const today = () => new Date().toISOString().slice(0, 10);
 const profileName = (relation: unknown, fallback: string) => {
@@ -28,6 +28,11 @@ export async function loadCloudWorkspace(client: SupabaseClient, userId: string)
   ]);
   const error = childError || updateError || messageError || consentError;
   if (error) throw new Error(error.message);
+  const [{ data: memberships }, { data: dailyReports }] = await Promise.all([
+    client.from('classroom_memberships').select('child_id, classroom_id, classroom:classrooms(name)').lte('starts_on', today()).or(`ends_on.is.null,ends_on.gte.${today()}`),
+    client.from('child_daily_reports').select('id, child_id, report_date, breakfast, lunch, snack, meal_notes, water_refills, wet_changes, soiled_changes, diaper_request, care_notes, published_at, updated_at').eq('report_date', today()),
+  ]);
+  const membershipMap = new Map((memberships ?? []).map((item: any) => [String(item.child_id), item]));
   const consentMap: Record<string, Record<string, boolean>> = {};
   for (const item of consents ?? []) {
     const childId = String(item.child_id);
@@ -37,11 +42,13 @@ export async function loadCloudWorkspace(client: SupabaseClient, userId: string)
   return {
     children: (children ?? []).map((child: any) => {
       const attendance = child.attendance_records?.[0];
-      return { id: child.id, name: child.display_name, room: child.room_name || 'Room not assigned', age: ageLabel(child.date_of_birth), keyPerson: profileName(child.key_person, 'Not assigned'), guardian: profileName(child.child_guardians?.[0]?.guardian, 'Not linked'), attendance: (attendance?.state || 'pending') as AttendanceState, arrival: attendance?.arrival_at ? new Date(attendance.arrival_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : undefined, allergies: Array.isArray(child.allergies) ? child.allergies.map(String) : [] };
+      const membership: any = membershipMap.get(String(child.id));
+      return { id: child.id, name: child.display_name, room: profileName(membership?.classroom, child.room_name || 'Room not assigned'), classroomId: membership?.classroom_id ? String(membership.classroom_id) : undefined, age: ageLabel(child.date_of_birth), keyPerson: profileName(child.key_person, 'Not assigned'), guardian: profileName(child.child_guardians?.[0]?.guardian, 'Not linked'), attendance: (attendance?.state || 'pending') as AttendanceState, arrival: attendance?.arrival_at ? new Date(attendance.arrival_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : undefined, allergies: Array.isArray(child.allergies) ? child.allergies.map(String) : [] };
     }),
     updates: (updates ?? []).map((item: any) => ({ id: item.id, childId: item.child_id, author: profileName(item.author, 'Early Years team'), body: item.body, createdAt: item.created_at, kind: item.kind })),
     messages: (messages ?? []).map((item: any) => ({ id: item.id, childId: item.child_id, sender: (profileRole(item.sender) === 'parent' ? 'family' : 'team') as 'family' | 'team', body: item.body, createdAt: item.created_at, read: Boolean(item.read_at) })),
     consents: consentMap,
+    dailyReports: (dailyReports ?? []).map((item: any) => ({ id: item.id, childId: item.child_id, reportDate: item.report_date, breakfast: item.breakfast, lunch: item.lunch, snack: item.snack, mealNotes: item.meal_notes, waterRefills: item.water_refills, wetChanges: item.wet_changes, soiledChanges: item.soiled_changes, diaperRequest: item.diaper_request, careNotes: item.care_notes, publishedAt: item.published_at || undefined, updatedAt: item.updated_at })),
     savedAt: new Date().toISOString(),
   };
 }
@@ -60,5 +67,17 @@ export async function saveCloudMessage(client: SupabaseClient, userId: string, c
 }
 export async function saveCloudConsent(client: SupabaseClient, userId: string, childId: string, key: string, granted: boolean) {
   const { error } = await client.from('child_consents').upsert({ child_id: childId, guardian_id: userId, consent_key: key, granted, updated_at: new Date().toISOString() }, { onConflict: 'child_id,guardian_id,consent_key' });
+  if (error) throw new Error(error.message);
+}
+
+export async function saveCloudDailyCare(client: SupabaseClient, userId: string, classroomId: string, report: DailyCareRecord, publish: boolean) {
+  const payload: Record<string, unknown> = {
+    child_id: report.childId, classroom_id: classroomId, report_date: report.reportDate,
+    breakfast: report.breakfast, lunch: report.lunch, snack: report.snack, meal_notes: report.mealNotes.trim(),
+    water_refills: report.waterRefills, wet_changes: report.wetChanges, soiled_changes: report.soiledChanges,
+    diaper_request: report.diaperRequest, care_notes: report.careNotes.trim(), updated_by: userId,
+  };
+  if (publish) payload.published_at = new Date().toISOString();
+  const { error } = await client.from('child_daily_reports').upsert(payload, { onConflict: 'child_id,report_date' });
   if (error) throw new Error(error.message);
 }

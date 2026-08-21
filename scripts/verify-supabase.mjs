@@ -35,10 +35,13 @@ const services = [
   ['Family links', 'child_guardians'],
   ['Classrooms', 'classrooms'],
   ['Staff assignments', 'staff_classroom_assignments'],
+  ['Classroom memberships', 'classroom_memberships'],
   ['Attendance', 'attendance_records'],
   ['Learning updates', 'family_updates'],
   ['Family messages', 'family_messages'],
   ['Parent consents', 'child_consents'],
+  ['Daily care reports', 'child_daily_reports'],
+  ['Daily care audit history', 'child_daily_report_revisions'],
 ];
 
 const failures = [];

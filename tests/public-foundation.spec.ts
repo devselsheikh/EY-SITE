@@ -97,6 +97,11 @@ test('Teacher preview is classroom-scoped and can publish family updates', async
   await page.getByLabel('Add a learning update').fill('Built a careful tower during block play.');
   await page.getByRole('button', { name: /Publish update/ }).click();
   await expect(page.getByText('Family update saved on this device.')).toBeVisible();
+  await page.getByRole('button', { name: 'Increase Water refills' }).click();
+  await page.getByLabel('Care notes').fill('Rested after lunch and joined music time happily.');
+  await page.getByRole('button', { name: /Publish to family/ }).click();
+  await expect(page.getByText('Daily report published in local preview.')).toBeVisible();
+  await expect(page.getByText('Published', { exact: true })).toBeVisible();
 });
 
 test('Parent account is child-scoped while preserving the separate shared portal', async ({ page }) => {
@@ -107,6 +112,7 @@ test('Parent account is child-scoped while preserving the separate shared portal
   await expect(page.getByRole('button', { name: 'present', exact: true })).toBeDisabled();
   await expect(page.getByRole('link', { name: /Open Parent Portal/ })).toHaveAttribute('href', '/daycare/parents');
   await expect(page.getByRole('heading', { name: 'Permissions' })).toBeVisible();
+  await expect(page.getByText('The classroom team has not published today’s report yet.')).toBeVisible();
   await page.getByLabel('Message the team').fill('Amira will arrive ten minutes late tomorrow.');
   await page.getByRole('button', { name: /Send message/ }).click();
   await expect(page.getByText('Message saved on this device.')).toBeVisible();
