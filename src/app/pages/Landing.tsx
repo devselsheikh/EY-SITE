@@ -170,7 +170,7 @@ export default function Landing() {
               <div className="absolute bottom-10 left-6 w-7 h-7 border-2 border-white/20 rounded" />
 
               <div className="relative flex-1 flex flex-col">
-                <EduHubLogo className="h-14 w-auto max-w-[200px] mb-5" />
+                <EduHubLogo variant="white" className="h-14 w-auto max-w-[200px] mb-5" />
                 <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-bold mb-4 uppercase tracking-wide border border-white/20 w-fit">
                   For Educators
                 </div>
