@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { MotionConfig } from 'motion/react';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import Landing from './pages/Landing';
-import DaycareHome from './pages/daycare/Home';
-import DaycareAbout from './pages/daycare/About';
-import DaycarePrograms from './pages/daycare/Programs';
-import DaycareParentInfo from './pages/daycare/ParentInfo';
-import DaycareContact from './pages/daycare/Contact';
-import DaycareCalendar from './pages/daycare/Calendar';
-import EduHubHome from './pages/eduhub/Home';
-import EduHubPrograms from './pages/eduhub/Programs';
-import EduHubProgramDetail from './pages/eduhub/ProgramDetail';
-import EduHubAbout from './pages/eduhub/About';
-import EduHubContact from './pages/eduhub/Contact';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
-import ContactSplit from './pages/ContactSplit';
-import Admin from './pages/Admin';
-import ParentPortal from './pages/daycare/ParentPortal';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
 import StickyMobileCTA from './components/StickyMobileCTA';
 import PageTransition from './components/PageTransition';
+
+const DaycareHome = lazy(() => import('./pages/daycare/Home'));
+const DaycareAbout = lazy(() => import('./pages/daycare/About'));
+const DaycarePrograms = lazy(() => import('./pages/daycare/Programs'));
+const DaycareParentInfo = lazy(() => import('./pages/daycare/ParentInfo'));
+const DaycareContact = lazy(() => import('./pages/daycare/Contact'));
+const DaycareCalendar = lazy(() => import('./pages/daycare/Calendar'));
+const ParentPortal = lazy(() => import('./pages/daycare/ParentPortal'));
+const EduHubHome = lazy(() => import('./pages/eduhub/Home'));
+const EduHubPrograms = lazy(() => import('./pages/eduhub/Programs'));
+const EduHubProgramDetail = lazy(() => import('./pages/eduhub/ProgramDetail'));
+const EduHubAbout = lazy(() => import('./pages/eduhub/About'));
+const EduHubContact = lazy(() => import('./pages/eduhub/Contact'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const ContactSplit = lazy(() => import('./pages/ContactSplit'));
+const Admin = lazy(() => import('./pages/Admin'));
+
+function RouteFallback() {
+  return (
+    <div className="route-fallback" role="status" aria-live="polite">
+      <span className="route-fallback__mark" aria-hidden="true" />
+      <span>Loading page</span>
+    </div>
+  );
+}
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,7 +39,9 @@ function AppLayout({ children }: { children: React.ReactNode }) {
       <ScrollToTop />
       <BackToTopButton />
       <StickyMobileCTA />
-      <PageTransition>{children}</PageTransition>
+      <Suspense fallback={<RouteFallback />}>
+        <PageTransition>{children}</PageTransition>
+      </Suspense>
     </>
   );
 }
@@ -101,7 +113,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <Admin />,
+    element: <Suspense fallback={<RouteFallback />}><Admin /></Suspense>,
   },
 ]);
 
