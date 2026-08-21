@@ -29,6 +29,7 @@ import { LaunchChecklistSection } from '../components/admin/LaunchChecklistSecti
 import { ContentHealthSection } from '../components/admin/ContentHealthSection';
 import { PublicationsSection } from '../components/admin/PublicationsSection';
 import { PopupSection } from '../components/admin/PopupSection';
+import { roleFromMetadata } from '../auth/roles';
 
 // ─── Brand colours ────────────────────────────────────────────────────────────
 // peach-600 ≈ #ea7c4b  |  coral ≈ #f06b5d  |  blue-600 = #2563eb
@@ -2320,6 +2321,22 @@ export default function Admin() {
           </form>
         </div>
       </div>
+    );
+  }
+
+  if (roleFromMetadata(session.user.app_metadata) !== 'owner') {
+    return (
+      <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <section className="bg-white border border-slate-200 rounded-3xl shadow-xl p-8 w-full max-w-md text-center">
+          <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><Shield className="w-7 h-7 text-slate-600" /></div>
+          <h1 className="text-2xl font-bold text-slate-900">Owner access required</h1>
+          <p className="text-sm text-slate-600 mt-2 leading-relaxed">This console contains publishing, infrastructure, security, and technical controls. Your account workspace remains available separately.</p>
+          <div className="grid gap-2 mt-6">
+            <a href="/workspace" className={btnPrimary + ' justify-center'}>Return to workspace</a>
+            <button type="button" onClick={handleSignOut} className="min-h-11 text-sm font-semibold text-slate-600">Sign out</button>
+          </div>
+        </section>
+      </main>
     );
   }
 

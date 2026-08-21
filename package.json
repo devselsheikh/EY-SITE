@@ -6,7 +6,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "images:sync": "node scripts/sync-local-image-slots.mjs"
+    "images:sync": "node scripts/sync-local-image-slots.mjs",
+    "qa:foundation": "node scripts/qa-foundation.mjs",
+    "qa": "npm run build && npm run qa:foundation"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
