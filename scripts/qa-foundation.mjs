@@ -69,6 +69,7 @@ requireCheck(existsSync(join(root, 'public', 'favicon.png')), 'brand favicon exi
 requireCheck(existsSync(join(root, 'dist', 'index.html')), 'production build exists');
 requireCheck(existsSync(join(root, 'playwright.config.ts')) && existsSync(join(root, 'tests', 'public-foundation.spec.ts')), 'cross-browser accessibility and responsive QA suite exists');
 requireCheck(existsSync(join(root, '.github', 'workflows', 'quality.yml')), 'continuous quality workflow exists');
+requireCheck(existsSync(join(root, 'scripts', 'verify-supabase.mjs')), 'credential-safe live Supabase verification command exists');
 
 for (const page of [
   'src/app/pages/Blog.tsx',

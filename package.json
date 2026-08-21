@@ -7,6 +7,7 @@
     "build": "vite build",
     "dev": "vite",
     "images:sync": "node scripts/sync-local-image-slots.mjs",
+    "backend:verify": "node scripts/verify-supabase.mjs",
     "qa:foundation": "node scripts/qa-foundation.mjs",
     "qa:browser": "playwright test",
     "qa": "npm run build && npm run qa:foundation",
