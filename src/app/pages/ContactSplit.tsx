@@ -219,7 +219,7 @@ function EduHubPanel() {
       {/* Panel header */}
       <div className="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 px-7 pt-8 pb-6 rounded-t-2xl border-b border-blue-700">
         <div className="flex items-center gap-2 mb-1">
-          <EduHubLogo className="h-8 w-auto" />
+          <EduHubLogo variant="white" className="h-8 w-auto" />
           <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/15 text-blue-100 text-xs font-bold uppercase tracking-wide border border-white/20">For Educators</span>
         </div>
         <h2 className="text-white mb-1" style={{ fontSize: '1.35rem', fontWeight: 700 }}>EduHub Training</h2>
