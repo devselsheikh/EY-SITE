@@ -1,0 +1,392 @@
+import { motion } from 'motion/react';
+import { GraduationCap, Clock, DollarSign, MapPin, CheckCircle2, BookOpen, Users, Award } from 'lucide-react';
+import { Link } from 'react-router';
+import EduHubNav from '../../components/EduHubNav';
+import EduHubFooter from '../../components/EduHubFooter';
+import { ImageWithFallback } from '../../components/figma/ImageWithFallback';
+
+export default function EduHubPrograms() {
+  const programs = [
+    {
+      level: 'CACHE Level 2',
+      title: 'Caring for Children and Young People',
+      description: 'Provides knowledge and understanding to explore careers working with children and young people. An entry-level qualification for those beginning their journey in early years education.',
+      duration: '6-9 months',
+      hours: '3 hours/week',
+      cost: 'Contact for pricing',
+      mode: 'Hybrid (in-person & online)',
+      status: 'Available',
+      color: 'from-blue-400 to-blue-600',
+      bgColor: 'from-blue-50 to-indigo-50',
+      entryRequirements: [
+        'Interest in working with children and young people',
+        'Basic English literacy skills',
+        'No prior qualifications required'
+      ],
+      outcomes: [
+        'Understanding of child development',
+        'Basic safeguarding knowledge',
+        'Foundation for further study',
+        'Entry-level career opportunities'
+      ],
+      whoFor: [
+        'School leavers exploring childcare careers',
+        'Career changers entering early years',
+        'Parents wanting to understand child development',
+        'Volunteers in childcare settings'
+      ]
+    },
+    {
+      level: 'CACHE Level 3',
+      title: 'Diploma for Early Years Workforce',
+      description: 'Prepares learners for roles with children from birth to 5 (knowledge extends to age 7). This qualification is widely recognized for early years practitioners.',
+      duration: '9-12 months',
+      hours: '3 hours/week',
+      cost: 'Contact for pricing',
+      mode: 'Hybrid (in-person & online)',
+      status: 'Available',
+      color: 'from-indigo-400 to-indigo-600',
+      bgColor: 'from-indigo-50 to-purple-50',
+      entryRequirements: [
+        'Level 2 qualification or equivalent',
+        'Experience working with children (preferred)',
+        'English proficiency'
+      ],
+      outcomes: [
+        'Qualified early years practitioner',
+        'EYFS curriculum expertise',
+        'Work independently with children',
+        'Progress to Level 5 leadership pathway'
+      ],
+      whoFor: [
+        'Early years assistants seeking advancement',
+        'Practitioners wanting formal qualification',
+        'Those transitioning to EYFS settings',
+        'Educators aiming for senior roles'
+      ]
+    },
+    {
+      level: 'CACHE Level 5',
+      title: 'Diploma for Early Years Leadership',
+      description: 'Develops skills for managing practice and leading others in children and youth services. For health & social care and children & young people\'s services.',
+      duration: '9-12 months',
+      hours: '3 hours/week',
+      cost: '85,000 EGP + 3,000 EGP registration',
+      mode: 'Hybrid (in-person & online)',
+      status: 'Available',
+      color: 'from-purple-400 to-purple-600',
+      bgColor: 'from-purple-50 to-pink-50',
+      entryRequirements: [
+        'Level 3 qualification or equivalent',
+        '3-5 years experience in early years setting',
+        'Current employment in leadership/supervisory role (preferred)'
+      ],
+      outcomes: [
+        'Qualified manager in early years settings',
+        'Leadership and management skills',
+        'Quality assurance expertise',
+        'Progression to degree-level study possible'
+      ],
+      whoFor: [
+        'Nursery managers and deputies',
+        'Setting coordinators',
+        'EYFS leaders in schools',
+        'Those aspiring to senior management'
+      ],
+      assessment: [
+        'Workplace observation',
+        'Research project',
+        'Written assignments',
+        'Professional portfolio'
+      ]
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white">
+      <EduHubNav />
+
+      {/* Hero */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <h1 className="text-5xl lg:text-6xl text-gray-900 mb-6">
+              CACHE Qualification Programs
+            </h1>
+            <p className="text-xl text-gray-600 leading-relaxed">
+              UK-accredited CACHE qualifications from Level 2 to Level 5 leadership, recognized across Egypt and the Middle East.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Programs Detail */}
+      <div className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+          {programs.map((program, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              id={program.level.toLowerCase().replace(' ', '-')}
+            >
+              <div className={`relative rounded-3xl overflow-hidden bg-gradient-to-br ${program.bgColor} p-8 lg:p-12`}>
+                <div className="grid lg:grid-cols-3 gap-12">
+                  {/* Main Info */}
+                  <div className="lg:col-span-2">
+                    <div className="flex items-center gap-4 mb-6">
+                      <span className="px-4 py-2 rounded-lg bg-white text-[#1349D1]">
+                        {program.level}
+                      </span>
+                      <span className={`px-4 py-2 rounded-lg text-sm ${
+                        program.status === 'Available'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-700'
+                      }`}>
+                        {program.status}
+                      </span>
+                    </div>
+                    <h2 className="text-4xl text-gray-900 mb-4">{program.title}</h2>
+                    <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                      {program.description}
+                    </p>
+
+                    {/* Course Details Grid */}
+                    <div className="grid md:grid-cols-2 gap-4 mb-8">
+                      <div className="bg-white/70 backdrop-blur rounded-xl p-4 flex items-center gap-3">
+                        <Clock className="w-5 h-5 text-[#1349D1]" />
+                        <div>
+                          <div className="text-xs text-gray-500">Duration</div>
+                          <div className="text-gray-900">{program.duration}</div>
+                        </div>
+                      </div>
+                      <div className="bg-white/70 backdrop-blur rounded-xl p-4 flex items-center gap-3">
+                        <BookOpen className="w-5 h-5 text-[#1349D1]" />
+                        <div>
+                          <div className="text-xs text-gray-500">Teaching Hours</div>
+                          <div className="text-gray-900">{program.hours}</div>
+                        </div>
+                      </div>
+                      <div className="bg-white/70 backdrop-blur rounded-xl p-4 flex items-center gap-3">
+                        <DollarSign className="w-5 h-5 text-[#1349D1]" />
+                        <div>
+                          <div className="text-xs text-gray-500">Cost</div>
+                          <div className="text-gray-900">{program.cost}</div>
+                        </div>
+                      </div>
+                      <div className="bg-white/70 backdrop-blur rounded-xl p-4 flex items-center gap-3">
+                        <MapPin className="w-5 h-5 text-[#1349D1]" />
+                        <div>
+                          <div className="text-xs text-gray-500">Mode</div>
+                          <div className="text-gray-900">{program.mode}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Who This Is For */}
+                    <div className="bg-white rounded-xl p-6">
+                      <h3 className="text-xl text-gray-900 mb-4 flex items-center gap-2">
+                        <Users className="w-5 h-5 text-[#1349D1]" />
+                        Who This Course Is For
+                      </h3>
+                      <div className="space-y-2">
+                        {program.whoFor.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-[#1349D1] flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-700">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sidebar Info */}
+                  <div className="space-y-6">
+                    {/* Entry Requirements */}
+                    <div className="bg-white rounded-xl p-6">
+                      <h3 className="text-lg text-gray-900 mb-4">Entry Requirements</h3>
+                      <div className="space-y-2">
+                        {program.entryRequirements.map((req, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#1349D1] mt-2 flex-shrink-0"></div>
+                            <span className="text-sm text-gray-700">{req}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Learning Outcomes */}
+                    <div className="bg-white rounded-xl p-6">
+                      <h3 className="text-lg text-gray-900 mb-4">Learning Outcomes</h3>
+                      <div className="space-y-2">
+                        {program.outcomes.map((outcome, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <Award className="w-4 h-4 text-[#1349D1] flex-shrink-0 mt-0.5" />
+                            <span className="text-sm text-gray-700">{outcome}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Assessment (if exists) */}
+                    {program.assessment && (
+                      <div className="bg-white rounded-xl p-6">
+                        <h3 className="text-lg text-gray-900 mb-4">Assessment Methods</h3>
+                        <div className="space-y-2">
+                          {program.assessment.map((method, idx) => (
+                            <div key={idx} className="flex items-start gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#1349D1] mt-2 flex-shrink-0"></div>
+                              <span className="text-sm text-gray-700">{method}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CTA Button */}
+                    <Link
+                      to="/eduhub/contact"
+                      className="block text-center px-6 py-3 rounded-lg bg-[#1349D1] text-white hover:bg-blue-700 transition-colors"
+                    >
+                      Register Interest
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Accreditation Partners */}
+      <div className="py-20 lg:py-28 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl text-gray-900 mb-6">
+              Accreditation Partners
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              EduHub is accredited and supported by leading UK education organizations
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'NCFE',
+                role: 'Accrediting Organization',
+                description: 'UK awarding organization recognized by UK regulators, providing official accreditation for all CACHE qualifications.'
+              },
+              {
+                name: 'BriteThink UK',
+                role: 'Quality Assurance Partner',
+                description: 'Provides support, quality assurance, educational content, and assessment services for all programs.'
+              },
+              {
+                name: 'CACHE',
+                role: 'Qualification Provider',
+                description: 'Leading awarding organization for qualifications in early years, childcare, and education sectors.'
+              }
+            ].map((partner, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white rounded-2xl p-8 shadow-lg"
+              >
+                <div className="w-16 h-16 rounded-full bg-[#1349D1] flex items-center justify-center mb-6">
+                  <Award className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl text-gray-900 mb-2">{partner.name}</h3>
+                <div className="text-sm text-[#1349D1] mb-4">{partner.role}</div>
+                <p className="text-gray-600 leading-relaxed">{partner.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Gallery */}
+      <div className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl text-gray-900 mb-6">
+              Professional Training Environment
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFjaGVyJTIwdHJhaW5pbmclMjBjbGFzc3Jvb218ZW58MHx8fHwxNzM2MzU1MjAyfDA&ixlib=rb-4.1.0&q=80&w=1080',
+              'https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFjaGVyJTIwdHJhaW5pbmclMjBncm91cHxlbnwwfHx8fDE3MzYzNTUyMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080',
+              'https://images.unsplash.com/photo-1509062522246-3755977927d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB0cmFpbmluZ3xlbnwwfHx8fDE3MzYzNTUyMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080'
+            ].map((src, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all aspect-square"
+              >
+                <ImageWithFallback
+                  src={src}
+                  alt={`Training environment ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="py-20 lg:py-28 bg-[#1349D1]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl lg:text-5xl text-white mb-6">
+              Ready to Start Your Journey?
+            </h2>
+            <p className="text-xl text-white/90 mb-8">
+              Register your interest or contact us for more information about enrolment
+            </p>
+            <Link
+              to="/eduhub/contact"
+              className="inline-block px-8 py-4 rounded-lg bg-white text-gray-900 hover:bg-gray-100 transition-all"
+            >
+              Register Interest
+            </Link>
+          </motion.div>
+        </div>
+      </div>
+
+      <EduHubFooter />
+    </div>
+  );
+}
