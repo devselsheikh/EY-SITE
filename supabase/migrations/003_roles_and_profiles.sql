@@ -20,6 +20,11 @@ CREATE OR REPLACE FUNCTION public.current_app_role()
 RETURNS public.app_role LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public
 AS $$ SELECT role FROM public.profiles WHERE id = auth.uid() AND active = TRUE; $$;
 
+DROP POLICY IF EXISTS "users_read_own_profile" ON public.profiles;
+DROP POLICY IF EXISTS "owners_and_admins_read_profiles" ON public.profiles;
+DROP POLICY IF EXISTS "owners_manage_all_profiles" ON public.profiles;
+DROP POLICY IF EXISTS "admins_manage_non_owner_profiles" ON public.profiles;
+
 CREATE POLICY "users_read_own_profile" ON public.profiles FOR SELECT TO authenticated
   USING (id = auth.uid());
 CREATE POLICY "owners_and_admins_read_profiles" ON public.profiles FOR SELECT TO authenticated

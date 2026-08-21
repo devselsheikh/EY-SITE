@@ -1,4 +1,5 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE SCHEMA IF NOT EXISTS extensions;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 
 CREATE TABLE IF NOT EXISTS public.parent_portal_access (
   singleton BOOLEAN PRIMARY KEY DEFAULT TRUE CHECK (singleton),
@@ -20,7 +21,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
   SELECT COALESCE(
-    (SELECT pin_hash = crypt(candidate_pin, pin_hash) FROM public.parent_portal_access WHERE singleton = TRUE),
+    (SELECT pin_hash = extensions.crypt(candidate_pin, pin_hash) FROM public.parent_portal_access WHERE singleton = TRUE),
     FALSE
   );
 $$;
@@ -39,7 +40,7 @@ BEGIN
     RAISE EXCEPTION 'Portal PIN must contain at least 6 characters';
   END IF;
   INSERT INTO public.parent_portal_access (singleton, pin_hash, updated_at, updated_by)
-  VALUES (TRUE, crypt(new_pin, gen_salt('bf')), now(), auth.uid())
+  VALUES (TRUE, extensions.crypt(new_pin, extensions.gen_salt('bf')), now(), auth.uid())
   ON CONFLICT (singleton) DO UPDATE SET
     pin_hash = EXCLUDED.pin_hash,
     updated_at = now(),

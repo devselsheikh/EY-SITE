@@ -26,6 +26,11 @@ CREATE OR REPLACE FUNCTION public.current_app_role()
 RETURNS public.app_role LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public
 AS $$ SELECT role FROM public.profiles WHERE id = auth.uid() AND active = TRUE; $$;
 
+DROP POLICY IF EXISTS "users_read_own_profile" ON public.profiles;
+DROP POLICY IF EXISTS "owners_and_admins_read_profiles" ON public.profiles;
+DROP POLICY IF EXISTS "owners_manage_all_profiles" ON public.profiles;
+DROP POLICY IF EXISTS "admins_manage_non_owner_profiles" ON public.profiles;
+
 CREATE POLICY "users_read_own_profile" ON public.profiles FOR SELECT TO authenticated
   USING (id = auth.uid());
 CREATE POLICY "owners_and_admins_read_profiles" ON public.profiles FOR SELECT TO authenticated
@@ -157,7 +162,8 @@ CREATE INDEX IF NOT EXISTS family_messages_child_created_idx ON public.family_me
 
 -- ── 005_parent_portal_access.sql ──
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE SCHEMA IF NOT EXISTS extensions;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 
 CREATE TABLE IF NOT EXISTS public.parent_portal_access (
   singleton BOOLEAN PRIMARY KEY DEFAULT TRUE CHECK (singleton),
@@ -179,7 +185,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
   SELECT COALESCE(
-    (SELECT pin_hash = crypt(candidate_pin, pin_hash) FROM public.parent_portal_access WHERE singleton = TRUE),
+    (SELECT pin_hash = extensions.crypt(candidate_pin, pin_hash) FROM public.parent_portal_access WHERE singleton = TRUE),
     FALSE
   );
 $$;
@@ -198,7 +204,7 @@ BEGIN
     RAISE EXCEPTION 'Portal PIN must contain at least 6 characters';
   END IF;
   INSERT INTO public.parent_portal_access (singleton, pin_hash, updated_at, updated_by)
-  VALUES (TRUE, crypt(new_pin, gen_salt('bf')), now(), auth.uid())
+  VALUES (TRUE, extensions.crypt(new_pin, extensions.gen_salt('bf')), now(), auth.uid())
   ON CONFLICT (singleton) DO UPDATE SET
     pin_hash = EXCLUDED.pin_hash,
     updated_at = now(),
@@ -219,7 +225,8 @@ GRANT EXECUTE ON FUNCTION public.set_parent_portal_pin(TEXT) TO authenticated;
 -- of the repeatable migration chain. This migration makes fresh setup complete
 -- and replaces broad "any authenticated user" access with role-scoped policies.
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE SCHEMA IF NOT EXISTS extensions;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 
 CREATE TABLE IF NOT EXISTS public.cms_published (
   id TEXT PRIMARY KEY,

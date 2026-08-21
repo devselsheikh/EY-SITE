@@ -2,7 +2,8 @@
 -- of the repeatable migration chain. This migration makes fresh setup complete
 -- and replaces broad "any authenticated user" access with role-scoped policies.
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE SCHEMA IF NOT EXISTS extensions;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
 
 CREATE TABLE IF NOT EXISTS public.cms_published (
   id TEXT PRIMARY KEY,
