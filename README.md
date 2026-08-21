@@ -29,6 +29,11 @@ Never add a service-role key to this website. After applying the migrations in
 all required tables, and the separate Parent Portal RPC without printing
 credentials or record contents.
 
+For an existing project that has only the original CMS tables, run
+`npm run backend:prepare-repair`, then paste the generated
+`supabase/LIVE_REPAIR_003_009.sql` into the Supabase SQL Editor and run it once.
+Run `npm run backend:verify` again afterward; every line must pass before launch.
+
 ## Quality gate
 
 Run `npm run qa:all` for the production build, architecture checks, mobile

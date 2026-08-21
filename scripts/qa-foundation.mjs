@@ -77,6 +77,8 @@ requireCheck(existsSync(join(root, 'dist', 'index.html')), 'production build exi
 requireCheck(existsSync(join(root, 'playwright.config.ts')) && existsSync(join(root, 'tests', 'public-foundation.spec.ts')), 'cross-browser accessibility and responsive QA suite exists');
 requireCheck(existsSync(join(root, '.github', 'workflows', 'quality.yml')), 'continuous quality workflow exists');
 requireCheck(existsSync(join(root, 'scripts', 'verify-supabase.mjs')), 'credential-safe live Supabase verification command exists');
+const repairBundle = read('supabase/LIVE_REPAIR_003_009.sql');
+requireCheck(['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql'].every(name => repairBundle.includes(name)), 'live Supabase repair bundle contains canonical migrations 003–009');
 
 for (const page of [
   'src/app/pages/Blog.tsx',
