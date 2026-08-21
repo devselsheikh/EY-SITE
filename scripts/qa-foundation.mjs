@@ -49,7 +49,7 @@ requireCheck(parentPortal.includes('<main className="min-h-screen') && parentPor
 const cmsData = read('src/app/data/cms.ts');
 requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
 
-for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql', '010_classrooms_and_staff_assignments.sql', '011_daily_care_foundation.sql', '012_class_management_operations.sql']) {
+for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql', '010_classrooms_and_staff_assignments.sql', '011_daily_care_foundation.sql', '012_class_management_operations.sql', '013_secure_workspace_invitations.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
 
@@ -69,6 +69,12 @@ const classOperations = read('supabase/migrations/012_class_management_operation
 requireCheck(['require_operations_role', 'create_classroom', 'set_classroom_staff', 'enrol_child_in_classroom', 'link_child_guardian'].every(name => classOperations.includes(name)), 'class setup operations are server-authorized and atomic');
 requireCheck(classOperations.includes('audit_log') && classOperations.includes('REVOKE ALL ON FUNCTION'), 'class setup changes are audited and RPC access is explicit');
 requireCheck(read('src/app/components/workspace/ClassManagement.tsx').includes('passwords are never created or exposed here'), 'class setup keeps account invitations out of the browser');
+const invitationMigration = read('supabase/migrations/013_secure_workspace_invitations.sql');
+const invitationFunction = read('supabase/functions/invite-workspace-user/index.ts');
+requireCheck(invitationMigration.includes('workspace_invitations') && invitationMigration.includes('REVOKE INSERT, UPDATE, DELETE'), 'invitation records are readable but browser writes are blocked');
+requireCheck(invitationFunction.includes('SUPABASE_SERVICE_ROLE_KEY') && invitationFunction.includes('inviteUserByEmail') && invitationFunction.includes('originAllowed'), 'workspace invitations use a server-only, origin-checked function');
+requireCheck(invitationFunction.includes('redirectTo: `${appUrl}/workspace`') && !invitationFunction.includes('body.redirect'), 'invitation redirects are fixed by server configuration');
+requireCheck(read('src/app/components/workspace/AccessManagement.tsx').includes("functions.invoke('invite-workspace-user'"), 'Owner and Admin access management invokes the protected invitation service');
 requireCheck(workspace.includes('cloud: !localPreview'), 'local preview and authenticated cloud workspaces use separate persistence modes');
 const workspaceStore = read('src/app/data/workspaceStore.ts');
 requireCheck(workspaceStore.includes('cloud ? emptyCloudData() : readStore()'), 'authenticated cloud failures cannot expose seeded local child records');
