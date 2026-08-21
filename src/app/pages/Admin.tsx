@@ -16,10 +16,10 @@ import {
   generateId, DEFAULT_CMS, isPublished, getStatus, scanMediaUsage,
   getHealthWarnings, loadDraftCMS, saveDraft, publishCMS, publishAllAssets,
   fetchSubmissions, updateSubmissionStatus, deleteSubmission,
-  CMS_KEY,
+  CMS_KEY, loadCMS, saveCMS,
 } from '../data/cms';
 import { ALL_POSTS as HARDCODED_BLOG_POSTS } from '../data/blogPosts';
-import { supabase } from '../utils/supabase/client';
+import { supabase, supabaseConfigured } from '../utils/supabase/client';
 import type { Session } from '@supabase/supabase-js';
 import { invalidateCMSCache } from '../hooks/useCMS';
 import { invalidateAssetCache } from '../hooks/useAssets';
@@ -2253,8 +2253,13 @@ export default function Admin() {
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [signingIn, setSigningIn] = useState(false);
+  const localOwnerPreview = import.meta.env.DEV && !supabaseConfigured;
 
   useEffect(() => {
+    if (localOwnerPreview) {
+      setAuthLoading(false);
+      return;
+    }
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setAuthLoading(false);
@@ -2263,7 +2268,7 @@ export default function Admin() {
       setSession(session);
     });
     return () => subscription.unsubscribe();
-  }, []);
+  }, [localOwnerPreview]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -2284,6 +2289,10 @@ export default function Admin() {
         <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
       </div>
     );
+  }
+
+  if (localOwnerPreview) {
+    return <AdminDashboard onLogout={() => window.location.assign('/workspace')} localMode />;
   }
 
   if (!session) {
@@ -2317,7 +2326,7 @@ export default function Admin() {
   return <AdminDashboard onLogout={handleSignOut} />;
 }
 
-function AdminDashboard({ onLogout }: { onLogout: () => void }) {
+function AdminDashboard({ onLogout, localMode = false }: { onLogout: () => void; localMode?: boolean }) {
   const [cms, setCMSState] = useState<CMSContent>(DEFAULT_CMS);
   const [cmsLoading, setCmsLoading] = useState(true);
   const [active, setActive] = useState<SectionId>('overview');
@@ -2332,13 +2341,18 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
   // Load draft on mount
   useEffect(() => {
+    if (localMode) {
+      setCMSState(loadCMS());
+      setCmsLoading(false);
+      return;
+    }
     loadDraftCMS().then(data => {
       setCMSState(data);
       setCmsLoading(false);
     });
     // Show migration banner if old localStorage content exists
     if (localStorage.getItem(CMS_KEY)) setLocalMigrationBanner(true);
-  }, []);
+  }, [localMode]);
 
   const handleChange = useCallback((updated: CMSContent) => {
     setCMSState(updated);
@@ -2348,6 +2362,15 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const handlePublish = async () => {
     setShowPublishModal(false);
     setPublishState('publishing');
+    if (localMode) {
+      saveCMS(cms);
+      setPublishedAt(new Date());
+      setHasUnsaved(false);
+      setPublishState('published');
+      invalidateCMSCache();
+      window.setTimeout(() => setPublishState('idle'), 3500);
+      return;
+    }
     await saveDraft(cms);
     const { error } = await publishCMS(cms);
     if (error) { setPublishState('failed'); return; }
@@ -2440,8 +2463,8 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               <Settings className="w-4 h-4 text-white" />
             </div>
             <div>
-              <div className="font-bold text-sm text-gray-900 leading-tight">Early Years CMS</div>
-              <div className="text-[10px] text-green-600 font-semibold leading-tight">● Database Status</div>
+              <div className="font-bold text-sm text-gray-900 leading-tight">Owner Console</div>
+              <div className={`text-[10px] font-semibold leading-tight ${localMode ? 'text-blue-600' : 'text-green-600'}`}>● {localMode ? 'Local preview' : 'Cloud connected'}</div>
             </div>
           </div>
         </div>
@@ -2502,8 +2525,8 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             <h1 className="font-bold text-gray-900 text-sm leading-tight truncate">{sectionTitle?.label}</h1>
             <p className="text-xs text-gray-400 hidden sm:block truncate">{SECTION_DESCRIPTIONS[active]}</p>
           </div>
-          <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />Database Status
+            <span className={`hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${localMode ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-green-100 text-green-700 border-green-200'}`}>
+            <span className={`w-1.5 h-1.5 rounded-full inline-block ${localMode ? 'bg-blue-500' : 'bg-green-500'}`} />{localMode ? 'Local owner preview' : 'Cloud connected'}
           </span>
           <div className="flex items-center gap-2">
             {hasUnsaved && (
@@ -2582,14 +2605,18 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               <div>
                 <h3 className="font-bold text-gray-900 text-lg">Publish Changes</h3>
                 <p className="text-gray-600 text-sm mt-1 leading-relaxed">
-                  Your changes will be saved to Supabase and the public website will update immediately. This becomes the live version visible to all visitors.
+                  {localMode
+                    ? 'Your changes will be saved in this browser for local preview. They will not affect the deployed website.'
+                    : 'Your changes will be saved to Supabase and the public website will update immediately. This becomes the live version visible to all visitors.'}
                 </p>
               </div>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-5 flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <p className="text-green-800 text-xs leading-relaxed">
-                The public website reads content live from Supabase. Changes take effect as soon as publishing completes — no separate deployment needed.
+                {localMode
+                  ? 'Local publishing is safe and reversible. Clear local site data to return to bundled defaults.'
+                  : 'The public website reads content live from Supabase. Changes take effect as soon as publishing completes — no separate deployment needed.'}
               </p>
             </div>
             <div className="flex gap-2 justify-end">

@@ -193,7 +193,7 @@ export const ASSET_MANIFEST: Record<string, AssetEntry> = {
     key: 'daycare.testimonial.dina',
     name: 'Dina Youssef Avatar',
     category: 'daycare-testimonials',
-    fallbackUrl: 'https://images.unsplash.com/photo-1567680148642-ac49a46543d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200',
+    fallbackUrl: 'https://images.unsplash.com/photo-1564429238817-393bd4286b2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200',
     alt: 'Dina Youssef, parent',
     usageLocations: ['Testimonials Carousel'],
   },

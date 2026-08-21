@@ -23,6 +23,7 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const ContactSplit = lazy(() => import('./pages/ContactSplit'));
 const Admin = lazy(() => import('./pages/Admin'));
+const Workspace = lazy(() => import('./pages/Workspace'));
 
 function RouteFallback() {
   return (
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <Suspense fallback={<RouteFallback />}><Admin /></Suspense>,
+  },
+  {
+    path: '/workspace',
+    element: <Suspense fallback={<RouteFallback />}><Workspace /></Suspense>,
   },
 ]);
 
