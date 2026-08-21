@@ -584,6 +584,7 @@ body {
 .workspace-access select { min-width: 7.5rem; min-height: 2.75rem; padding: 0 2rem 0 0.75rem; border: 1px solid var(--platform-border); border-radius: 0.8rem; background: white; color: var(--platform-ink); font: inherit; font-size: 0.75rem; }
 .workspace-access__protected { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--platform-muted); font-size: 0.72rem; font-weight: 700; }
 .workspace-access__protected svg { width: 1rem; }
+.workspace-loading { margin: 1rem 0; padding: 0.9rem 1rem; border: 1px solid var(--platform-border); border-radius: 1rem; background: rgb(255 255 255 / 0.72); color: var(--platform-muted); font-size: 0.76rem; }
 .workspace-portal-bridge { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1rem 0; padding: 1rem 1.2rem; border: 1px solid rgb(232 150 55 / 0.22); border-radius: 1.2rem; background: rgb(255 247 235 / 0.82); }
 .workspace-portal-bridge strong { font-size: 0.84rem; }
 .workspace-portal-bridge p { max-width: 44rem; margin: 0.25rem 0 0; color: var(--platform-muted); font-size: 0.7rem; line-height: 1.5; }

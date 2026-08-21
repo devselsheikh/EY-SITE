@@ -32,7 +32,7 @@ requireCheck(!contactSplit.includes('ViaWeb3Forms') && contactSplit.includes("in
 const cmsData = read('src/app/data/cms.ts');
 requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
 
-for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql']) {
+for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
 
@@ -41,6 +41,12 @@ requireCheck(identityMigration.includes('on_auth_user_created'), 'new auth users
 requireCheck(identityMigration.includes('claim_initial_owner'), 'fresh installations have an explicit Owner bootstrap');
 requireCheck(identityMigration.includes('assign_profile_role'), 'role assignment is server-authorized');
 requireCheck(identityMigration.includes('protect_last_owner'), 'final active Owner is protected');
+const workspaceCloud = read('src/app/data/workspaceCloud.ts');
+requireCheck(['attendance_records', 'family_updates', 'family_messages', 'child_consents'].every(table => workspaceCloud.includes(table)), 'authenticated workspaces persist core child-management workflows');
+requireCheck(workspace.includes('cloud: !localPreview'), 'local preview and authenticated cloud workspaces use separate persistence modes');
+const workspaceStore = read('src/app/data/workspaceStore.ts');
+requireCheck(workspaceStore.includes('cloud ? emptyCloudData() : readStore()'), 'authenticated cloud failures cannot expose seeded local child records');
+requireCheck(workspaceStore.includes('Attendance was not changed') && workspaceStore.includes('message was not sent'), 'failed cloud writes do not appear successfully applied');
 
 const robots = read('public/robots.txt');
 requireCheck(robots.includes('Disallow: /admin') && robots.includes('Disallow: /daycare/parents'), 'private routes are excluded from search crawling');
