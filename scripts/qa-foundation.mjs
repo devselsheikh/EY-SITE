@@ -50,6 +50,8 @@ requireCheck(workspace.includes('cloud: !localPreview'), 'local preview and auth
 const workspaceStore = read('src/app/data/workspaceStore.ts');
 requireCheck(workspaceStore.includes('cloud ? emptyCloudData() : readStore()'), 'authenticated cloud failures cannot expose seeded local child records');
 requireCheck(workspaceStore.includes('Attendance was not changed') && workspaceStore.includes('message was not sent'), 'failed cloud writes do not appear successfully applied');
+const backendHealth = read('src/app/utils/supabase/health.ts');
+requireCheck(['cms_published', 'submissions', 'profiles', 'children', 'attendance_records', 'family_messages', 'child_consents', 'verify_parent_portal_pin'].every(service => backendHealth.includes(service)), 'backend health verifies every critical public and private subsystem without reading the PIN table');
 
 const robots = read('public/robots.txt');
 requireCheck(robots.includes('Disallow: /admin') && robots.includes('Disallow: /daycare/parents'), 'private routes are excluded from search crawling');
