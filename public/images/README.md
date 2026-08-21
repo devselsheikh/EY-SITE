@@ -15,6 +15,4 @@ always uses these local files and never depends on Supabase.
 Teacher, testimonial, and alumni portraits are dynamic-profile slots. They may use a
 profile URL supplied by the CMS, but retain the local file as an offline fallback.
 
-Run `npm run images:sync` to repopulate the slots from the fallback URLs in
-`public/asset-manifest.json`.
-
+Run `npm run images:sync` to verify the local manifest and slot files remain aligned.

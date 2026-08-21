@@ -23,7 +23,7 @@ for (const [key, asset] of Object.entries(manifest.assets ?? {})) {
     if (source.startsWith('/')) {
       const localSource = join(root, 'public', source.replace(/^\/+/, ''));
       await mkdir(dirname(outputPath), { recursive: true });
-      await copyFile(localSource, outputPath);
+      if (localSource !== outputPath) await copyFile(localSource, outputPath);
     } else {
       const response = await fetch(source, { signal: AbortSignal.timeout(30_000) });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -44,4 +44,3 @@ await writeFile(
 );
 
 if (report.some(item => item.status === 'failed')) process.exitCode = 1;
-

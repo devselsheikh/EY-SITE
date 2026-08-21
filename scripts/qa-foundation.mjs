@@ -10,6 +10,7 @@ const read = path => readFileSync(join(root, path), 'utf8');
 const manifest = read('src/app/data/assetManifest.ts');
 const keys = [...manifest.matchAll(/\bkey:\s*['"]([a-z0-9.-]+)['"]/g)].map(match => match[1]);
 requireCheck(keys.length >= 25, `semantic manifest exposes ${keys.length} slots`, 'Semantic image manifest is unexpectedly incomplete.');
+requireCheck(manifest.includes('localFallbackPath') && manifest.includes('/images/slots/'), 'manifest fallbacks resolve to local semantic slots');
 for (const key of keys) {
   const extension = key === 'daycare.educator.lamia' ? 'png' : 'jpg';
   const path = join(root, 'public', 'images', 'slots', `${key}.${extension}`);
@@ -19,6 +20,8 @@ for (const key of keys) {
 const imageSlots = read('src/app/data/imageSlots.ts');
 requireCheck(imageSlots.includes("'daycare.educator.'") && imageSlots.includes("'eduhub.alumni.'"), 'dynamic profiles remain explicitly scoped');
 requireCheck(imageSlots.includes('/images/slots/'), 'static image slots use local public paths');
+const publicAssetManifest = JSON.parse(read('public/asset-manifest.json'));
+requireCheck(Object.values(publicAssetManifest.assets ?? {}).every(asset => typeof asset.fallback_url === 'string' && asset.fallback_url.startsWith('/images/slots/') && !String(asset.published_url).startsWith('http')), 'deployed asset manifest contains local paths only');
 for (const page of [
   'src/app/pages/daycare/About.tsx',
   'src/app/pages/daycare/Home.tsx',
