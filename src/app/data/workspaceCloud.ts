@@ -21,23 +21,27 @@ const ageLabel = (dateOfBirth?: string | null) => {
 
 export async function loadCloudWorkspace(client: SupabaseClient, userId: string): Promise<WorkspaceData> {
   const [{ data: children, error: childError }, { data: updates, error: updateError }, { data: messages, error: messageError }, { data: consents, error: consentError }] = await Promise.all([
-    client.from('children').select('id, display_name, date_of_birth, room_name, key_person:profiles!children_key_person_id_fkey(display_name), child_guardians(relationship, guardian:profiles!child_guardians_guardian_id_fkey(display_name)), attendance_records(state, arrival_at, attendance_date)').eq('active', true).eq('attendance_records.attendance_date', today()),
+    client.from('children').select('id, display_name, date_of_birth, room_name, allergies, key_person:profiles!children_key_person_id_fkey(display_name), child_guardians(relationship, guardian:profiles!child_guardians_guardian_id_fkey(display_name)), attendance_records(state, arrival_at, attendance_date)').eq('active', true).eq('attendance_records.attendance_date', today()),
     client.from('family_updates').select('id, child_id, kind, body, created_at, author:profiles!family_updates_author_id_fkey(display_name)').order('created_at', { ascending: false }).limit(200),
     client.from('family_messages').select('id, child_id, sender_id, body, read_at, created_at, sender:profiles!family_messages_sender_id_fkey(role)').order('created_at', { ascending: true }).limit(200),
     client.from('child_consents').select('child_id, consent_key, granted').eq('guardian_id', userId),
   ]);
   const error = childError || updateError || messageError || consentError;
   if (error) throw new Error(error.message);
-  const consentMap: Record<string, boolean> = {};
-  for (const item of consents ?? []) consentMap[String(item.consent_key)] = Boolean(item.granted);
+  const consentMap: Record<string, Record<string, boolean>> = {};
+  for (const item of consents ?? []) {
+    const childId = String(item.child_id);
+    consentMap[childId] ??= { photos: false, localTrips: false, emergencyCare: false };
+    consentMap[childId][String(item.consent_key)] = Boolean(item.granted);
+  }
   return {
     children: (children ?? []).map((child: any) => {
       const attendance = child.attendance_records?.[0];
-      return { id: child.id, name: child.display_name, room: child.room_name || 'Room not assigned', age: ageLabel(child.date_of_birth), keyPerson: profileName(child.key_person, 'Not assigned'), guardian: profileName(child.child_guardians?.[0]?.guardian, 'Not linked'), attendance: (attendance?.state || 'pending') as AttendanceState, arrival: attendance?.arrival_at ? new Date(attendance.arrival_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : undefined, allergies: [] };
+      return { id: child.id, name: child.display_name, room: child.room_name || 'Room not assigned', age: ageLabel(child.date_of_birth), keyPerson: profileName(child.key_person, 'Not assigned'), guardian: profileName(child.child_guardians?.[0]?.guardian, 'Not linked'), attendance: (attendance?.state || 'pending') as AttendanceState, arrival: attendance?.arrival_at ? new Date(attendance.arrival_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : undefined, allergies: Array.isArray(child.allergies) ? child.allergies.map(String) : [] };
     }),
     updates: (updates ?? []).map((item: any) => ({ id: item.id, childId: item.child_id, author: profileName(item.author, 'Early Years team'), body: item.body, createdAt: item.created_at, kind: item.kind })),
     messages: (messages ?? []).map((item: any) => ({ id: item.id, childId: item.child_id, sender: (profileRole(item.sender) === 'parent' ? 'family' : 'team') as 'family' | 'team', body: item.body, createdAt: item.created_at, read: Boolean(item.read_at) })),
-    consents: { photos: false, localTrips: false, emergencyCare: false, ...consentMap },
+    consents: consentMap,
     savedAt: new Date().toISOString(),
   };
 }

@@ -82,6 +82,9 @@ test('Admin preview operates children without exposing Owner technical controls'
   await expect(page.getByRole('link', { name: /Open console/ })).toHaveCount(0);
   await page.getByRole('button', { name: 'absent', exact: true }).click();
   await expect(page.getByText('Attendance saved on this device.')).toBeVisible();
+  await page.getByLabel('Reply to family').fill('Thank you—we have noted that for tomorrow.');
+  await page.getByRole('button', { name: /Send family message/ }).click();
+  await expect(page.getByText('Thank you—we have noted that for tomorrow.')).toBeVisible();
 });
 
 test('Teacher preview is classroom-scoped and can publish family updates', async ({ page }) => {

@@ -46,7 +46,7 @@ requireCheck(parentPortal.includes('<main className="min-h-screen') && parentPor
 const cmsData = read('src/app/data/cms.ts');
 requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
 
-for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql']) {
+for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
 
@@ -57,10 +57,12 @@ requireCheck(identityMigration.includes('assign_profile_role'), 'role assignment
 requireCheck(identityMigration.includes('protect_last_owner'), 'final active Owner is protected');
 const workspaceCloud = read('src/app/data/workspaceCloud.ts');
 requireCheck(['attendance_records', 'family_updates', 'family_messages', 'child_consents'].every(table => workspaceCloud.includes(table)), 'authenticated workspaces persist core child-management workflows');
+requireCheck(workspaceCloud.includes('allergies') && read('supabase/migrations/009_child_health_basics.sql').includes('allergies TEXT[]'), 'child allergy information has a protected cloud data path');
 requireCheck(workspace.includes('cloud: !localPreview'), 'local preview and authenticated cloud workspaces use separate persistence modes');
 const workspaceStore = read('src/app/data/workspaceStore.ts');
 requireCheck(workspaceStore.includes('cloud ? emptyCloudData() : readStore()'), 'authenticated cloud failures cannot expose seeded local child records');
 requireCheck(workspaceStore.includes('Attendance was not changed') && workspaceStore.includes('message was not sent'), 'failed cloud writes do not appear successfully applied');
+requireCheck(workspace.includes('Family messages') && workspace.includes('Reply to family') && workspace.includes('data.consents[selected.id]'), 'family conversations and per-child consent controls are rendered for the selected child');
 const backendHealth = read('src/app/utils/supabase/health.ts');
 requireCheck(['cms_published', 'submissions', 'profiles', 'children', 'attendance_records', 'family_messages', 'child_consents', 'verify_parent_portal_pin'].every(service => backendHealth.includes(service)), 'backend health verifies every critical public and private subsystem without reading the PIN table');
 

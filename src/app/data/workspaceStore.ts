@@ -38,7 +38,7 @@ export interface WorkspaceData {
   children: ChildRecord[];
   updates: FamilyUpdate[];
   messages: FamilyMessage[];
-  consents: Record<string, boolean>;
+  consents: Record<string, Record<string, boolean>>;
   savedAt: string;
 }
 
@@ -57,10 +57,10 @@ const seedData: WorkspaceData = {
   messages: [
     { id: 'message-1', childId: 'child-amira', sender: 'family', body: 'Amira slept well and is excited for music time today.', createdAt: new Date(Date.now() - 3 * 60 * 60_000).toISOString(), read: true },
   ],
-  consents: { photos: true, localTrips: true, emergencyCare: true },
+  consents: { 'child-amira': { photos: true, localTrips: true, emergencyCare: true } },
   savedAt: new Date().toISOString(),
 };
-const emptyCloudData = (): WorkspaceData => ({ children: [], updates: [], messages: [], consents: { photos: false, localTrips: false, emergencyCare: false }, savedAt: new Date().toISOString() });
+const emptyCloudData = (): WorkspaceData => ({ children: [], updates: [], messages: [], consents: {}, savedAt: new Date().toISOString() });
 
 function readStore(): WorkspaceData {
   try {
@@ -124,7 +124,7 @@ export function useWorkspaceStore({ cloud = false, userId = '' }: { cloud?: bool
   }, [cloud, userId]);
 
   const setConsent = useCallback((childId: string, key: string, value: boolean) => {
-    const apply = () => setData(current => ({ ...current, consents: { ...current.consents, [key]: value }, savedAt: new Date().toISOString() }));
+    const apply = () => setData(current => ({ ...current, consents: { ...current.consents, [childId]: { photos: false, localTrips: false, emergencyCare: false, ...current.consents[childId], [key]: value } }, savedAt: new Date().toISOString() }));
     if (cloud && userId) { void saveCloudConsent(supabase, userId, childId, key, value).then(() => { apply(); setNotice('Permission preference saved securely.'); }).catch(() => setNotice('The permission preference was not changed. Please retry.')); return; }
     apply(); setNotice('Permission preference saved on this device.');
   }, [cloud, userId]);
