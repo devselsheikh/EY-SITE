@@ -49,7 +49,7 @@ requireCheck(parentPortal.includes('<main className="min-h-screen') && parentPor
 const cmsData = read('src/app/data/cms.ts');
 requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
 
-for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql', '010_classrooms_and_staff_assignments.sql', '011_daily_care_foundation.sql']) {
+for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql', '010_classrooms_and_staff_assignments.sql', '011_daily_care_foundation.sql', '012_class_management_operations.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
 
@@ -65,6 +65,10 @@ const dailyCareMigration = read('supabase/migrations/011_daily_care_foundation.s
 requireCheck(['classroom_memberships', 'child_daily_reports', 'child_daily_report_revisions'].every(table => dailyCareMigration.includes(table)), 'daily care has effective class membership, structured reports, and revision history');
 requireCheck(dailyCareMigration.includes('published_at IS NOT NULL') && dailyCareMigration.includes('guardian.guardian_id = auth.uid()'), 'parents can read only published reports for linked children');
 requireCheck(dailyCareMigration.includes('REVOKE DELETE ON public.child_daily_reports') && dailyCareMigration.includes('audit_child_daily_report_change'), 'daily care records are non-deletable and changes are audited');
+const classOperations = read('supabase/migrations/012_class_management_operations.sql');
+requireCheck(['require_operations_role', 'create_classroom', 'set_classroom_staff', 'enrol_child_in_classroom', 'link_child_guardian'].every(name => classOperations.includes(name)), 'class setup operations are server-authorized and atomic');
+requireCheck(classOperations.includes('audit_log') && classOperations.includes('REVOKE ALL ON FUNCTION'), 'class setup changes are audited and RPC access is explicit');
+requireCheck(read('src/app/components/workspace/ClassManagement.tsx').includes('passwords are never created or exposed here'), 'class setup keeps account invitations out of the browser');
 requireCheck(workspace.includes('cloud: !localPreview'), 'local preview and authenticated cloud workspaces use separate persistence modes');
 const workspaceStore = read('src/app/data/workspaceStore.ts');
 requireCheck(workspaceStore.includes('cloud ? emptyCloudData() : readStore()'), 'authenticated cloud failures cannot expose seeded local child records');

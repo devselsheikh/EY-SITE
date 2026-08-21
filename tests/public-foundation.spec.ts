@@ -70,6 +70,8 @@ test('Owner preview exposes full operations and the technical console', async ({
   await page.getByRole('button', { name: /Owner/ }).click();
   await expect(page.getByRole('heading', { name: 'Owner workspace' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Children & families' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Class setup' })).toBeVisible();
+  await expect(page.getByText('Setup attention')).toBeVisible();
   await expect(page.getByRole('link', { name: /Open console/ })).toHaveAttribute('href', '/admin');
   await expect(page.getByRole('button', { name: 'present' }).first()).toBeEnabled();
 });
@@ -79,6 +81,12 @@ test('Admin preview operates children without exposing Owner technical controls'
   await page.getByRole('button', { name: /Admin/ }).click();
   await expect(page.getByRole('heading', { name: 'Admin workspace' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Children & families' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Class setup' })).toBeVisible();
+  await page.getByText('Create a classroom').click();
+  await page.getByLabel('Name').fill('Fireflies');
+  await page.getByLabel('Age group').fill('4–5 years');
+  await page.getByRole('button', { name: /Create classroom/ }).click();
+  await expect(page.getByText('Fireflies classroom created.')).toBeVisible();
   await expect(page.getByRole('link', { name: /Open console/ })).toHaveCount(0);
   await page.getByRole('button', { name: 'absent', exact: true }).click();
   await expect(page.getByText('Attendance saved on this device.')).toBeVisible();

@@ -9,6 +9,7 @@ import { supabase, supabaseConfigured } from '../utils/supabase/client';
 import { checkBackendHealth, localBackendHealth, type BackendHealth } from '../utils/supabase/health';
 import { AccessManagement } from '../components/workspace/AccessManagement';
 import { DailyCarePanel } from '../components/workspace/DailyCarePanel';
+import { ClassManagement } from '../components/workspace/ClassManagement';
 
 const ROLE_COPY: Record<AppRole, { eyebrow: string; title: string; description: string }> = {
   owner: { eyebrow: 'Platform control', title: 'Owner workspace', description: 'Technical controls, system reliability, access, and full operational visibility.' },
@@ -54,6 +55,7 @@ function RoleWorkspace({ role, health, localPreview, currentUserId, onChangeRole
       {notice && <div className="workspace-toast" role="status"><Check aria-hidden="true" /><span>{notice}</span><button onClick={() => setNotice('')} aria-label="Dismiss notification">×</button></div>}
       {loading && <div className="workspace-loading" role="status">Loading your secure records…</div>}
       <section className="workspace-stats" aria-label="Today at a glance"><article><strong>{visibleChildren.length}</strong><span>{role === 'parent' ? 'Child profile' : 'Children visible'}</span></article><article><strong>{visibleChildren.filter(child => child.attendance === 'present').length}</strong><span>Present today</span></article><article><strong>{data.messages.filter(message => !message.read).length}</strong><span>New messages</span></article></section>
+      {(role === 'owner' || role === 'admin') && <ClassManagement cloud={!localPreview} />}
       {!localPreview && currentUserId && (role === 'owner' || role === 'admin') && <AccessManagement role={role} currentUserId={currentUserId} />}
       <div className="workspace-layout">
         <section className="workspace-panel" aria-labelledby="children-title"><div className="workspace-panel__heading"><div><p className="platform-eyebrow">Live records</p><h2 id="children-title">{role === 'parent' ? 'My child' : role === 'teacher' ? 'My classroom' : 'Children & families'}</h2></div><UsersRound aria-hidden="true" /></div><div className="workspace-child-list">{visibleChildren.map(child => <button key={child.id} className={selected?.id === child.id ? 'is-selected' : ''} onClick={() => setSelectedId(child.id)}><span className="workspace-avatar">{child.name.split(' ').map(part => part[0]).join('').slice(0, 2)}</span><span><strong>{child.name}</strong><small>{child.room} · {child.age}</small></span><i className={`attendance-dot attendance-dot--${child.attendance}`} aria-label={child.attendance} /></button>)}</div></section>
