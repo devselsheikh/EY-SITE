@@ -57,17 +57,17 @@ export default function DaycareFooter() {
               {(s.linkedinUrl || s.instagramUrl) && (
                 <div className="flex items-center gap-3 pt-1">
                   {s.linkedinUrl && (
-                    <a href={s.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-coral-500 transition-colors">
+                    <a aria-label="LinkedIn" href={s.linkedinUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 min-w-11 items-center justify-center text-gray-600 hover:text-coral-700 transition-colors">
                       <Linkedin className="w-4 h-4" />
                     </a>
                   )}
                   {s.instagramUrl && (
-                    <a href={s.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-coral-500 transition-colors">
+                    <a aria-label="Instagram" href={s.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 min-w-11 items-center justify-center text-gray-600 hover:text-coral-700 transition-colors">
                       <Instagram className="w-4 h-4" />
                     </a>
                   )}
                   {s.whatsapp && (
-                    <a href={waLink} target="_blank" rel="noopener noreferrer" className="text-xs text-green-600 hover:text-green-700 font-medium transition-colors">
+                    <a href={waLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-xs text-green-800 hover:text-green-900 font-semibold transition-colors">
                       WhatsApp
                     </a>
                   )}

@@ -34,7 +34,7 @@ export default function Landing() {
             href={waLink(s.whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
-            className="md:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-green-500 text-white text-sm font-medium"
+            className="md:hidden inline-flex min-h-11 items-center gap-1.5 px-3 py-2 rounded-full bg-green-700 text-white text-sm font-semibold"
           >
             <MessageCircle className="w-4 h-4" />
             WhatsApp
@@ -141,7 +141,7 @@ export default function Landing() {
                   ))}
                 </ul>
                 <div className="mt-auto">
-                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm group-hover:bg-orange-600 transition-colors">
+                  <div className="inline-flex min-h-11 items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-700 text-white font-bold text-sm group-hover:bg-orange-800 transition-colors">
                     {cta.homepageDaycareLabel || 'Find Childcare'}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -216,13 +216,13 @@ export default function Landing() {
                 href={waLink(s.whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-green-600 font-medium hover:text-green-700 transition-colors"
+                className="inline-flex min-h-11 items-center gap-1.5 text-green-800 font-semibold hover:text-green-900 transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp us
               </a>
             )}
-            <Link to="/contact" className="inline-flex items-center gap-1.5 text-blue-600 font-medium hover:text-blue-700 transition-colors">
+            <Link to="/contact" className="inline-flex min-h-11 items-center gap-1.5 text-blue-700 font-medium hover:text-blue-800 transition-colors">
               <Mail className="w-4 h-4" />
               Send a message
             </Link>
@@ -269,10 +269,10 @@ export default function Landing() {
       {/* ── Footer ── */}
       <footer className="border-t border-gray-100 px-6 sm:px-10 lg:px-16 py-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-400">{s.footerCopyright || '© 2026 Early Years Company. All rights reserved.'}</p>
-          <div className="flex flex-wrap gap-4 justify-center text-xs text-gray-400">
+          <p className="text-xs text-gray-600">{s.footerCopyright || '© 2026 Early Years Company. All rights reserved.'}</p>
+          <div className="flex flex-wrap gap-4 justify-center text-xs text-gray-600">
             {s.mainEmail && (
-              <a href={`mailto:${s.mainEmail}`} className="inline-flex items-center gap-1 hover:text-gray-600 transition-colors">
+              <a href={`mailto:${s.mainEmail}`} className="inline-flex min-h-11 items-center gap-1 hover:text-gray-900 transition-colors">
                 <Mail className="w-3.5 h-3.5" />
                 {s.mainEmail}
               </a>
@@ -288,7 +288,7 @@ export default function Landing() {
                 href={waLink(s.whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-green-600 hover:text-green-700 transition-colors font-medium"
+                className="inline-flex min-h-11 items-center gap-1 text-green-800 hover:text-green-900 transition-colors font-semibold"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 WhatsApp

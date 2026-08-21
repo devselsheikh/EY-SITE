@@ -1,12 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { MotionConfig } from 'motion/react';
 import { RouterProvider, createBrowserRouter } from 'react-router';
-import Landing from './pages/Landing';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
-import StickyMobileCTA from './components/StickyMobileCTA';
 import PageTransition from './components/PageTransition';
 
+const Landing = lazy(() => import('./pages/Landing'));
+const StickyMobileCTA = lazy(() => import('./components/StickyMobileCTA'));
 const DaycareHome = lazy(() => import('./pages/daycare/Home'));
 const DaycareAbout = lazy(() => import('./pages/daycare/About'));
 const DaycarePrograms = lazy(() => import('./pages/daycare/Programs'));
@@ -39,7 +39,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
     <>
       <ScrollToTop />
       <BackToTopButton />
-      <StickyMobileCTA />
+      <Suspense fallback={null}><StickyMobileCTA /></Suspense>
       <Suspense fallback={<RouteFallback />}>
         <PageTransition>{children}</PageTransition>
       </Suspense>

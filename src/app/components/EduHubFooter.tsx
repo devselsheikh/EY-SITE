@@ -37,7 +37,7 @@ export default function EduHubFooter() {
                 </div>
               )}
               {s.mainEmail && s.mainEmail !== s.eduhubEmail && (
-                <div className="text-xs text-gray-500 mt-3">
+                <div className="text-xs text-gray-300 mt-3">
                   General: <a href={`mailto:${s.mainEmail}`} className="inline-flex min-h-11 items-center text-gray-400 hover:text-[#1349D1] transition-colors">{s.mainEmail}</a>
                 </div>
               )}

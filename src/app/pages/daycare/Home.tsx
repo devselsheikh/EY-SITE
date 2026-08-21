@@ -734,6 +734,7 @@ export default function DaycareHome() {
       ]} />
       <SitePopup site="daycare" />
       <DaycareNav />
+      <main>
 
       {/* ══════════════════════════════════════════════════════════
           HERO — What? Where? Why trust?
@@ -750,9 +751,7 @@ export default function DaycareHome() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left */}
             <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
+              initial={false}
             >
               {/* Trust badge */}
               <motion.div
@@ -839,9 +838,7 @@ export default function DaycareHome() {
 
             {/* Right — hero image */}
             <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
+              initial={false}
               className="relative"
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
@@ -850,6 +847,8 @@ export default function DaycareHome() {
                   src={image_IMG_20211012_WA0027}
                   alt="Children arriving happily at Early Years daycare"
                   className="w-full aspect-[4/3] object-cover"
+                  loading="eager"
+                  fetchPriority="high"
                 />
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -1100,7 +1099,7 @@ export default function DaycareHome() {
               href="https://maps.app.goo.gl/JYf4tcxn6CyofMWU6"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-orange-600 font-semibold hover:text-orange-700 transition-colors"
+              className="inline-flex min-h-11 items-center text-sm text-orange-800 font-semibold hover:text-orange-900 transition-colors"
             >
               Open in Google Maps ↗
             </a>
@@ -1809,6 +1808,7 @@ export default function DaycareHome() {
         </div>
       </section>
 
+      </main>
       <DaycareFooter />
 
       {/* ── Sticky mobile action bar (hidden on lg+) ── */}
@@ -1818,7 +1818,7 @@ export default function DaycareHome() {
             href="https://wa.me/201234567890"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 bg-green-500 text-white active:bg-green-600 transition-colors min-h-[56px]"
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 bg-green-700 text-white active:bg-green-800 transition-colors min-h-[56px]"
             aria-label="Chat on WhatsApp"
           >
             <MessageCircle className="w-5 h-5" />
@@ -1829,7 +1829,7 @@ export default function DaycareHome() {
           <div className="w-px bg-white/30" />
           <Link
             to="/daycare/contact"
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 bg-orange-500 text-white active:bg-orange-600 transition-colors min-h-[56px]"
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 bg-orange-700 text-white active:bg-orange-800 transition-colors min-h-[56px]"
             aria-label="Book a tour"
           >
             <Calendar className="w-5 h-5" />

@@ -68,7 +68,9 @@ export default function DaycareNav() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2.5 rounded-xl text-gray-600 hover:bg-peach-50 transition-colors"
+            className="lg:hidden min-h-11 min-w-11 p-2.5 rounded-xl text-gray-600 hover:bg-peach-50 transition-colors"
+            aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>

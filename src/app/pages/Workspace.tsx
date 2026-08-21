@@ -11,7 +11,7 @@ const ROLE_COPY: Record<AppRole, { eyebrow: string; title: string; description: 
   owner: { eyebrow: 'Platform control', title: 'Owner workspace', description: 'Technical controls, system reliability, access, and full operational visibility.' },
   admin: { eyebrow: 'Day-to-day operations', title: 'Admin workspace', description: 'Children, families, attendance, communications, and team coordination.' },
   teacher: { eyebrow: 'Classroom tools', title: 'Teacher workspace', description: 'A focused view of assigned children, attendance, updates, and family messages.' },
-  parent: { eyebrow: 'Your family', title: 'Parent workspace', description: 'Private daily updates, messages, attendance, and permission preferences.' },
+  parent: { eyebrow: 'Future child management', title: 'Family account workspace', description: 'An individual child record foundation for future daily updates, messages, attendance, and permissions.' },
 };
 
 function timeLabel(value: string) {
@@ -40,6 +40,7 @@ function RoleWorkspace({ role, health, localPreview, onChangeRole }: { role: App
     <div className="platform-content">
       <section className="workspace-hero"><div><p className="platform-eyebrow">{copy.eyebrow}</p><h1>{copy.title}</h1><p>{copy.description}</p></div><span className="platform-role-badge"><LockKeyhole aria-hidden="true" />{ROLE_LABELS[role]}</span></section>
       <div className={`platform-notice platform-notice--${health.state}`} role="status"><div><strong>{localPreview ? 'Local-first workspace' : 'System status'}</strong><p>{health.message}</p></div></div>
+      {role === 'parent' && <aside className="workspace-portal-bridge"><div><strong>Looking for the general Parent Portal?</strong><p>The shared-password portal for newsletters, menus, calendars, and forms remains separate and does not require an individual child profile.</p></div><Link to="/daycare/parents" className="platform-button platform-button--quiet">Open Parent Portal <ArrowRight aria-hidden="true" /></Link></aside>}
       {notice && <div className="workspace-toast" role="status"><Check aria-hidden="true" /><span>{notice}</span><button onClick={() => setNotice('')} aria-label="Dismiss notification">×</button></div>}
       <section className="workspace-stats" aria-label="Today at a glance"><article><strong>{visibleChildren.length}</strong><span>{role === 'parent' ? 'Child profile' : 'Children visible'}</span></article><article><strong>{visibleChildren.filter(child => child.attendance === 'present').length}</strong><span>Present today</span></article><article><strong>{data.messages.filter(message => !message.read).length}</strong><span>New messages</span></article></section>
       <div className="workspace-layout">
