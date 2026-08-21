@@ -29,7 +29,7 @@ import { LaunchChecklistSection } from '../components/admin/LaunchChecklistSecti
 import { ContentHealthSection } from '../components/admin/ContentHealthSection';
 import { PublicationsSection } from '../components/admin/PublicationsSection';
 import { PopupSection } from '../components/admin/PopupSection';
-import { roleFromMetadata } from '../auth/roles';
+import { useProfileRole } from '../auth/useProfileRole';
 
 // ─── Brand colours ────────────────────────────────────────────────────────────
 // peach-600 ≈ #ea7c4b  |  coral ≈ #f06b5d  |  blue-600 = #2563eb
@@ -2255,6 +2255,7 @@ export default function Admin() {
   const [authError, setAuthError] = useState('');
   const [signingIn, setSigningIn] = useState(false);
   const localOwnerPreview = import.meta.env.DEV && !supabaseConfigured;
+  const { role: accountRole, loading: roleLoading, error: roleError, refresh: refreshRole } = useProfileRole(session);
 
   useEffect(() => {
     if (localOwnerPreview) {
@@ -2284,7 +2285,7 @@ export default function Admin() {
     await supabase.auth.signOut();
   };
 
-  if (authLoading) {
+  if (authLoading || (!!session && roleLoading)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
@@ -2324,14 +2325,15 @@ export default function Admin() {
     );
   }
 
-  if (roleFromMetadata(session.user.app_metadata) !== 'owner') {
+  if (accountRole !== 'owner') {
     return (
       <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <section className="bg-white border border-slate-200 rounded-3xl shadow-xl p-8 w-full max-w-md text-center">
           <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><Shield className="w-7 h-7 text-slate-600" /></div>
           <h1 className="text-2xl font-bold text-slate-900">Owner access required</h1>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">This console contains publishing, infrastructure, security, and technical controls. Your account workspace remains available separately.</p>
+          <p className="text-sm text-slate-600 mt-2 leading-relaxed">{roleError || 'This console contains publishing, infrastructure, security, and technical controls. Your account workspace remains available separately.'}</p>
           <div className="grid gap-2 mt-6">
+            {roleError && <button type="button" onClick={() => void refreshRole()} className={btnPrimary + ' justify-center'}>Try verification again</button>}
             <a href="/workspace" className={btnPrimary + ' justify-center'}>Return to workspace</a>
             <button type="button" onClick={handleSignOut} className="min-h-11 text-sm font-semibold text-slate-600">Sign out</button>
           </div>

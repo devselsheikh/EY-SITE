@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import type { Session } from '@supabase/supabase-js';
 import { ArrowRight, Check, CloudOff, Database, LockKeyhole, Send, Settings2, ShieldCheck, UsersRound } from 'lucide-react';
-import { APP_ROLES, ROLE_LABELS, roleFromMetadata, type AppRole } from '../auth/roles';
+import { APP_ROLES, ROLE_LABELS, type AppRole } from '../auth/roles';
+import { useProfileRole } from '../auth/useProfileRole';
 import { useWorkspaceStore, type AttendanceState } from '../data/workspaceStore';
 import { supabase, supabaseConfigured } from '../utils/supabase/client';
 import { checkBackendHealth, localBackendHealth, type BackendHealth } from '../utils/supabase/health';
@@ -57,10 +58,13 @@ function RoleWorkspace({ role, health, localPreview, currentUserId, onChangeRole
 }
 
 export default function Workspace() {
-  const [session, setSession] = useState<Session | null>(null), [health, setHealth] = useState<BackendHealth>(() => localBackendHealth()), [previewRole, setPreviewRole] = useState<AppRole | null>(null), [email, setEmail] = useState(''), [password, setPassword] = useState(''), [error, setError] = useState('');
-  useEffect(() => { checkBackendHealth().then(setHealth); if (!supabaseConfigured) return; supabase.auth.getSession().then(({ data }) => setSession(data.session)); const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next)); return () => data.subscription.unsubscribe(); }, []);
-  const authenticatedRole = useMemo(() => roleFromMetadata(session?.user.app_metadata), [session]), role = authenticatedRole ?? previewRole;
-  if (role) return <RoleWorkspace role={role} health={health} localPreview={!authenticatedRole} currentUserId={session?.user.id} onChangeRole={() => setPreviewRole(null)} />;
+  const [session, setSession] = useState<Session | null>(null), [sessionLoading, setSessionLoading] = useState(supabaseConfigured), [health, setHealth] = useState<BackendHealth>(() => localBackendHealth()), [previewRole, setPreviewRole] = useState<AppRole | null>(null), [email, setEmail] = useState(''), [password, setPassword] = useState(''), [error, setError] = useState('');
+  const { role: authenticatedRole, loading: roleLoading, error: roleError, refresh: refreshRole } = useProfileRole(session);
+  useEffect(() => { checkBackendHealth().then(setHealth); if (!supabaseConfigured) return; supabase.auth.getSession().then(({ data }) => setSession(data.session)).finally(() => setSessionLoading(false)); const { data } = supabase.auth.onAuthStateChange((_event, next) => { setSession(next); setSessionLoading(false); }); return () => data.subscription.unsubscribe(); }, []);
+  const role = authenticatedRole ?? (!supabaseConfigured ? previewRole : null);
+  if (sessionLoading || (session && roleLoading)) return <main className="platform-gate"><div className="workspace-loading" role="status">Verifying your secure workspace…</div></main>;
+  if (role) return <RoleWorkspace role={role} health={health} localPreview={!supabaseConfigured} currentUserId={session?.user.id} onChangeRole={() => setPreviewRole(null)} />;
+  if (session && roleError) return <main className="platform-gate"><section className="platform-gate__card"><Link to="/" className="platform-brand"><span className="platform-brand__mark">EY</span><span>Early Years</span></Link><p className="platform-eyebrow">Private workspace</p><h1>Access needs attention</h1><p className="platform-error" role="alert">{roleError}</p><div className="platform-role-grid"><button onClick={() => void refreshRole()}><strong>Try again</strong><span>Recheck your secure profile</span><ArrowRight aria-hidden="true" /></button><button onClick={() => void supabase.auth.signOut()}><strong>Sign out</strong><span>Use a different account</span><ArrowRight aria-hidden="true" /></button></div></section></main>;
   const signIn = async (event: React.FormEvent) => { event.preventDefault(); setError(''); const { error: authError } = await supabase.auth.signInWithPassword({ email, password }); if (authError) setError(authError.message); };
   return <main className="platform-gate"><section className="platform-gate__card"><Link to="/" className="platform-brand"><span className="platform-brand__mark">EY</span><span>Early Years</span></Link><p className="platform-eyebrow">Private workspace</p><h1>{supabaseConfigured ? 'Welcome back' : 'Local role preview'}</h1><p>{supabaseConfigured ? 'Sign in to open the private workspace assigned to your account.' : 'Cloud credentials are not present, so the complete role workflows are available in local safe mode.'}</p>{supabaseConfigured ? <form onSubmit={signIn} className="platform-form"><label>Email<input type="email" value={email} onChange={event => setEmail(event.target.value)} autoComplete="email" required /></label><label>Password<input type="password" value={password} onChange={event => setPassword(event.target.value)} autoComplete="current-password" required /></label>{error && <p className="platform-error" role="alert">{error}</p>}<button className="platform-button" type="submit">Sign in <ArrowRight aria-hidden="true" /></button></form> : <div className="platform-role-grid">{APP_ROLES.map(item => <button key={item} onClick={() => setPreviewRole(item)}><strong>{ROLE_LABELS[item]}</strong><span>{ROLE_COPY[item].eyebrow}</span><ArrowRight aria-hidden="true" /></button>)}</div>}</section></main>;
 }

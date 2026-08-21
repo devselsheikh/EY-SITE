@@ -34,7 +34,9 @@ requireCheck(['owner', 'admin', 'teacher', 'parent'].every(role => workspace.inc
 requireCheck(workspace.includes('/daycare/parents') && workspace.includes('does not require an individual child profile'), 'shared Parent Portal is separated from family accounts');
 
 const admin = read('src/app/pages/Admin.tsx');
-requireCheck(admin.includes("roleFromMetadata(session.user.app_metadata) !== 'owner'"), 'Owner Console has an explicit owner route guard');
+requireCheck(admin.includes("accountRole !== 'owner'") && admin.includes('useProfileRole(session)'), 'Owner Console verifies its owner route guard against the database profile');
+const profileRoleHook = read('src/app/auth/useProfileRole.ts');
+requireCheck(profileRoleHook.includes("from('profiles')") && profileRoleHook.includes("select('role, active')"), 'authenticated role resolution uses the active database profile');
 
 const contactSplit = read('src/app/pages/ContactSplit.tsx');
 requireCheck(!contactSplit.includes('ViaWeb3Forms') && contactSplit.includes("insertSubmission('daycare'") && contactSplit.includes("insertSubmission('eduhub'"), 'combined contact forms use the active local-first submission service');
