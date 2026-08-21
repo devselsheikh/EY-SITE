@@ -15,7 +15,7 @@ export default function EduHubFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* About */}
           <div className="md:col-span-2">
-            <EduHubLogo className="h-10 w-auto mb-4" />
+            <EduHubLogo variant="white" className="h-10 w-auto mb-4" />
             <p className="text-sm text-gray-400 mb-4 leading-relaxed">
               First CACHE-approved training centre in Egypt. UK-accredited professional development for early years educators.
             </p>
