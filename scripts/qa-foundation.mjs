@@ -34,7 +34,7 @@ for (const page of [
 
 const workspace = read('src/app/pages/Workspace.tsx');
 requireCheck(['owner', 'admin', 'teacher', 'parent'].every(role => workspace.includes(`${role}:`)), 'all four workspace roles are present');
-requireCheck(workspace.includes('/daycare/parents') && workspace.includes('does not require an individual child profile'), 'shared Parent Portal is separated from family accounts');
+requireCheck(workspace.includes('/daycare/parents') && workspace.includes('General Parent Portal'), 'shared Parent Portal is separated from family accounts');
 
 const admin = read('src/app/pages/Admin.tsx');
 requireCheck(admin.includes("accountRole !== 'owner'") && admin.includes('useProfileRole(session)'), 'Owner Console verifies its owner route guard against the database profile');
@@ -49,7 +49,7 @@ requireCheck(parentPortal.includes('<main className="min-h-screen') && parentPor
 const cmsData = read('src/app/data/cms.ts');
 requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
 
-for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql', '010_classrooms_and_staff_assignments.sql', '011_daily_care_foundation.sql', '012_class_management_operations.sql', '013_secure_workspace_invitations.sql']) {
+for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql', '008_child_consents.sql', '009_child_health_basics.sql', '010_classrooms_and_staff_assignments.sql', '011_daily_care_foundation.sql', '012_class_management_operations.sql', '013_secure_workspace_invitations.sql', '014_child_onboarding_operation.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
 
@@ -75,12 +75,15 @@ requireCheck(invitationMigration.includes('workspace_invitations') && invitation
 requireCheck(invitationFunction.includes('SUPABASE_SERVICE_ROLE_KEY') && invitationFunction.includes('inviteUserByEmail') && invitationFunction.includes('originAllowed'), 'workspace invitations use a server-only, origin-checked function');
 requireCheck(invitationFunction.includes('redirectTo: `${appUrl}/workspace`') && !invitationFunction.includes('body.redirect'), 'invitation redirects are fixed by server configuration');
 requireCheck(read('src/app/components/workspace/AccessManagement.tsx').includes("functions.invoke('invite-workspace-user'"), 'Owner and Admin access management invokes the protected invitation service');
+const childOnboarding = read('supabase/migrations/014_child_onboarding_operation.sql');
+requireCheck(childOnboarding.includes('require_operations_role') && childOnboarding.includes('create_child_record') && childOnboarding.includes('audit_log'), 'child onboarding is server-authorized and audited');
+requireCheck(!read('src/app/data/workspaceStore.ts').includes('Amira Hassan') && !read('src/app/data/classManagement.ts').includes('Sunflowers'), 'workspace ships without fabricated children, classrooms, or activity');
 requireCheck(workspace.includes('cloud: !localPreview'), 'local preview and authenticated cloud workspaces use separate persistence modes');
 const workspaceStore = read('src/app/data/workspaceStore.ts');
 requireCheck(workspaceStore.includes('cloud ? emptyCloudData() : readStore()'), 'authenticated cloud failures cannot expose seeded local child records');
 requireCheck(workspaceStore.includes('Attendance was not changed') && workspaceStore.includes('message was not sent'), 'failed cloud writes do not appear successfully applied');
 requireCheck(workspaceStore.includes('No local fallback was used') && workspaceStore.includes('current classroom assignment'), 'daily care cloud failures and missing classroom links fail closed');
-requireCheck(workspace.includes('Family messages') && workspace.includes('Reply to family') && workspace.includes('data.consents[selected.id]'), 'family conversations and per-child consent controls are rendered for the selected child');
+requireCheck(workspace.includes('<h3>Messages</h3>') && workspace.includes('Reply to family') && workspace.includes('data.consents[selected.id]'), 'family conversations and per-child consent controls are rendered for the selected child');
 const backendHealth = read('src/app/utils/supabase/health.ts');
 requireCheck(['cms_published', 'submissions', 'profiles', 'children', 'attendance_records', 'family_messages', 'child_consents', 'verify_parent_portal_pin'].every(service => backendHealth.includes(service)), 'backend health verifies every critical public and private subsystem without reading the PIN table');
 
