@@ -111,8 +111,8 @@ export default function DaycareContact() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
@@ -222,8 +222,8 @@ export default function DaycareContact() {
 
             {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
@@ -399,7 +399,7 @@ export default function DaycareContact() {
                     )}
                   </button>
 
-                  <p className="text-sm text-gray-500 text-center">
+                  <p className="text-sm text-gray-700 text-center">
                     We'll confirm your tour within 24 hours
                   </p>
                 </form>

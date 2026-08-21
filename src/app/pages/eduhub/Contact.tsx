@@ -90,7 +90,7 @@ export default function EduHubContact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <h2 className="text-4xl text-gray-900 mb-8">Get in Touch with EduHub</h2>
 
               <div className="space-y-6 mb-12">
@@ -166,7 +166,7 @@ export default function EduHubContact() {
             </motion.div>
 
             {/* Registration Form */}
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
               <div className="bg-white rounded-2xl border-2 border-gray-100 shadow-lg p-8">
                 <h2 className="text-3xl text-gray-900 mb-6">Register Your Interest</h2>
 

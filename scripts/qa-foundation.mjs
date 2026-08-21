@@ -58,6 +58,8 @@ requireCheck(robots.includes('Disallow: /admin') && robots.includes('Disallow: /
 requireCheck(existsSync(join(root, 'public', 'sitemap.xml')), 'public sitemap exists');
 requireCheck(existsSync(join(root, 'public', 'favicon.png')), 'brand favicon exists');
 requireCheck(existsSync(join(root, 'dist', 'index.html')), 'production build exists');
+requireCheck(existsSync(join(root, 'playwright.config.ts')) && existsSync(join(root, 'tests', 'public-foundation.spec.ts')), 'cross-browser accessibility and responsive QA suite exists');
+requireCheck(existsSync(join(root, '.github', 'workflows', 'quality.yml')), 'continuous quality workflow exists');
 
 const sourceFiles = [];
 const walk = directory => {

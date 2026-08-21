@@ -734,6 +734,7 @@ export default function DaycareHome() {
       ]} />
       <SitePopup site="daycare" />
       <DaycareNav />
+
       <main>
 
       {/* ══════════════════════════════════════════════════════════
@@ -1157,7 +1158,7 @@ export default function DaycareHome() {
           </div>
 
           {/* Mobile: horizontal snap carousel */}
-          <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory flex gap-4 pb-4" style={{ scrollbarWidth: 'none' }}>
+          <div tabIndex={0} aria-label="Daycare programs carousel" className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory flex gap-4 pb-4" style={{ scrollbarWidth: 'none' }}>
             {programs.map((prog, i) => (
               <div
                 key={i}
@@ -1812,7 +1813,7 @@ export default function DaycareHome() {
       <DaycareFooter />
 
       {/* ── Sticky mobile action bar (hidden on lg+) ── */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-2xl">
+      <nav aria-label="Mobile contact actions" className="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-2xl">
         <div className="flex items-stretch">
           <a
             href="https://wa.me/201234567890"
@@ -1854,7 +1855,7 @@ export default function DaycareHome() {
             paddingBottom: "env(safe-area-inset-bottom)",
           }}
         />
-      </div>
+      </nav>
 
       {/* Bottom padding so footer isn't hidden behind sticky bar on mobile */}
       <div className="lg:hidden h-16" />
