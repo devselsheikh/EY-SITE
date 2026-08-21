@@ -27,9 +27,15 @@ requireCheck(workspace.includes('/daycare/parents') && workspace.includes('does 
 const admin = read('src/app/pages/Admin.tsx');
 requireCheck(admin.includes("roleFromMetadata(session.user.app_metadata) !== 'owner'"), 'Owner Console has an explicit owner route guard');
 
-for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql']) {
+for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
+
+const identityMigration = read('supabase/migrations/007_identity_provisioning.sql');
+requireCheck(identityMigration.includes('on_auth_user_created'), 'new auth users receive application profiles');
+requireCheck(identityMigration.includes('claim_initial_owner'), 'fresh installations have an explicit Owner bootstrap');
+requireCheck(identityMigration.includes('assign_profile_role'), 'role assignment is server-authorized');
+requireCheck(identityMigration.includes('protect_last_owner'), 'final active Owner is protected');
 
 const robots = read('public/robots.txt');
 requireCheck(robots.includes('Disallow: /admin') && robots.includes('Disallow: /daycare/parents'), 'private routes are excluded from search crawling');
