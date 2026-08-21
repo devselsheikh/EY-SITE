@@ -861,12 +861,37 @@ export interface SupabaseSubmission {
 export async function insertSubmission(
   source: 'daycare' | 'eduhub' | 'general',
   payload: Record<string, unknown>
-): Promise<void> {
-  const supabase = await getSupabase();
-  await supabase.from('submissions').insert({ source, payload, status: 'unread' });
+): Promise<{ cloudSaved: boolean; localSaved: boolean; error?: string }> {
+  const stringValue = (value: unknown) => typeof value === 'string' ? value : '';
+  addSubmission({
+    submittedAt: stringValue(payload.submittedAt) || new Date().toISOString(),
+    source: source === 'daycare' ? 'Daycare' : source === 'eduhub' ? 'EduHub' : 'General',
+    name: stringValue(payload.name),
+    email: stringValue(payload.email),
+    phone: stringValue(payload.phone),
+    message: stringValue(payload.message),
+    extra: Object.fromEntries(Object.entries(payload).filter(([, value]) => typeof value === 'string').map(([key, value]) => [key, value as string])),
+  });
+
+  if (!supabaseConfigured) return { cloudSaved: false, localSaved: true, error: 'Cloud submissions are not configured.' };
+  try {
+    const supabase = await getSupabase();
+    const { error } = await supabase.from('submissions').insert({ source, payload, status: 'unread' });
+    if (error) return { cloudSaved: false, localSaved: true, error: error.message };
+    return { cloudSaved: true, localSaved: true };
+  } catch (error) {
+    return { cloudSaved: false, localSaved: true, error: error instanceof Error ? error.message : 'Cloud submission failed.' };
+  }
 }
 
 export async function fetchSubmissions(): Promise<SupabaseSubmission[]> {
+  if (!supabaseConfigured) return loadSubmissions().map(item => ({
+    id: item.id,
+    source: item.source.toLowerCase(),
+    payload: { name: item.name, email: item.email, phone: item.phone, message: item.message, ...item.extra },
+    status: item.read ? 'read' : 'unread',
+    created_at: item.submittedAt,
+  }));
   const supabase = await getSupabase();
   const { data, error } = await supabase
     .from('submissions')
@@ -877,13 +902,23 @@ export async function fetchSubmissions(): Promise<SupabaseSubmission[]> {
 }
 
 export async function updateSubmissionStatus(id: string, status: 'read' | 'unread'): Promise<void> {
+  if (!supabaseConfigured) {
+    saveSubmissions(loadSubmissions().map(item => item.id === id ? { ...item, read: status === 'read' } : item));
+    return;
+  }
   const supabase = await getSupabase();
-  await supabase.from('submissions').update({ status }).eq('id', id);
+  const { error } = await supabase.from('submissions').update({ status }).eq('id', id);
+  if (error) throw new Error(error.message);
 }
 
 export async function deleteSubmission(id: string): Promise<void> {
+  if (!supabaseConfigured) {
+    saveSubmissions(loadSubmissions().filter(item => item.id !== id));
+    return;
+  }
   const supabase = await getSupabase();
-  await supabase.from('submissions').delete().eq('id', id);
+  const { error } = await supabase.from('submissions').delete().eq('id', id);
+  if (error) throw new Error(error.message);
 }
 
 // ─── Global asset CRUD ────────────────────────────────────────────────────────

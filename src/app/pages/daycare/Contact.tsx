@@ -56,18 +56,22 @@ export default function DaycareContact() {
 
     try {
       // 1. Always save to Supabase
-      await insertSubmission('daycare', payload);
+      const receipt = await insertSubmission('daycare', payload);
+      let delivered = receipt.cloudSaved;
 
       // 2. If webhook configured, POST there too
       if (fs.emailEndpointEnabled && fs.daycareEndpoint) {
-        await postToWebhook(fs.daycareEndpoint, payload);
+        const webhook = await postToWebhook(fs.daycareEndpoint, payload);
+        delivered ||= webhook.success;
       }
+
+      if (!delivered) throw new Error(receipt.error || 'No delivery channel accepted the enquiry.');
 
       setSubmitStatus('success');
       setFormData({ name: "", email: "", phone: "", childAge: "", tourDate: "", message: "" });
     } catch (err) {
       console.error('Daycare form error:', err);
-      setErrorMsg('Something went wrong saving your enquiry. Please try again or call us directly.');
+      setErrorMsg('Your details were kept safely on this device, but could not be delivered. Please try again or call us directly.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);

@@ -1658,7 +1658,7 @@ function SubmissionsSection({ onUnreadChange }: { onUnreadChange?: (n: number) =
 
   return (
     <div>
-      <SectionHeader title="Submissions Inbox" description="Form enquiries submitted through the public website — stored in Supabase." />
+      <SectionHeader title="Submissions Inbox" description="Form enquiries submitted through the public website — cloud-backed in production with an on-device recovery copy." />
       <div className="flex flex-wrap gap-2 mb-4 items-center">
         {(['All', 'daycare', 'eduhub', 'general', 'Unread'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-full text-xs font-semibold capitalize transition-all ${filter === f ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>

@@ -3,8 +3,6 @@ import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Send, CheckCircle, Phone, Mail } from 'lucide-react';
 import {
-  sendDaycareViaWeb3Forms,
-  sendEduHubViaWeb3Forms,
   DAYCARE_RECIPIENT_EMAIL,
   EDUHUB_RECIPIENT_EMAIL,
   createMailtoLink,
@@ -63,18 +61,18 @@ function DaycarePanel() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const result = await sendDaycareViaWeb3Forms({
+      const payload = {
         subject: `Daycare Enquiry — ${form.name}`,
-        from_name: form.name,
+        name: form.name,
         email: form.email,
         phone: form.phone,
-        child_age: form.childAge || 'Not specified',
+        childAge: form.childAge || 'Not specified',
         message: form.message || 'No message provided',
-        submitted_at: new Date().toLocaleString(),
-        form_type: 'Split Contact — Daycare',
-      });
-      if (result.success) {
-        insertSubmission('daycare', { name: form.name, email: form.email, phone: form.phone, childAge: form.childAge || 'Not specified', message: form.message || 'No message provided' }).catch(() => {});
+        submittedAt: new Date().toISOString(),
+        source: 'Split Contact — Daycare',
+      };
+      const receipt = await insertSubmission('daycare', payload);
+      if (receipt.cloudSaved) {
         setDone(true);
       } else {
         const mailtoUrl = createMailtoLink(
@@ -183,18 +181,18 @@ function EduHubPanel() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const result = await sendEduHubViaWeb3Forms({
+      const payload = {
         subject: `EduHub Enquiry — ${form.name}`,
-        from_name: form.name,
+        name: form.name,
         email: form.email,
         phone: form.phone,
         qualification: form.qualification || 'Not specified',
         message: form.message || 'No message provided',
-        submitted_at: new Date().toLocaleString(),
-        form_type: 'Split Contact — EduHub',
-      });
-      if (result.success) {
-        insertSubmission('eduhub', { name: form.name, email: form.email, phone: form.phone, qualification: form.qualification || 'Not specified', message: form.message || 'No message provided' }).catch(() => {});
+        submittedAt: new Date().toISOString(),
+        source: 'Split Contact — EduHub',
+      };
+      const receipt = await insertSubmission('eduhub', payload);
+      if (receipt.cloudSaved) {
         setDone(true);
       } else {
         const mailtoUrl = createMailtoLink(

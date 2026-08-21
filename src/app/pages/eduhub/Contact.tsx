@@ -45,18 +45,22 @@ export default function EduHubContact() {
 
     try {
       // 1. Always save to Supabase
-      await insertSubmission('eduhub', payload);
+      const receipt = await insertSubmission('eduhub', payload);
+      let delivered = receipt.cloudSaved;
 
       // 2. If webhook configured, POST there too
       if (fs.emailEndpointEnabled && fs.eduhubEndpoint) {
-        await postToWebhook(fs.eduhubEndpoint, payload);
+        const webhook = await postToWebhook(fs.eduhubEndpoint, payload);
+        delivered ||= webhook.success;
       }
+
+      if (!delivered) throw new Error(receipt.error || 'No delivery channel accepted the registration.');
 
       setSubmitStatus('success');
       setFormData({ name: '', email: '', phone: '', qualification: '', experience: '', institution: '', message: '' });
     } catch (err) {
       console.error('EduHub form error:', err);
-      setErrorMsg('Something went wrong saving your registration. Please try again or contact us directly.');
+      setErrorMsg('Your details were kept safely on this device, but could not be delivered. Please try again or contact us directly.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);

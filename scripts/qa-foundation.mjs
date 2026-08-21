@@ -27,6 +27,11 @@ requireCheck(workspace.includes('/daycare/parents') && workspace.includes('does 
 const admin = read('src/app/pages/Admin.tsx');
 requireCheck(admin.includes("roleFromMetadata(session.user.app_metadata) !== 'owner'"), 'Owner Console has an explicit owner route guard');
 
+const contactSplit = read('src/app/pages/ContactSplit.tsx');
+requireCheck(!contactSplit.includes('ViaWeb3Forms') && contactSplit.includes("insertSubmission('daycare'") && contactSplit.includes("insertSubmission('eduhub'"), 'combined contact forms use the active local-first submission service');
+const cmsData = read('src/app/data/cms.ts');
+requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
+
 for (const migration of ['003_roles_and_profiles.sql', '004_child_management_foundation.sql', '005_parent_portal_access.sql', '006_owner_console_security.sql', '007_identity_provisioning.sql']) {
   requireCheck(existsSync(join(root, 'supabase', 'migrations', migration)), `migration ${migration}`);
 }
