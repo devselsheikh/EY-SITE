@@ -20,4 +20,3 @@ export function originAllowed(origin: string | null) {
   const allowed = configuredOrigins();
   return allowed.has(origin) || developmentOrigins.has(origin);
 }
-

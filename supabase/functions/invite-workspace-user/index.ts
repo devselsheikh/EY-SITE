@@ -65,4 +65,3 @@ Deno.serve(async request => {
   await service.from('audit_log').insert({ actor_id: userData.user.id, action: 'workspace.invitation.sent', resource_type: 'workspace_invitations', resource_id: invitation.id, after_state: { invited_role: role, provider_user_id: invited.user.id } });
   return json(origin, { ok: true, message: `Invitation sent to ${email}` });
 });
-

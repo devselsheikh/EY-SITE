@@ -29,4 +29,3 @@ CREATE POLICY "operations_read_workspace_invitations"
 
 -- Browser clients may read invitation history but never create or alter it.
 REVOKE INSERT, UPDATE, DELETE ON public.workspace_invitations FROM authenticated, anon;
-
