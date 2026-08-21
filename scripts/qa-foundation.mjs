@@ -29,6 +29,9 @@ requireCheck(admin.includes("roleFromMetadata(session.user.app_metadata) !== 'ow
 
 const contactSplit = read('src/app/pages/ContactSplit.tsx');
 requireCheck(!contactSplit.includes('ViaWeb3Forms') && contactSplit.includes("insertSubmission('daycare'") && contactSplit.includes("insertSubmission('eduhub'"), 'combined contact forms use the active local-first submission service');
+requireCheck(contactSplit.includes('<main>') && contactSplit.includes('htmlFor="split-eduhub-qualification"'), 'combined contact page has landmarks and explicit form labels');
+const parentPortal = read('src/app/pages/daycare/ParentPortal.tsx');
+requireCheck(parentPortal.includes('<main className="min-h-screen') && parentPortal.includes('text-orange-700'), 'shared Parent Portal login preserves accessible landmarks and help-text contrast');
 const cmsData = read('src/app/data/cms.ts');
 requireCheck(cmsData.includes('localSaved: true') && cmsData.includes('if (error) return { cloudSaved: false'), 'public submissions retain a local recovery copy and surface cloud failures');
 

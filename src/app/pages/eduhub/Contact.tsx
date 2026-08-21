@@ -71,6 +71,8 @@ export default function EduHubContact() {
     <div className="min-h-screen bg-white">
       <EduHubNav />
 
+      <main>
+
       {/* Hero */}
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -257,6 +259,7 @@ export default function EduHubContact() {
         </div>
       </div>
 
+      </main>
       <EduHubFooter />
     </div>
   );

@@ -56,7 +56,7 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-peach-50 via-white to-coral-50 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-gradient-to-br from-peach-50 via-white to-coral-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -116,9 +116,9 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
               </button>
             </form>
 
-            <p className="text-xs text-gray-400 text-center">
+            <p className="text-xs text-gray-600 text-center">
               Need your PIN?{' '}
-              <a href="/daycare/contact" className="text-peach-500 hover:underline font-medium">Contact us</a>
+              <a href="/daycare/contact" className="text-orange-700 hover:underline font-medium">Contact us</a>
             </p>
           </div>
         </div>
@@ -137,7 +137,7 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
           ))}
         </div>
       </motion.div>
-    </div>
+    </main>
   );
 }
 
@@ -184,6 +184,8 @@ function PortalContent({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="min-h-screen bg-[#faf9f7]">
       <DaycareNav />
+
+      <main>
 
       {/* Portal header */}
       <div className="bg-gradient-to-br from-peach-400 via-coral-500 to-pink-500 relative overflow-hidden">
@@ -252,6 +254,7 @@ function PortalContent({ onLogout }: { onLogout: () => void }) {
           </motion.div>
         </AnimatePresence>
       </div>
+      </main>
 
       <DaycareFooter />
     </div>
