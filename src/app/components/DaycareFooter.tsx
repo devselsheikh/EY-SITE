@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { Mail, Phone, MapPin, Linkedin, Instagram } from 'lucide-react';
-import daycareLogo from '../../imports/EY_Daycare.png';
+import DaycareLogo from './DaycareLogo';
 import { useCMS } from '../hooks/useCMS';
 
 export default function DaycareFooter() {
@@ -15,7 +15,7 @@ export default function DaycareFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* About */}
           <div className="md:col-span-2">
-            <img src={daycareLogo} alt="Early Years - The Daycare" className="h-16 w-auto max-w-[220px] object-contain mb-4" />
+            <DaycareLogo className="h-16 w-auto max-w-[220px] mb-4" />
             <p className="text-sm text-gray-600 mb-4 leading-relaxed">
               25 years of expertise in Early Years education following the EYFS curriculum. Nurturing young minds with care, play, and learning.
             </p>

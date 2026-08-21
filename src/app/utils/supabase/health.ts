@@ -23,16 +23,21 @@ export async function checkBackendHealth(): Promise<BackendHealth> {
     const timeout = new Promise<never>((_, reject) => {
       window.setTimeout(() => reject(new Error('Health check timed out')), 5_000);
     });
-    const request = supabase.from('cms_published').select('id').limit(1);
-    const result = await Promise.race([request, timeout]);
-    if (result.error) throw result.error;
-    return { state: 'online', message: 'Cloud services are online.', checkedAt: new Date().toISOString() };
+    const request = Promise.all([
+      supabase.from('cms_published').select('id', { head: true, count: 'exact' }),
+      supabase.from('profiles').select('id', { head: true, count: 'exact' }),
+      supabase.from('children').select('id', { head: true, count: 'exact' }),
+      supabase.from('family_updates').select('id', { head: true, count: 'exact' }),
+    ]);
+    const results = await Promise.race([request, timeout]);
+    const failure = results.find(result => result.error)?.error;
+    if (failure) throw failure;
+    return { state: 'online', message: 'Cloud authentication, content, profiles, and child-management records are reachable.', checkedAt: new Date().toISOString() };
   } catch (error) {
     return {
       state: 'degraded',
-      message: `Cloud services are unavailable. Local content remains active. ${error instanceof Error ? error.message : String(error)}`,
+      message: `Cloud services need attention. Local content and device-saved workflows remain active. ${error instanceof Error ? error.message : String(error)}`,
       checkedAt: new Date().toISOString(),
     };
   }
 }
-

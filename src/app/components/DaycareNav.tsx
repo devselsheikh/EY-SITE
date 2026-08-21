@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import daycareLogo from '../../imports/EY_Daycare.png';
+import DaycareLogo from './DaycareLogo';
 
 const NAV_ITEMS = [
   { path: '/daycare', label: 'Home' },
@@ -27,7 +27,7 @@ export default function DaycareNav() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center self-center group flex-shrink-0">
-            <img src={daycareLogo} alt="Early Years — The Daycare" className="h-10 w-auto max-w-[160px] object-contain object-left transition-transform group-hover:scale-105" />
+            <DaycareLogo className="h-10 w-auto max-w-[160px] transition-transform group-hover:scale-[1.03]" />
           </Link>
 
           {/* Desktop Nav */}

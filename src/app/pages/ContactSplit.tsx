@@ -10,7 +10,7 @@ import {
   createMailtoLink,
 } from '../utils/emailService';
 import { insertSubmission } from '../data/cms';
-import earlyYearsLogo from '../../imports/EY_Daycare.png';
+import DaycareLogo from '../components/DaycareLogo';
 import EduHubLogo from '../components/EduHubLogo';
 
 /* ─── Shared spinner ─────────────────────────────────────── */
@@ -101,7 +101,7 @@ function DaycarePanel() {
       {/* Panel header */}
       <div className="bg-gradient-to-br from-orange-50 via-yellow-50 to-teal-50 px-7 pt-8 pb-6 rounded-t-2xl border-b border-orange-100">
         <div className="flex items-center gap-2 mb-1">
-          <img src={earlyYearsLogo} alt="Early Years" className="h-8 w-auto" />
+          <DaycareLogo className="h-8 w-auto" />
           <span className="inline-block px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700 text-xs font-bold uppercase tracking-wide">For Parents</span>
         </div>
         <h2 className="text-gray-900 mb-1" style={{ fontSize: '1.35rem', fontWeight: 700 }}>Early Years Daycare</h2>
@@ -311,7 +311,7 @@ export default function ContactSplit() {
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Home
         </Link>
-        <img src={earlyYearsLogo} alt="Early Years Company" className="h-10 w-auto" />
+        <DaycareLogo company className="h-10 w-auto" />
         <div className="w-24" /> {/* spacer for balance */}
       </header>
 

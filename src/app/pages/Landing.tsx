@@ -1,8 +1,8 @@
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import { ArrowRight, Star, GraduationCap, MapPin, MessageCircle, Phone, Mail, HelpCircle } from 'lucide-react';
-import LOGO_DAYCARE from '../../imports/EY_Daycare.png';
-import LOGO_EDUHUB from '@/imports/eduhublogo-1.png';
+import DaycareLogo from '../components/DaycareLogo';
+import EduHubLogo from '../components/EduHubLogo';
 import { useCMS } from '../hooks/useCMS';
 import { JsonLd, organizationSchema } from '../components/JsonLd';
 
@@ -23,7 +23,7 @@ export default function Landing() {
 
       {/* ── Minimal top bar ── */}
       <header className="flex items-center justify-between px-6 sm:px-10 lg:px-16 py-5 border-b border-gray-100">
-        <img src={LOGO_DAYCARE} alt="Early Years Company" className="h-14 sm:h-16 w-auto max-w-[220px] object-contain" />
+        <DaycareLogo company className="h-14 sm:h-16 w-auto max-w-[220px]" />
         <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600 font-medium">
           {s.linkedinUrl && <a href={s.linkedinUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">LinkedIn</a>}
           {s.instagramUrl && <a href={s.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">Instagram</a>}
@@ -122,7 +122,7 @@ export default function Landing() {
               <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-gradient-to-tr from-teal-200/30 to-transparent blur-3xl translate-y-1/2 -translate-x-1/2" />
 
               <div className="relative flex-1 flex flex-col">
-                <img src={LOGO_DAYCARE} alt="Early Years — The Daycare" className="h-14 w-auto max-w-[200px] object-contain mb-5 transition-transform group-hover:scale-105" />
+                <DaycareLogo className="h-14 w-auto max-w-[200px] mb-5 transition-transform group-hover:scale-[1.03]" />
                 <div className="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-bold mb-4 uppercase tracking-wide w-fit">
                   For Parents
                 </div>
@@ -170,7 +170,7 @@ export default function Landing() {
               <div className="absolute bottom-10 left-6 w-7 h-7 border-2 border-white/20 rounded" />
 
               <div className="relative flex-1 flex flex-col">
-                <img src={LOGO_EDUHUB} alt="EduHub" className="h-14 w-auto max-w-[200px] object-contain mb-5" />
+                <EduHubLogo className="h-14 w-auto max-w-[200px] mb-5" />
                 <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-bold mb-4 uppercase tracking-wide border border-white/20 w-fit">
                   For Educators
                 </div>
