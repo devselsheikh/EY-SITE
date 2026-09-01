@@ -57,9 +57,7 @@ const editorialRoutes = [
   '/blog/choosing-daycare-new-cairo', '/blog/benefits-play-based-learning',
   '/blog/cache-certification-explained', '/blog/becoming-early-years-teacher-egypt',
   '/blog/eyfs-teaching-strategies', '/blog/cpd-early-years-professionals',
-  '/blog/cache-level-3-vs-level-5', '/blog/newsletter-may-2026',
-  '/blog/newsletter-april-2026', '/blog/newsletter-march-2026',
-  '/blog/newsletter-february-2026', '/blog/newsletter-january-2026',
+  '/blog/cache-level-3-vs-level-5',
 ];
 
 for (const route of publicRoutes) {
@@ -103,6 +101,14 @@ test('all parent and educator articles resolve with healthy images and links', a
     expect(brokenImages, `broken article images at ${route}`).toEqual([]);
     const placeholders = await page.locator('main a[href="#"], main a[href=""], main a:not([href])').count();
     expect(placeholders, `placeholder links at ${route}`).toBe(0);
+  }
+});
+
+test('legacy newsletter article links resolve to the secure family resource library', async ({ page }) => {
+  for (const slug of ['newsletter-may-2026', 'newsletter-april-2026', 'newsletter-march-2026', 'newsletter-february-2026', 'newsletter-january-2026']) {
+    await page.goto(`/blog/${slug}`);
+    await expect(page).toHaveURL(/\/daycare\/parents$/);
+    await expect(page.getByRole('heading', { name: 'Family Portal' })).toBeVisible();
   }
 });
 

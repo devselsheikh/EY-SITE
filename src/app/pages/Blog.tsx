@@ -7,7 +7,7 @@ import DaycareFooter from '../components/DaycareFooter';
 import { getPostsByStream } from '../data/blogPosts';
 import { useCMS } from '../hooks/useCMS';
 import { useSEO } from '../hooks/useSEO';
-import { isPublished, CMSBlogArticle } from '../data/cms';
+import { isPublished, isEditorialArticle, CMSBlogArticle } from '../data/cms';
 
 type Stream = 'parents' | 'educators';
 
@@ -116,7 +116,7 @@ export default function Blog() {
   useSEO('blog', {}, cms);
 
   // Merge CMS blog with hardcoded posts — CMS takes precedence by slug
-  const cmsBlogPosts = cms.blog.filter(isPublished);
+  const cmsBlogPosts = cms.blog.filter(isPublished).filter(isEditorialArticle);
   const cmsSlugSet = new Set(cmsBlogPosts.map(p => p.slug));
 
   const hardcodedParents = getPostsByStream('parents')

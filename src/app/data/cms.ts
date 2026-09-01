@@ -22,6 +22,10 @@ export function isPublished(record: { status?: CMSStatus; active?: boolean }): b
   return getStatus(record) === 'published';
 }
 
+export function isEditorialArticle(record: { category?: string }): boolean {
+  return record.category?.trim().toLowerCase() !== 'newsletter';
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface CMSStat { label: string; value: string }
@@ -678,7 +682,7 @@ export const DEFAULT_CMS: CMSContent = {
       seoTitle: 'January 2026 Newsletter | Early Years Daycare',
       seoDescription: 'New term welcome, programme updates and policy reminders from Early Years The Daycare, January 2026.',
     },
-  ],
+  ].filter(isEditorialArticle),
 
   faq: [
     { id: generateId(), displayOrder: 1, group: 'Daycare', question: 'What ages do you accept?', answer: 'We welcome children from 1 to 10 years old. Our Preschool Program serves ages 1–5, while our After-School Program caters to children up to 10 years old.', tip: 'Early Years is one of the few centres in Egypt with 25 years of EYFS experience!', icon: '👶', status: 'published' },
@@ -713,11 +717,11 @@ export const DEFAULT_CMS: CMSContent = {
 export function loadCMS(): CMSContent {
   try {
     const raw = localStorage.getItem(CMS_KEY);
-    if (!raw) return DEFAULT_CMS;
+    if (!raw) return migrate(DEFAULT_CMS);
     const parsed = JSON.parse(raw) as CMSContent;
     return migrate({ ...DEFAULT_CMS, ...parsed });
   } catch {
-    return DEFAULT_CMS;
+    return migrate(DEFAULT_CMS);
   }
 }
 
@@ -743,7 +747,8 @@ function migrate(cms: CMSContent): CMSContent {
     courses: cms.courses?.map(c => { if (!c.publishStatus) c.publishStatus = c.active !== false ? 'published' : 'hidden'; return c; }) ?? DEFAULT_CMS.courses,
     alumni: cms.alumni?.map(a => conv(a) as CMSAlumni) ?? DEFAULT_CMS.alumni,
     accreditations: cms.accreditations?.map(a => conv(a) as CMSAccreditation) ?? DEFAULT_CMS.accreditations,
-    blog: cms.blog?.map(b => conv(b) as CMSBlogArticle) ?? [],
+    // Newsletters are downloadable family resources, never editorial articles.
+    blog: cms.blog?.map(b => conv(b) as CMSBlogArticle).filter(isEditorialArticle) ?? [],
     faq: cms.faq?.map(f => conv(f) as CMSFAQ) ?? DEFAULT_CMS.faq,
     calendarEvents: cms.calendarEvents?.map(e => conv(e) as CMSCalendarEvent) ?? DEFAULT_CMS.calendarEvents,
     portalFiles: cms.portalFiles?.map(f => conv(f) as CMSPortalFile) ?? DEFAULT_CMS.portalFiles,

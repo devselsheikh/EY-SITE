@@ -14,7 +14,7 @@ import {
   CMSCourse, CMSAlumni, CMSAccreditation, CMSBlogArticle, CMSFAQ,
   CMSCalendarEvent, CMSPortalFile, CMSDaycareHero, CMSEduhubHero,
   SupabaseSubmission, CMSMediaItem, CMSProgram, CMSScheduleStep,
-  generateId, DEFAULT_CMS, isPublished, getStatus, scanMediaUsage,
+  generateId, DEFAULT_CMS, isPublished, isEditorialArticle, getStatus, scanMediaUsage,
   getHealthWarnings, loadDraftCMS, saveDraft, publishCMS, publishAllAssets,
   fetchSubmissions, updateSubmissionStatus, deleteSubmission,
   CMS_KEY, loadCMS, saveCMS,
@@ -584,7 +584,7 @@ function SitemapGenerator({ cms }: { cms: CMSContent }) {
       { loc: `${base}/terms`, changefreq: 'yearly', priority: '0.3' },
     ];
 
-    const publishedBlogs = cms.blog.filter(isPublished);
+    const publishedBlogs = cms.blog.filter(isPublished).filter(isEditorialArticle);
     const blogSlugs = new Set([...HARDCODED_BLOG_POSTS.map(post => post.slug), ...publishedBlogs.map(post => post.slug)]);
     const blogRoutes = [...blogSlugs].map(slug => ({ loc: `${base}/blog/${slug}`, changefreq: 'monthly', priority: '0.6' }));
 

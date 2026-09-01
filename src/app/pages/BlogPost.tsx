@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router';
+import { useParams, Link, Navigate } from 'react-router';
 import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
@@ -11,7 +11,7 @@ import EduHubNav from '../components/EduHubNav';
 import EduHubFooter from '../components/EduHubFooter';
 import { getPostBySlug, getRelatedPosts, BlogSection } from '../data/blogPosts';
 import { useCMS } from '../hooks/useCMS';
-import { isPublished, CMSBlogArticle } from '../data/cms';
+import { isPublished, isEditorialArticle, CMSBlogArticle } from '../data/cms';
 import { JsonLd, articleSchema, breadcrumbSchema } from '../components/JsonLd';
 
 // ─── Simple markdown body → BlogSection[] ────────────────
@@ -213,11 +213,12 @@ function RelatedCard({ post, stream }: { post: PostView; stream: 'parents' | 'ed
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const cms = useCMS();
+  const isLegacyNewsletter = slug?.startsWith('newsletter-') === true;
 
   // Try CMS blog first
-  const cmsArticle = slug ? cms.blog.find(a => a.slug === slug && isPublished(a)) : undefined;
+  const cmsArticle = slug ? cms.blog.find(a => a.slug === slug && isPublished(a) && isEditorialArticle(a)) : undefined;
   // Fall back to hardcoded
-  const hardcodedPost = !cmsArticle && slug ? getPostBySlug(slug) : undefined;
+  const hardcodedPost = !isLegacyNewsletter && !cmsArticle && slug ? getPostBySlug(slug) : undefined;
 
   const post: PostView | undefined = cmsArticle
     ? cmsToView(cmsArticle)
@@ -228,7 +229,7 @@ export default function BlogPost() {
   // Related posts from same source
   const related: PostView[] = cmsArticle
     ? cms.blog
-        .filter(a => isPublished(a) && a.slug !== slug && a.audience === cmsArticle.audience)
+        .filter(a => isPublished(a) && isEditorialArticle(a) && a.slug !== slug && a.audience === cmsArticle.audience)
         .slice(0, 3)
         .map(cmsToView)
     : hardcodedPost
@@ -247,6 +248,8 @@ export default function BlogPost() {
       metaDesc.setAttribute('content', post.metaDescription);
     }
   }, [post]);
+
+  if (isLegacyNewsletter) return <Navigate to="/daycare/parents" replace />;
 
   if (!post) {
     return (
