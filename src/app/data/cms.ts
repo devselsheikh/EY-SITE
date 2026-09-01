@@ -367,7 +367,7 @@ export const DEFAULT_CMS: CMSContent = {
     daycarePhone: '+20 2 2615 3903',
     eduhubPhone: '+20 111 500 4090',
     whatsapp: '+20 111 443 3382',
-    address: 'AUC New Cairo Campus, Gate 3, Ring Road, Cairo',
+    address: 'AUC New Cairo, Campus Center, Arnold Pavilion PO29, New Cairo 11835, Egypt',
     googleMapsLink: 'https://maps.app.goo.gl/JYf4tcxn6CyofMWU6',
     linkedinUrl: 'https://www.linkedin.com/company/early-years-daycare/',
     instagramUrl: 'https://www.instagram.com/earlyyearscompany/',

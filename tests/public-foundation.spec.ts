@@ -18,8 +18,27 @@ const publicRoutes = [
   '/blog',
   '/blog/when-should-my-child-start-nursery',
   '/contact',
+  '/privacy',
+  '/terms',
+  '/thank-you',
   '/workspace',
 ];
+
+test('every named public route receives unique launch metadata', async ({ page }) => {
+  const routes = ['/', '/daycare', '/daycare/about', '/daycare/programs', '/eduhub', '/eduhub/programs', '/contact', '/privacy', '/terms'];
+  const titles = new Set<string>();
+  for (const route of routes) {
+    await page.goto(route);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`${route === '/' ? '/?$' : route + '$'}`));
+    const title = await page.title();
+    expect(title.length).toBeGreaterThan(20);
+    titles.add(title);
+    const description = await page.locator('meta[name="description"]').getAttribute('content');
+    expect(description?.length).toBeGreaterThanOrEqual(50);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\//);
+  }
+  expect(titles.size).toBe(routes.length);
+});
 
 const staticImageRoutes = ['/daycare/about', '/eduhub/about', '/eduhub/programs'];
 

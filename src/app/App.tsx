@@ -5,6 +5,8 @@ import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
 import PageTransition from './components/PageTransition';
 import RouteErrorPage from './components/RouteErrorPage';
+import RouteMetadata from './components/RouteMetadata';
+import PrivacyControls from './components/PrivacyControls';
 
 const Landing = lazy(() => import('./pages/Landing'));
 const StickyMobileCTA = lazy(() => import('./components/StickyMobileCTA'));
@@ -25,6 +27,8 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const ContactSplit = lazy(() => import('./pages/ContactSplit'));
 const Admin = lazy(() => import('./pages/Admin'));
 const Workspace = lazy(() => import('./pages/Workspace'));
+const Legal = lazy(() => import('./pages/Legal'));
+const ThankYou = lazy(() => import('./pages/ThankYou'));
 
 function RouteFallback() {
   return (
@@ -39,7 +43,9 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ScrollToTop />
+      <RouteMetadata />
       <BackToTopButton />
+      <PrivacyControls />
       <Suspense fallback={null}><StickyMobileCTA /></Suspense>
       <Suspense fallback={<RouteFallback />}>
         <PageTransition>{children}</PageTransition>
@@ -112,6 +118,18 @@ const routes = [
   {
     path: '/contact',
     element: <AppLayout><ContactSplit /></AppLayout>,
+  },
+  {
+    path: '/thank-you',
+    element: <AppLayout><ThankYou /></AppLayout>,
+  },
+  {
+    path: '/privacy',
+    element: <AppLayout><Legal type="privacy" /></AppLayout>,
+  },
+  {
+    path: '/terms',
+    element: <AppLayout><Legal type="terms" /></AppLayout>,
   },
   {
     path: '/admin',
