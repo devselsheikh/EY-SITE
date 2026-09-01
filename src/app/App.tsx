@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
 import PageTransition from './components/PageTransition';
+import RouteErrorPage from './components/RouteErrorPage';
 
 const Landing = lazy(() => import('./pages/Landing'));
 const StickyMobileCTA = lazy(() => import('./components/StickyMobileCTA'));
@@ -47,7 +48,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: '/',
     element: <AppLayout><Landing /></AppLayout>,
@@ -120,7 +121,16 @@ const router = createBrowserRouter([
     path: '/workspace',
     element: <Suspense fallback={<RouteFallback />}><Workspace /></Suspense>,
   },
-]);
+  {
+    path: '*',
+    element: <RouteErrorPage notFound />,
+  },
+];
+
+const router = createBrowserRouter(routes.map(route => ({
+  ...route,
+  errorElement: <RouteErrorPage />,
+})));
 
 export default function App() {
   return (

@@ -821,3 +821,41 @@ body {
 @media (prefers-reduced-transparency: reduce) {
   .ey-workspace__rail, .ey-workspace__top, .ey-workspace__mobile-nav { background: white; backdrop-filter: none; }
 }
+
+/* Calm, branded recovery UI for missing pages and unexpected failures. */
+.app-error { --error-ink: #30263f; display: grid; min-height: 100svh; place-items: center; overflow: hidden; padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); color: var(--error-ink); background: radial-gradient(circle at 15% 12%, #fff0df 0 9rem, transparent 9.1rem), radial-gradient(circle at 90% 88%, #e6f5ed 0 12rem, transparent 12.1rem), #fffaf5; font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, sans-serif; }
+.app-error__card { position: relative; width: min(100%, 39rem); overflow: hidden; padding: clamp(1.4rem, 5vw, 3rem); border: 1px solid #f0e4da; border-radius: clamp(1.5rem, 5vw, 2.25rem); background: rgb(255 255 255 / 0.9); box-shadow: 0 28px 80px rgb(99 70 52 / 0.12); backdrop-filter: blur(22px) saturate(150%); }
+.app-error__logo { width: auto; max-width: 8.5rem; height: 3.4rem; object-fit: contain; object-position: left center; }
+.app-error__illustration { position: absolute; top: 1.4rem; right: 1.6rem; width: 6.5rem; height: 5.5rem; }
+.app-error__illustration span { position: absolute; display: block; border-radius: 36% 64% 55% 45%; }
+.app-error__illustration span:nth-child(1) { top: 0; right: 0.5rem; width: 3.4rem; height: 3.4rem; background: #f7b154; transform: rotate(18deg); }
+.app-error__illustration span:nth-child(2) { right: 3rem; bottom: 0; width: 2.5rem; height: 2.5rem; background: #75c9a6; transform: rotate(-13deg); }
+.app-error__illustration span:nth-child(3) { right: 0; bottom: 0.3rem; width: 1.8rem; height: 1.8rem; background: #9a65af; transform: rotate(8deg); }
+.app-error__eyebrow { margin: clamp(2.7rem, 8vw, 5rem) 0 0.45rem; color: #b45245; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.11em; text-transform: uppercase; }
+.app-error h1 { max-width: 30rem; margin: 0; font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1; letter-spacing: -0.055em; }
+.app-error__copy { max-width: 31rem; margin: 1rem 0 0; color: #746b79; font-size: clamp(0.85rem, 2vw, 1rem); line-height: 1.65; }
+.app-error__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-top: 1.7rem; }
+.app-error__actions button, .app-error__actions a:not(.app-error__text-link) { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: 0.55rem; padding: 0.72rem 1rem; border: 1px solid #eadfd7; border-radius: 0.9rem; color: var(--error-ink); background: white; box-shadow: 0 6px 18px rgb(70 45 35 / 0.07); font: inherit; font-size: 0.77rem; font-weight: 750; text-decoration: none; cursor: pointer; transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease, background-color 160ms ease; }
+.app-error__actions button { border-color: transparent; color: white; background: linear-gradient(120deg, #ed6f5d, #f29b55); box-shadow: 0 9px 24px rgb(209 100 73 / 0.2); }
+.app-error__actions svg { width: 1rem; height: 1rem; }
+.app-error__actions button:active, .app-error__actions a:not(.app-error__text-link):active { transform: scale(0.97); }
+.app-error__text-link { padding: 0.65rem 0.3rem; color: #9a5147; font-size: 0.75rem; font-weight: 750; text-underline-offset: 0.2rem; }
+
+@media (hover: hover) and (pointer: fine) {
+  .app-error__actions button:hover, .app-error__actions a:not(.app-error__text-link):hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgb(70 45 35 / 0.12); }
+}
+
+@media (max-width: 520px) {
+  .app-error__illustration { opacity: 0.7; transform: scale(0.8); transform-origin: top right; }
+  .app-error__actions { display: grid; }
+  .app-error__actions button, .app-error__actions a:not(.app-error__text-link) { width: 100%; }
+  .app-error__text-link { justify-self: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-error__actions button, .app-error__actions a { transition-duration: 0.01ms; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .app-error__card { background: white; backdrop-filter: none; }
+}

@@ -60,6 +60,14 @@ test('shared Parent Portal remains separate from child-linked accounts', async (
   await expect(page.getByText('No individual child profile is required')).toBeVisible();
 });
 
+test('unknown links receive a useful, private recovery page', async ({ page }) => {
+  await page.goto('/a-page-that-does-not-exist');
+  await expect(page.getByRole('heading', { name: 'This page has wandered off.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Go to homepage' })).toHaveAttribute('href', '/');
+  await expect(page.getByRole('link', { name: 'Visit the daycare' })).toHaveAttribute('href', '/daycare');
+  await expect(page.locator('body')).not.toContainText(/stack|exception|supabase|database/i);
+});
+
 test('local workspace exposes all four functional role previews', async ({ page }) => {
   await page.goto('/workspace');
   for (const role of ['Owner', 'Admin', 'Teacher', 'Parent']) await expect(page.getByRole('button', { name: new RegExp(role) })).toBeVisible();

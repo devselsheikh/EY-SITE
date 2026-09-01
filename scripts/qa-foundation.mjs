@@ -36,6 +36,13 @@ const workspace = read('src/app/pages/Workspace.tsx');
 requireCheck(['owner', 'admin', 'teacher', 'parent'].every(role => workspace.includes(`${role}:`)), 'all four workspace roles are present');
 requireCheck(workspace.includes('/daycare/parents') && workspace.includes('General Parent Portal'), 'shared Parent Portal is separated from family accounts');
 
+const appRouter = read('src/app/App.tsx');
+const appEntry = read('src/main.tsx');
+const routeErrorPage = read('src/app/components/RouteErrorPage.tsx');
+requireCheck(appRouter.includes('errorElement: <RouteErrorPage />') && appRouter.includes("path: '*'"), 'router has branded route errors and a deliberate not-found page');
+requireCheck(appEntry.includes('<AppErrorBoundary>'), 'application root has a last-resort render error boundary');
+requireCheck(!routeErrorPage.includes('error.message') && !routeErrorPage.includes('error.stack'), 'error pages do not disclose technical details');
+
 const admin = read('src/app/pages/Admin.tsx');
 requireCheck(admin.includes("accountRole !== 'owner'") && admin.includes('useProfileRole(session)'), 'Owner Console verifies its owner route guard against the database profile');
 const profileRoleHook = read('src/app/auth/useProfileRole.ts');
