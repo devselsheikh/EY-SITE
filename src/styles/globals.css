@@ -1159,12 +1159,25 @@ body {
 
 /* Public brand systems: the Family Portal's friendly, tactile hierarchy at site scale. */
 .daycare-site, .eduhub-site { color: #172033; font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, sans-serif; }
+.eduhub-site { color: #12213f; font-feature-settings: "kern" 1, "ss01" 1; }
+.eduhub-site :is(p, li) { line-height: 1.68; }
+.eduhub-site :is(h1, h2) { font-weight: 760; }
 .daycare-site h1, .daycare-site h2, .eduhub-site h1, .eduhub-site h2 { letter-spacing: -0.035em; line-height: 1.06; text-wrap: balance; }
 .daycare-site h3, .eduhub-site h3 { letter-spacing: -0.018em; }
 .daycare-site main > div:first-child { background: radial-gradient(circle at 10% 4%, rgb(255 170 32 / 0.52), transparent 34%), radial-gradient(circle at 92% 12%, rgb(244 71 133 / 0.30), transparent 37%), radial-gradient(circle at 74% 92%, rgb(35 201 178 / 0.24), transparent 36%), linear-gradient(145deg, #fff1cf, #ffe1e8 58%, #dffaf6) !important; border-bottom: 1px solid #f2c38f; }
 .daycare-site main > section:first-child { background-image: radial-gradient(circle at 10% 4%, rgb(255 170 32 / 0.52), transparent 34%), radial-gradient(circle at 92% 12%, rgb(244 71 133 / 0.30), transparent 37%), radial-gradient(circle at 74% 92%, rgb(35 201 178 / 0.24), transparent 36%), linear-gradient(145deg, #fff1cf, #ffe1e8 58%, #dffaf6) !important; background-color: #fff1cf !important; }
 .eduhub-site main > div:first-child { background: radial-gradient(circle at 12% 10%, rgb(42 116 255 / 0.28), transparent 36%), radial-gradient(circle at 90% 12%, rgb(72 218 255 / 0.30), transparent 34%), radial-gradient(circle at 70% 90%, rgb(139 92 246 / 0.22), transparent 38%), linear-gradient(145deg, #dce9ff, #e1f8ff 56%, #eee5ff) !important; border-bottom: 1px solid #b9d1ff; }
 .eduhub-site main > section:first-child { background-image: none !important; background-color: #123c92 !important; }
+.eduhub-site main > .editorial-hero--educators {
+  color: white;
+  background:
+    radial-gradient(circle at 12% 0%, rgb(56 189 248 / 0.35), transparent 30rem),
+    radial-gradient(circle at 92% 100%, rgb(139 92 246 / 0.32), transparent 34rem),
+    linear-gradient(135deg, #123b98 0%, #164fc9 52%, #273ca2 100%) !important;
+}
+.eduhub-site .editorial-hero--educators .text-gray-700 { color: #24324b !important; }
+.eduhub-site .editorial-hero--educators input { color: #172033; }
+.eduhub-site .editorial-hero--educators input::placeholder { color: #667085; opacity: 1; }
 .daycare-site [class*="from-orange-50"][class*="to-teal-50"], .daycare-site [class*="from-orange-50/50"] { background-image: linear-gradient(135deg, #ffe4ac 0%, #ffd9e2 52%, #cef6ee 100%) !important; background-color: #ffe4ac !important; }
 .eduhub-site [class*="from-blue-50"][class*="to-indigo-50"] { background-image: none !important; background-color: #f5f8ff !important; }
 .daycare-site .shadow-lg, .daycare-site .shadow-xl, .daycare-site .shadow-2xl { box-shadow: 0 14px 40px rgb(94 61 34 / 0.09) !important; }
@@ -1216,6 +1229,13 @@ body {
 }
 .daycare-site main article { border-color: rgb(226 122 84 / 0.14); box-shadow: 0 8px 28px rgb(112 65 36 / 0.07); }
 .eduhub-site main article { border-color: rgb(54 102 218 / 0.14); box-shadow: 0 8px 30px rgb(19 60 146 / 0.075); }
+.eduhub-site main .text-gray-400 { color: #667085; }
+.eduhub-site main .text-gray-500 { color: #53627a; }
+.eduhub-site main .text-gray-600 { color: #3d4d67; }
+.eduhub-site main [class*="bg-[#1349D1]"] :is(.text-gray-400, .text-gray-500, .text-gray-600),
+.eduhub-site main [class*="from-[#1349D1]"] :is(.text-gray-400, .text-gray-500, .text-gray-600) { color: #eef5ff; }
+.eduhub-site main .bg-blue-50 { background-color: #edf4ff; }
+.eduhub-site main .bg-indigo-50 { background-color: #f1efff; }
 .daycare-site main :is(input, textarea, select),
 .eduhub-site main :is(input, textarea, select) {
   min-height: 3.15rem;

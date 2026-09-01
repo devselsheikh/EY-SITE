@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { ArrowRight, BookOpen, Clock, Search } from 'lucide-react';
 import DaycareNav from '../components/DaycareNav';
 import DaycareFooter from '../components/DaycareFooter';
+import EduHubNav from '../components/EduHubNav';
+import EduHubFooter from '../components/EduHubFooter';
 import { getPostsByStream } from '../data/blogPosts';
 import { useCMS } from '../hooks/useCMS';
 import { useSEO } from '../hooks/useSEO';
@@ -139,25 +141,25 @@ export default function Blog() {
 
   return (
     <div className={`${stream === 'parents' ? 'daycare-site' : 'eduhub-site'} editorial-hub min-h-screen bg-white`}>
-      <DaycareNav />
+      {stream === 'parents' ? <DaycareNav /> : <EduHubNav />}
 
       <main>
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-peach-50 via-lemon-50 to-mint-50 py-16 sm:py-20 overflow-hidden">
+      <section className={`editorial-hero relative py-16 sm:py-20 overflow-hidden ${stream === 'parents' ? 'editorial-hero--parents bg-gradient-to-br from-peach-50 via-lemon-50 to-mint-50' : 'editorial-hero--educators'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md text-gray-700 text-sm mb-5">
               <BookOpen className="w-4 h-4" />
               <span className="font-semibold">Early Years Resource Hub</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+            <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 ${stream === 'parents' ? 'text-gray-900' : 'text-white'}`}>
               Guides, Insights &{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-peach-500 to-blue-600">
+              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${stream === 'parents' ? 'from-peach-500 to-blue-600' : 'from-cyan-200 via-white to-violet-200'}`}>
                 Expert Advice
               </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className={`text-xl max-w-2xl mx-auto mb-8 ${stream === 'parents' ? 'text-gray-600' : 'text-blue-50'}`}>
               Two blogs in one place — practical reads for parents navigating childcare, and professional insights for educators building their careers.
             </p>
 
@@ -296,7 +298,7 @@ export default function Blog() {
       </section>
 
       </main>
-      <DaycareFooter />
+      {stream === 'parents' ? <DaycareFooter /> : <EduHubFooter />}
     </div>
   );
 }
