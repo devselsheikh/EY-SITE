@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import type { Session } from '@supabase/supabase-js';
-import { ArrowRight, Check, CloudOff, Database, Heart, Home, LogOut, MessageCircle, School, Send, Settings2, ShieldCheck, Sparkles, UserPlus, UserRoundCog, UsersRound } from 'lucide-react';
+import { ArrowRight, Check, CloudOff, Database, Eye, EyeOff, Heart, Home, LockKeyhole, LogOut, MessageCircle, School, Send, Settings2, ShieldCheck, Sparkles, UserPlus, UserRoundCog, UsersRound } from 'lucide-react';
 import { APP_ROLES, ROLE_LABELS, type AppRole } from '../auth/roles';
 import { useProfileRole } from '../auth/useProfileRole';
 import { useWorkspaceStore, type AttendanceState } from '../data/workspaceStore';
@@ -18,6 +18,27 @@ const ROLE_COPY: Record<AppRole, { eyebrow: string; title: string; description: 
   teacher: { eyebrow: 'Classroom tools', title: 'Teacher workspace', description: 'A focused view of assigned children, attendance, updates, and family messages.' },
   parent: { eyebrow: 'Future child management', title: 'Family account workspace', description: 'An individual child record foundation for future daily updates, messages, attendance, and permissions.' },
 };
+
+function WorkspaceGateShell({ children }: { children: ReactNode }) {
+  return <main className="ey-gate">
+    <header className="ey-gate__header">
+      <Link to="/daycare" aria-label="Early Years Daycare home"><DaycareLogo /></Link>
+      <Link to="/" className="ey-gate__back">Back to website <ArrowRight aria-hidden="true" /></Link>
+    </header>
+    <div className="ey-gate__layout">
+      <section className="ey-gate__welcome" aria-labelledby="workspace-welcome-title">
+        <div className="ey-gate__art" aria-hidden="true"><span>●</span><span>★</span><span>♥</span><Sparkles /></div>
+        <div className="ey-gate__welcome-copy">
+          <p className="platform-eyebrow">Early Years workspace</p>
+          <h1 id="workspace-welcome-title">Everything for their day, in one caring place.</h1>
+          <p>Simple, private tools that keep educators and families close to every important moment.</p>
+        </div>
+        <div className="ey-gate__trust"><ShieldCheck aria-hidden="true" /><span><strong>Private by design</strong><small>Access is limited to the children and classes assigned to each account.</small></span></div>
+      </section>
+      <section className="ey-gate__entry">{children}</section>
+    </div>
+  </main>;
+}
 
 function timeLabel(value: string) {
   return new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' }).format(new Date(value));
@@ -73,13 +94,29 @@ function RoleWorkspace({ role, health, localPreview, currentUserId, onChangeRole
 }
 
 export default function Workspace() {
-  const [session, setSession] = useState<Session | null>(null), [sessionLoading, setSessionLoading] = useState(supabaseConfigured), [health, setHealth] = useState<BackendHealth>(() => localBackendHealth()), [previewRole, setPreviewRole] = useState<AppRole | null>(null), [email, setEmail] = useState(''), [password, setPassword] = useState(''), [error, setError] = useState('');
+  const [session, setSession] = useState<Session | null>(null), [sessionLoading, setSessionLoading] = useState(supabaseConfigured), [health, setHealth] = useState<BackendHealth>(() => localBackendHealth()), [previewRole, setPreviewRole] = useState<AppRole | null>(null), [email, setEmail] = useState(''), [password, setPassword] = useState(''), [error, setError] = useState(''), [showPassword, setShowPassword] = useState(false), [signingIn, setSigningIn] = useState(false);
   const { role: authenticatedRole, loading: roleLoading, error: roleError, refresh: refreshRole } = useProfileRole(session);
   useEffect(() => { checkBackendHealth().then(setHealth); if (!supabaseConfigured) return; supabase.auth.getSession().then(({ data }) => setSession(data.session)).finally(() => setSessionLoading(false)); const { data } = supabase.auth.onAuthStateChange((_event, next) => { setSession(next); setSessionLoading(false); }); return () => data.subscription.unsubscribe(); }, []);
   const role = authenticatedRole ?? (!supabaseConfigured ? previewRole : null);
-  if (sessionLoading || (session && roleLoading)) return <main className="platform-gate"><div className="workspace-loading" role="status">Verifying your secure workspace…</div></main>;
+  if (sessionLoading || (session && roleLoading)) return <WorkspaceGateShell><div className="ey-gate__loading" role="status"><span aria-hidden="true" /><strong>Opening your workspace</strong><small>Verifying secure access…</small></div></WorkspaceGateShell>;
   if (role) return <RoleWorkspace role={role} health={health} localPreview={!supabaseConfigured} currentUserId={session?.user.id} onChangeRole={() => setPreviewRole(null)} />;
-  if (session && roleError) return <main className="platform-gate"><section className="platform-gate__card"><Link to="/" className="platform-brand"><span className="platform-brand__mark">EY</span><span>Early Years</span></Link><p className="platform-eyebrow">Private workspace</p><h1>Access needs attention</h1><p className="platform-error" role="alert">{roleError}</p><div className="platform-role-grid"><button onClick={() => void refreshRole()}><strong>Try again</strong><span>Recheck your secure profile</span><ArrowRight aria-hidden="true" /></button><button onClick={() => void supabase.auth.signOut()}><strong>Sign out</strong><span>Use a different account</span><ArrowRight aria-hidden="true" /></button></div></section></main>;
-  const signIn = async (event: React.FormEvent) => { event.preventDefault(); setError(''); const { error: authError } = await supabase.auth.signInWithPassword({ email, password }); if (authError) setError(authError.message); };
-  return <main className="platform-gate"><section className="platform-gate__card"><Link to="/" className="platform-brand"><span className="platform-brand__mark">EY</span><span>Early Years</span></Link><p className="platform-eyebrow">Private workspace</p><h1>{supabaseConfigured ? 'Welcome back' : 'Local role preview'}</h1><p>{supabaseConfigured ? 'Sign in to open the private workspace assigned to your account.' : 'Cloud credentials are not present, so the complete role workflows are available in local safe mode.'}</p>{supabaseConfigured ? <form onSubmit={signIn} className="platform-form"><label>Email<input type="email" value={email} onChange={event => setEmail(event.target.value)} autoComplete="email" required /></label><label>Password<input type="password" value={password} onChange={event => setPassword(event.target.value)} autoComplete="current-password" required /></label>{error && <p className="platform-error" role="alert">{error}</p>}<button className="platform-button" type="submit">Sign in <ArrowRight aria-hidden="true" /></button></form> : <div className="platform-role-grid">{APP_ROLES.map(item => <button key={item} onClick={() => setPreviewRole(item)}><strong>{ROLE_LABELS[item]}</strong><span>{ROLE_COPY[item].eyebrow}</span><ArrowRight aria-hidden="true" /></button>)}</div>}</section></main>;
+  if (session && roleError) return <WorkspaceGateShell><div className="ey-gate__entry-heading"><span className="ey-gate__icon"><LockKeyhole /></span><p className="platform-eyebrow">Secure account</p><h2>Access needs attention</h2><p>We couldn’t verify the workspace assigned to this account. No private records were opened.</p></div><p className="platform-error" role="alert">{roleError}</p><div className="platform-role-grid"><button onClick={() => void refreshRole()}><strong>Try again</strong><span>Recheck your secure profile</span><ArrowRight aria-hidden="true" /></button><button onClick={() => void supabase.auth.signOut()}><strong>Sign out</strong><span>Use a different account</span><ArrowRight aria-hidden="true" /></button></div></WorkspaceGateShell>;
+  const signIn = async (event: React.FormEvent) => { event.preventDefault(); if (signingIn) return; setError(''); setSigningIn(true); const { error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password }); if (authError) setError('That email or password was not recognised. Check your details and try again.'); setSigningIn(false); };
+  return <WorkspaceGateShell>
+    <div className="ey-gate__entry-heading">
+      <span className="ey-gate__icon"><LockKeyhole aria-hidden="true" /></span>
+      <p className="platform-eyebrow">Private workspace</p>
+      <h2>{supabaseConfigured ? 'Welcome back' : 'Choose a workspace'}</h2>
+      <p>{supabaseConfigured ? 'Sign in with the account provided by Early Years.' : 'Explore each unpopulated workspace locally. Nothing here changes the live database.'}</p>
+    </div>
+    {supabaseConfigured ? <form onSubmit={signIn} className="ey-gate__form">
+      <label htmlFor="workspace-email">Email address</label>
+      <input id="workspace-email" type="email" value={email} onChange={event => setEmail(event.target.value)} autoComplete="email" inputMode="email" placeholder="you@example.com" required />
+      <label htmlFor="workspace-password">Password</label>
+      <div className="ey-gate__password"><input id="workspace-password" type={showPassword ? 'text' : 'password'} value={password} onChange={event => setPassword(event.target.value)} autoComplete="current-password" placeholder="Your password" required /><button type="button" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</button></div>
+      {error && <p className="platform-error" role="alert">{error}</p>}
+      <button className="platform-button ey-gate__submit" type="submit" disabled={signingIn}>{signingIn ? 'Signing in…' : 'Sign in securely'} {!signingIn && <ArrowRight aria-hidden="true" />}</button>
+    </form> : <div className="ey-gate__roles">{APP_ROLES.map((item, index) => <button key={item} className={`is-role-${index + 1}`} onClick={() => setPreviewRole(item)}><span className="ey-gate__role-icon">{item === 'parent' ? <Heart /> : item === 'teacher' ? <School /> : item === 'admin' ? <UsersRound /> : <Settings2 />}</span><span><strong>{ROLE_LABELS[item]}</strong><small>{ROLE_COPY[item].eyebrow}</small></span><ArrowRight aria-hidden="true" /></button>)}</div>}
+    <div className="ey-gate__parent-link"><MessageCircle aria-hidden="true" /><span><strong>Looking for the general Parent Portal?</strong><small>Open calendars, menus, newsletters, and shared forms.</small></span><Link to="/daycare/parents">Open portal <ArrowRight aria-hidden="true" /></Link></div>
+  </WorkspaceGateShell>;
 }
