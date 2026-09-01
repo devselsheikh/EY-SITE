@@ -958,3 +958,86 @@ body {
   .ey-gate__loading > span { animation-duration: 1.4s; }
   .ey-gate__roles button, .ey-gate__back svg, .ey-gate__parent-link a svg { transition-duration: 0.01ms; }
 }
+
+/* Shared Family Portal — mobile-first companion to the private workspace. */
+.family-gate { min-height: 100svh; padding: max(0.7rem, env(safe-area-inset-top)) max(0.65rem, env(safe-area-inset-right)) max(0.8rem, env(safe-area-inset-bottom)) max(0.65rem, env(safe-area-inset-left)); color: #30263f; background: #fffaf5; font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, sans-serif; }
+.family-gate__header { display: flex; min-height: 4rem; align-items: center; justify-content: space-between; padding: 0 0.35rem; }
+.family-gate__header img { width: auto; max-width: 8.5rem; height: 3.1rem; }
+.family-gate__header > a:last-child { display: inline-flex; align-items: center; gap: 0.35rem; color: #746978; font-size: 0; font-weight: 750; text-decoration: none; }
+.family-gate__header > a:last-child svg { width: 1.1rem; }
+.family-gate__layout { display: grid; overflow: hidden; border: 1px solid #ede1d8; border-radius: 1.7rem; background: white; box-shadow: 0 24px 65px rgb(95 66 48 / 0.11); }
+.family-gate__story { position: relative; display: flex; min-height: 18rem; flex-direction: column; justify-content: flex-end; overflow: hidden; padding: 1.7rem; color: white; background: linear-gradient(145deg, #ef715f, #f29a58 60%, #ebb55d); }
+.family-gate__story::after { position: absolute; right: -8rem; bottom: -9rem; width: 20rem; height: 20rem; border: 2.4rem solid rgb(255 255 255 / 0.1); border-radius: 50%; content: ""; }
+.family-gate__story > div:not(.family-gate__art), .family-gate__features { position: relative; z-index: 1; }
+.family-gate__story .platform-eyebrow { color: rgb(255 255 255 / 0.78); }
+.family-gate__story h1 { max-width: 10ch; margin: 0.45rem 0 0; font-size: clamp(2.5rem, 12vw, 4.4rem); line-height: 0.98; letter-spacing: -0.06em; }
+.family-gate__story > div > p:last-child { max-width: 30rem; margin: 0.9rem 0 0; color: rgb(255 255 255 / 0.86); font-size: 0.72rem; line-height: 1.6; }
+.family-gate__art { position: absolute; top: 1.4rem; right: 1.4rem; width: 7rem; height: 5.5rem; }
+.family-gate__art span { position: absolute; font-size: 1.7rem; }
+.family-gate__art span:nth-child(1) { top: 0; left: 0; color: #a7e0bd; }
+.family-gate__art span:nth-child(2) { top: 0; right: 0; color: #ffe481; font-size: 2.3rem; transform: rotate(12deg); }
+.family-gate__art span:nth-child(3) { right: 25%; bottom: 0; color: #f4bfdd; font-size: 2.8rem; transform: rotate(-9deg); }
+.family-gate__art svg { position: absolute; right: 38%; bottom: 30%; width: 1.5rem; }
+.family-gate__features { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+.family-gate__features span { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.48rem 0.6rem; border: 1px solid rgb(255 255 255 / 0.2); border-radius: 99px; background: rgb(255 255 255 / 0.1); font-size: 0.58rem; font-weight: 750; }
+.family-gate__features svg { width: 0.8rem; }
+.family-gate__entry { padding: 1.5rem; }
+.family-gate__lock { display: grid; width: 3.2rem; height: 3.2rem; margin-bottom: 1.25rem; place-items: center; border-radius: 1.05rem; color: #a55045; background: #fff0e7; }
+.family-gate__lock svg { width: 1.3rem; }
+.family-gate__entry h2 { margin: 0.4rem 0 0; font-size: clamp(2rem, 9vw, 3rem); line-height: 1; letter-spacing: -0.05em; }
+.family-gate__entry > p:not(.platform-eyebrow) { margin: 0.8rem 0 0; color: #706574; font-size: 0.72rem; line-height: 1.65; }
+.family-gate__form { display: grid; gap: 0.5rem; margin-top: 1.35rem; }
+.family-gate__form label { color: #5e5366; font-size: 0.68rem; font-weight: 780; }
+.family-gate__form input { width: 100%; min-height: 3.6rem; padding: 0.8rem 1rem; border: 1px solid #e8dbd2; border-radius: 1rem; outline: 0; color: #30263f; background: #fffdfa; font: 700 1.3rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.45em; text-align: center; transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease; }
+.family-gate__form input:focus { border-color: #dc8d7f; background: white; box-shadow: 0 0 0 3px rgb(239 113 95 / 0.12); }
+.family-gate__form button { display: inline-flex; min-height: 3.25rem; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.3rem; border: 0; border-radius: 0.95rem; color: white; background: linear-gradient(120deg, #ed6f5d, #f29b55); box-shadow: 0 9px 24px rgb(209 100 73 / 0.2); font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease, opacity 160ms ease; }
+.family-gate__form button svg { width: 0.95rem; }
+.family-gate__form button:disabled { cursor: wait; opacity: 0.45; }
+.family-gate__form button:active, .family-gate__account:active { transform: scale(0.97); }
+.family-gate__error { display: flex; align-items: flex-start; gap: 0.4rem; margin: 0; color: #b52e38; font-size: 0.65rem; line-height: 1.45; }
+.family-gate__error svg { width: 0.9rem; flex: 0 0 auto; }
+.family-gate__help { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.6rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #efe4dc; }
+.family-gate__help > svg { width: 1rem; color: #af5d51; }
+.family-gate__help span { display: grid; gap: 0.12rem; }
+.family-gate__help strong { font-size: 0.63rem; }
+.family-gate__help small { color: #716675; font-size: 0.56rem; line-height: 1.4; }
+.family-gate__help a { color: #a45146; font-size: 0.62rem; font-weight: 800; text-underline-offset: 0.18rem; }
+.family-gate__account { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.65rem; margin-top: 0.8rem; padding: 0.8rem; border-radius: 0.95rem; color: inherit; background: #eff8f3; text-decoration: none; transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease; }
+.family-gate__account > svg { width: 1rem; color: #3f7a62; }
+.family-gate__account span { display: grid; gap: 0.12rem; }
+.family-gate__account strong { font-size: 0.63rem; }
+.family-gate__account small { color: #5f7169; font-size: 0.55rem; line-height: 1.4; }
+.family-gate__account > svg:last-child { width: 0.85rem; color: #799188; }
+.family-portal__hero { background: linear-gradient(130deg, #ef715f, #f29a58 62%, #eab65f); }
+.family-portal__tabs { scroll-padding-inline: 1rem; }
+.family-portal__tabs button { transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), color 160ms ease, background-color 160ms ease, box-shadow 180ms ease; }
+.family-portal__tabs button:active { transform: scale(0.97); }
+
+@media (min-width: 760px) {
+  .family-gate { padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); }
+  .family-gate__header { width: min(100%, 72rem); min-height: 4.5rem; margin: 0 auto; }
+  .family-gate__header > a:last-child { font-size: 0.7rem; }
+  .family-gate__layout { width: min(100%, 72rem); min-height: min(42rem, calc(100svh - 6.5rem)); grid-template-columns: minmax(0, 1.05fr) minmax(23rem, 0.95fr); margin: 1rem auto 0; border-radius: 2.2rem; }
+  .family-gate__story { min-height: 100%; padding: clamp(2.5rem, 5vw, 4rem); }
+  .family-gate__entry { display: flex; flex-direction: column; justify-content: center; padding: clamp(2rem, 5vw, 4rem); }
+  .family-gate__story h1 { font-size: clamp(3.2rem, 5vw, 4.7rem); }
+}
+
+@media (max-width: 759px) {
+  .family-gate__entry { order: -1; }
+  .family-gate__story { min-height: 16rem; }
+  .family-gate__story h1 { max-width: 12ch; font-size: 2.55rem; }
+  .family-gate__features { margin-top: 1rem; }
+  .family-portal__hero { padding-top: env(safe-area-inset-top); }
+  .family-portal__tabs { margin-right: -1rem; padding-right: 1rem; scroll-snap-type: x proximity; }
+  .family-portal__tabs button { min-height: 2.75rem; scroll-snap-align: start; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .family-gate__form button:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 13px 30px rgb(209 100 73 / 0.26); }
+  .family-gate__account:hover { background: #e6f4ec; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .family-gate__form button, .family-gate__account, .family-portal__tabs button { transition-duration: 0.01ms; }
+}

@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Lock, FileText, Camera, UtensilsCrossed, Calendar, ClipboardList,
   Download, LogOut, Star, Heart, ChevronRight, Bell, BookOpen,
-  CheckCircle2, AlertCircle, Clock, Leaf, Sun,
+  CheckCircle2, AlertCircle, Clock, Leaf, Sun, ArrowRight, ShieldCheck, MessageCircle,
 } from 'lucide-react';
 import DaycareNav from '../../components/DaycareNav';
 import DaycareFooter from '../../components/DaycareFooter';
+import DaycareLogo from '../../components/DaycareLogo';
 import { supabase, supabaseConfigured } from '../../utils/supabase/client';
 import { useCMS } from '../../hooks/useCMS';
 import type { CMSCalendarEvent, CMSPortalFile, CMSMeals } from '../../data/cms';
@@ -56,86 +57,28 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-peach-50 via-white to-coral-50 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: 'spring', damping: 20 }}
-        className="w-full max-w-sm"
-      >
-        {/* Card */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-br from-peach-400 via-coral-500 to-pink-500 px-8 pt-8 pb-10 text-center">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-              <Lock className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-white">Family Portal</h1>
-            <p className="text-white/75 text-sm mt-1">Early Years — The Daycare</p>
-          </div>
-
-          {/* Body */}
-          <div className="px-8 py-7 space-y-5">
-            <p className="text-sm text-gray-500 text-center leading-relaxed">
-              This shared information space is for approved families. No individual child profile is required—enter the PIN supplied by the nursery team.
-            </p>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <input
-                  aria-label="Parent Portal PIN"
-                  type="password"
-                  value={pin}
-                  onChange={e => setPin(e.target.value)}
-                  placeholder="• • • •"
-                  maxLength={8}
-                  autoFocus
-                  className="w-full border-2 border-gray-200 rounded-2xl px-5 py-4 text-center text-2xl tracking-[0.6em] font-mono focus:outline-none focus:border-peach-400 transition-colors placeholder:tracking-normal placeholder:text-gray-300"
-                />
-              </div>
-
-              <AnimatePresence>
-                {error && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-xs text-red-600 text-center flex items-center justify-center gap-1"
-                  >
-                    <AlertCircle className="w-3.5 h-3.5" /> {error}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-
-              <button
-                type="submit"
-                disabled={checking || pin.length < 4}
-                className="w-full py-3.5 bg-gradient-to-r from-peach-400 to-coral-500 text-white rounded-2xl font-bold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-40 disabled:scale-100"
-              >
-                {checking ? 'Checking…' : 'Enter Portal →'}
-              </button>
-            </form>
-
-            <p className="text-xs text-gray-600 text-center">
-              Need your PIN?{' '}
-              <a href="/daycare/contact" className="text-orange-700 hover:underline font-medium">Contact us</a>
-            </p>
-          </div>
-        </div>
-
-        {/* What's inside teaser */}
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          {[
-            { icon: FileText, label: 'Newsletters' },
-            { icon: UtensilsCrossed, label: 'Full Menu' },
-            { icon: Calendar, label: 'Calendar' },
-          ].map(({ icon: Icon, label }) => (
-            <div key={label} className="bg-white/70 backdrop-blur rounded-2xl p-3 text-center border border-white/80">
-              <Icon className="w-5 h-5 text-gray-400 mx-auto mb-1" />
-              <p className="text-[10px] text-gray-500 font-medium">{label}</p>
-            </div>
-          ))}
-        </div>
+    <main className="family-gate">
+      <header className="family-gate__header"><a href="/daycare" aria-label="Early Years Daycare home"><DaycareLogo /></a><a href="/daycare">Back to daycare <ArrowRight aria-hidden="true" /></a></header>
+      <motion.div initial={{ opacity: 0, transform: 'translateY(10px)' }} animate={{ opacity: 1, transform: 'translateY(0)' }} transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }} className="family-gate__layout">
+        <section className="family-gate__story" aria-labelledby="family-portal-title">
+          <div className="family-gate__art" aria-hidden="true"><span>●</span><span>★</span><span>♥</span><Heart /></div>
+          <div><p className="platform-eyebrow">For Early Years families</p><h1 id="family-portal-title">The useful bits, always close by.</h1><p>Menus, calendars, newsletters, and nursery forms—all gathered into one simple family space.</p></div>
+          <div className="family-gate__features" aria-label="Available family information">{[{ icon: FileText, label: 'Newsletters' }, { icon: UtensilsCrossed, label: 'Lunch menu' }, { icon: Calendar, label: 'Calendar' }].map(({ icon: Icon, label }) => <span key={label}><Icon aria-hidden="true" />{label}</span>)}</div>
+        </section>
+        <section className="family-gate__entry">
+          <span className="family-gate__lock"><Lock aria-hidden="true" /></span>
+          <p className="platform-eyebrow">Shared Family Portal</p>
+          <h2>Family Portal</h2>
+          <p>This shared information space is for approved families. No individual child profile is required—enter the PIN supplied by the nursery team.</p>
+          <form onSubmit={handleSubmit} className="family-gate__form">
+            <label htmlFor="family-portal-pin">Family PIN</label>
+            <input id="family-portal-pin" aria-label="Parent Portal PIN" type="password" inputMode="numeric" autoComplete="one-time-code" value={pin} onChange={e => setPin(e.target.value.replace(/\D/g, ''))} placeholder="• • • •" maxLength={8} autoFocus />
+            <AnimatePresence>{error && <motion.p initial={{ opacity: 0, transform: 'translateY(-4px)' }} animate={{ opacity: 1, transform: 'translateY(0)' }} exit={{ opacity: 0 }} className="family-gate__error" role="alert"><AlertCircle aria-hidden="true" /> {error}</motion.p>}</AnimatePresence>
+            <button type="submit" disabled={checking || pin.length < 4}>{checking ? 'Checking securely…' : 'Open Family Portal'} {!checking && <ArrowRight aria-hidden="true" />}</button>
+          </form>
+          <div className="family-gate__help"><MessageCircle aria-hidden="true" /><span><strong>Need the family PIN?</strong><small>Ask the nursery team or contact Early Years.</small></span><a href="/daycare/contact">Contact us</a></div>
+          <a className="family-gate__account" href="/workspace"><ShieldCheck aria-hidden="true" /><span><strong>Have an individual child account?</strong><small>Use your email and password in the secure workspace.</small></span><ArrowRight aria-hidden="true" /></a>
+        </section>
       </motion.div>
     </main>
   );
@@ -182,13 +125,13 @@ function PortalContent({ onLogout }: { onLogout: () => void }) {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
+    <div className="family-portal min-h-screen bg-[#fffaf5]">
       <DaycareNav />
 
       <main>
 
       {/* Portal header */}
-      <div className="bg-gradient-to-br from-peach-400 via-coral-500 to-pink-500 relative overflow-hidden">
+      <div className="family-portal__hero bg-gradient-to-br from-peach-400 via-coral-500 to-pink-500 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
           <div className="flex items-center justify-between gap-4 mb-6">
@@ -211,7 +154,7 @@ function PortalContent({ onLogout }: { onLogout: () => void }) {
           </div>
 
           {/* Section tab bar */}
-          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
+          <div className="family-portal__tabs flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
             {SECTIONS.map(s => {
               const Icon = s.icon;
               const active = activeSection === s.id;
