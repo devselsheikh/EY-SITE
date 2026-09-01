@@ -1161,11 +1161,11 @@ body {
 .daycare-site, .eduhub-site { color: #172033; }
 .daycare-site h1, .daycare-site h2, .eduhub-site h1, .eduhub-site h2 { letter-spacing: -0.035em; line-height: 1.06; text-wrap: balance; }
 .daycare-site h3, .eduhub-site h3 { letter-spacing: -0.018em; }
-.daycare-site main > div:first-child { background: radial-gradient(circle at 12% 5%, rgb(255 181 71 / 0.32), transparent 34%), radial-gradient(circle at 92% 14%, rgb(236 72 153 / 0.18), transparent 36%), linear-gradient(145deg, #fff7e9, #fff1f5 62%, #eefbff) !important; border-bottom: 1px solid #f5d8c3; }
-.daycare-site main > section:first-child { background-image: radial-gradient(circle at 12% 5%, rgb(255 181 71 / 0.32), transparent 34%), radial-gradient(circle at 92% 14%, rgb(236 72 153 / 0.18), transparent 36%), linear-gradient(145deg, #fff7e9, #fff1f5 62%, #eefbff) !important; background-color: #fff7e9 !important; }
-.eduhub-site main > div:first-child { background: #f3f7ff !important; border-bottom: 1px solid #dce7ff; }
+.daycare-site main > div:first-child { background: radial-gradient(circle at 10% 4%, rgb(255 170 32 / 0.52), transparent 34%), radial-gradient(circle at 92% 12%, rgb(244 71 133 / 0.30), transparent 37%), radial-gradient(circle at 74% 92%, rgb(35 201 178 / 0.24), transparent 36%), linear-gradient(145deg, #fff1cf, #ffe1e8 58%, #dffaf6) !important; border-bottom: 1px solid #f2c38f; }
+.daycare-site main > section:first-child { background-image: radial-gradient(circle at 10% 4%, rgb(255 170 32 / 0.52), transparent 34%), radial-gradient(circle at 92% 12%, rgb(244 71 133 / 0.30), transparent 37%), radial-gradient(circle at 74% 92%, rgb(35 201 178 / 0.24), transparent 36%), linear-gradient(145deg, #fff1cf, #ffe1e8 58%, #dffaf6) !important; background-color: #fff1cf !important; }
+.eduhub-site main > div:first-child { background: radial-gradient(circle at 12% 10%, rgb(42 116 255 / 0.28), transparent 36%), radial-gradient(circle at 90% 12%, rgb(72 218 255 / 0.30), transparent 34%), radial-gradient(circle at 70% 90%, rgb(139 92 246 / 0.22), transparent 38%), linear-gradient(145deg, #dce9ff, #e1f8ff 56%, #eee5ff) !important; border-bottom: 1px solid #b9d1ff; }
 .eduhub-site main > section:first-child { background-image: none !important; background-color: #123c92 !important; }
-.daycare-site [class*="from-orange-50"][class*="to-teal-50"], .daycare-site [class*="from-orange-50/50"] { background-image: linear-gradient(135deg, #fff6e7 0%, #fff0f4 52%, #ebfbf8 100%) !important; background-color: #fff6e7 !important; }
+.daycare-site [class*="from-orange-50"][class*="to-teal-50"], .daycare-site [class*="from-orange-50/50"] { background-image: linear-gradient(135deg, #ffe4ac 0%, #ffd9e2 52%, #cef6ee 100%) !important; background-color: #ffe4ac !important; }
 .eduhub-site [class*="from-blue-50"][class*="to-indigo-50"] { background-image: none !important; background-color: #f5f8ff !important; }
 .daycare-site .shadow-lg, .daycare-site .shadow-xl, .daycare-site .shadow-2xl { box-shadow: 0 14px 40px rgb(94 61 34 / 0.09) !important; }
 .eduhub-site .shadow-lg, .eduhub-site .shadow-xl, .eduhub-site .shadow-2xl { box-shadow: 0 14px 42px rgb(19 60 146 / 0.10) !important; }
@@ -1181,8 +1181,8 @@ body {
 @media (prefers-reduced-motion: reduce) { .daycare-site *, .eduhub-site * { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
 /* Workspace-inspired public canvases: modular, scannable and brand-specific. */
-.daycare-site main { padding: 0.6rem 0 1rem; background: #fff7ef; }
-.eduhub-site main { padding: 0.6rem 0 1rem; background: #edf3ff; }
+.daycare-site main { padding: 0.6rem 0 1rem; background: linear-gradient(160deg, #fff0d5 0%, #ffe5e8 48%, #ddf8f3 100%); }
+.eduhub-site main { padding: 0.6rem 0 1rem; background: linear-gradient(160deg, #dce9ff 0%, #dff7ff 48%, #ece4ff 100%); }
 .daycare-site main > section, .daycare-site main > div,
 .eduhub-site main > section, .eduhub-site main > div {
   width: min(calc(100% - 1.2rem), 92rem);

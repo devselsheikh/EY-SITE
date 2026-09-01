@@ -51,6 +51,16 @@ test('every named public route receives unique launch metadata', async ({ page }
 });
 
 const staticImageRoutes = ['/daycare/about', '/eduhub/about', '/eduhub/programs'];
+const editorialRoutes = [
+  '/blog/when-should-my-child-start-nursery', '/blog/what-is-eyfs-curriculum',
+  '/blog/preparing-child-for-preschool', '/blog/nursery-vs-preschool',
+  '/blog/choosing-daycare-new-cairo', '/blog/benefits-play-based-learning',
+  '/blog/cache-certification-explained', '/blog/becoming-early-years-teacher-egypt',
+  '/blog/eyfs-teaching-strategies', '/blog/cpd-early-years-professionals',
+  '/blog/cache-level-3-vs-level-5', '/blog/newsletter-may-2026',
+  '/blog/newsletter-april-2026', '/blog/newsletter-march-2026',
+  '/blog/newsletter-february-2026', '/blog/newsletter-january-2026',
+];
 
 for (const route of publicRoutes) {
   test(`${route} renders without confirmed accessibility or overflow failures`, async ({ page }) => {
@@ -81,6 +91,20 @@ for (const route of staticImageRoutes) {
     expect(sources.every(source => source.startsWith('/images/')), `non-local image on ${route}: ${sources.join(', ')}`).toBe(true);
   });
 }
+
+test('all parent and educator articles resolve with healthy images and links', async ({ page }) => {
+  for (const route of editorialRoutes) {
+    await page.goto(route, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('main h1').first(), `missing article at ${route}`).toBeVisible();
+    await expect(page.getByText('Article Not Found')).toHaveCount(0);
+    const brokenImages = await page.locator('main img').evaluateAll(images => images
+      .filter(image => !(image as HTMLImageElement).complete || (image as HTMLImageElement).naturalWidth === 0)
+      .map(image => (image as HTMLImageElement).currentSrc));
+    expect(brokenImages, `broken article images at ${route}`).toEqual([]);
+    const placeholders = await page.locator('main a[href="#"], main a[href=""], main a:not([href])').count();
+    expect(placeholders, `placeholder links at ${route}`).toBe(0);
+  }
+});
 
 test('shared Parent Portal remains separate from child-linked accounts', async ({ page }) => {
   await page.goto('/daycare/parents');

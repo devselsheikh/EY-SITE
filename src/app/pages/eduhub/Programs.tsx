@@ -4,9 +4,12 @@ import { Link } from 'react-router';
 import EduHubNav from '../../components/EduHubNav';
 import EduHubFooter from '../../components/EduHubFooter';
 import ManagedImage from '../../components/ManagedImage';
+import { useCMS } from '../../hooks/useCMS';
+import { isPublished } from '../../data/cms';
 
 export default function EduHubPrograms() {
-  const programs = [
+  const cms = useCMS();
+  const fallbackPrograms = [
     {
       level: 'CACHE Level 2',
       title: 'Caring for Children and Young People',
@@ -101,6 +104,16 @@ export default function EduHubPrograms() {
       ]
     }
   ];
+  const managedPrograms = cms.courses
+    .filter(course => isPublished({ status: course.publishStatus, active: course.active }))
+    .sort((a, b) => a.displayOrder - b.displayOrder)
+    .map(course => ({
+      ...course,
+      bgColor: course.lightBg.replace('bg-', 'from-') + ' to-white',
+      entryRequirements: ['Contact our team to confirm entry requirements', 'English proficiency appropriate to the course'],
+      whoFor: course.outcomes.map(outcome => `Learners developing: ${outcome}`),
+    }));
+  const programs = managedPrograms.length > 0 ? managedPrograms : fallbackPrograms;
 
   return (
     <div className="eduhub-site min-h-screen bg-white">

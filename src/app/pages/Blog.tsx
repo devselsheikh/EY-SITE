@@ -72,7 +72,16 @@ function PostCard({ post, stream }: { post: NormalizedPost; stream: Stream }) {
         <div className={`h-2 w-full ${stream === 'parents' ? 'bg-gradient-to-r from-peach-400 to-coral-500' : 'bg-gradient-to-r from-blue-500 to-indigo-600'}`} />
         {post.featuredImage ? (
           <div className="h-44 overflow-hidden">
-            <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <img
+              src={post.featuredImage}
+              alt={post.title}
+              onError={event => {
+                const fallback = stream === 'parents' ? '/images/daycare/daycare.section.classroom-2.jpg' : '/images/eduhub/eduhub.about.training.jpg';
+                if (event.currentTarget.src.endsWith(fallback)) return;
+                event.currentTarget.src = fallback;
+              }}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
           </div>
         ) : null}
         <div className="p-7 flex flex-col flex-1">

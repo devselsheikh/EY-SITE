@@ -307,12 +307,12 @@ export default function EduHubProgramDetail() {
                   <p className="text-sm text-gray-600 mb-4">
                     Download detailed course information
                   </p>
-                  <a
-                    href="#"
+                  <Link
+                    to="/eduhub/contact"
                     className="block w-full px-4 py-2 rounded-lg bg-gray-100 text-gray-900 text-center hover:bg-gray-200 transition-all text-sm"
                   >
-                    Download PDF
-                  </a>
+                    Request Program Guide
+                  </Link>
                 </motion.div>
               </div>
             </div>

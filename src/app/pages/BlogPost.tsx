@@ -304,7 +304,16 @@ export default function BlogPost() {
             </div>
 
             {post.featuredImage
-              ? <div className="rounded-2xl overflow-hidden mb-6 h-56 sm:h-72"><img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" /></div>
+              ? <div className="rounded-2xl overflow-hidden mb-6 h-56 sm:h-72"><img
+                  src={post.featuredImage}
+                  alt={post.title}
+                  onError={event => {
+                    const fallback = post.stream === 'parents' ? '/images/daycare/daycare.section.classroom-2.jpg' : '/images/eduhub/eduhub.about.training.jpg';
+                    if (event.currentTarget.src.endsWith(fallback)) return;
+                    event.currentTarget.src = fallback;
+                  }}
+                  className="w-full h-full object-cover"
+                /></div>
               : <div className="text-6xl mb-5">{post.emoji}</div>
             }
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-5">{post.title}</h1>
