@@ -1136,3 +1136,32 @@ body {
 @media (hover: hover) and (pointer: fine) { .daycare-site main a:hover, .eduhub-site main a:hover { transform: translateY(-1px); } }
 @media (prefers-reduced-transparency: reduce) { .daycare-nav, .eduhub-nav { background: #fff !important; backdrop-filter: none; } }
 @media (prefers-reduced-motion: reduce) { .daycare-site *, .eduhub-site * { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+/* Workspace-inspired public canvases: modular, scannable and brand-specific. */
+.daycare-site main { padding: 0.6rem 0 1rem; background: #fff7ef; }
+.eduhub-site main { padding: 0.6rem 0 1rem; background: #edf3ff; }
+.daycare-site main > section, .daycare-site main > div,
+.eduhub-site main > section, .eduhub-site main > div {
+  width: min(calc(100% - 1.2rem), 92rem);
+  margin: 0.7rem auto 0;
+  overflow: hidden;
+  border-radius: 2rem;
+  border: 1px solid rgb(255 255 255 / 0.72);
+}
+.daycare-site main > section, .daycare-site main > div { box-shadow: 0 12px 38px rgb(112 65 36 / 0.055); }
+.eduhub-site main > section, .eduhub-site main > div { box-shadow: 0 12px 40px rgb(19 60 146 / 0.065); }
+.daycare-site main > section:not([class*="bg-"]), .daycare-site main > div:not([class*="bg-"]) { background-color: #fff; }
+.eduhub-site main > section:not([class*="bg-"]), .eduhub-site main > div:not([class*="bg-"]) { background-color: #fff; }
+.daycare-site main :is(article, [class*="rounded-2xl"], [class*="rounded-3xl"]),
+.eduhub-site main :is(article, [class*="rounded-2xl"], [class*="rounded-3xl"]) {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease, border-color 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .daycare-site main article:hover { border-color: rgb(232 100 63 / 0.18); }
+  .eduhub-site main article:hover { border-color: rgb(19 73 209 / 0.18); }
+}
+@media (max-width: 639px) {
+  .daycare-site main, .eduhub-site main { padding-top: 0.35rem; }
+  .daycare-site main > section, .daycare-site main > div,
+  .eduhub-site main > section, .eduhub-site main > div { width: calc(100% - 0.7rem); margin-top: 0.4rem; border-radius: 1.45rem; }
+}
