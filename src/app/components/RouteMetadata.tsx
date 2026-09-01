@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 
 const SITE = 'https://theearlyyearscompany.com';
-const DEFAULT_IMAGE = `${SITE}/images/slots/daycare.hero.family.jpg`;
+const DEFAULT_IMAGE = `${SITE}/images/daycare/daycare.hero.family.jpg`;
 
 const pages: Record<string, { title: string; description: string; image?: string }> = {
   '/': { title: 'Early Years Company | Nursery & Teacher Training in Cairo', description: 'Early Years Company provides EYFS childcare at AUC New Cairo and CACHE-accredited educator training through EduHub.' },

@@ -5,6 +5,7 @@ import DaycareLogo from '../components/DaycareLogo';
 import EduHubLogo from '../components/EduHubLogo';
 import { useCMS } from '../hooks/useCMS';
 import { JsonLd, organizationSchema } from '../components/JsonLd';
+import { SitePopup } from '../components/SitePopup';
 
 function waLink(num: string) {
   return `https://wa.me/${num.replace(/\D/g, '')}`;
@@ -20,6 +21,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <JsonLd data={organizationSchema({ name: s.companyName, url: siteUrl, phone: s.mainPhone, email: s.mainEmail })} />
+      <SitePopup site="all" />
 
       {/* ── Minimal top bar ── */}
       <header className="flex items-center justify-between px-6 sm:px-10 lg:px-16 py-5 border-b border-gray-100">

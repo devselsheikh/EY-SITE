@@ -18,7 +18,9 @@ export function isDynamicProfileSlot(key: string): boolean {
 }
 
 export function imageSlotPath(key: string): string {
-  return `/images/slots/${key}.jpg`;
+  const brand = key.startsWith('eduhub.') ? 'eduhub' : 'daycare';
+  const extension = key === 'daycare.educator.lamia' ? 'png' : 'jpg';
+  return `/images/${brand}/${key}.${extension}`;
 }
 
 export const IMAGE_SLOTS: Record<string, ImageSlot> = Object.fromEntries(

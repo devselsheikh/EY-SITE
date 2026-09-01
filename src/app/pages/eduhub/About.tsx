@@ -13,35 +13,35 @@ export default function EduHubAbout() {
     {
       name: 'Nesreen Hassanin',
       role: 'Founder & Managing Director',
-      image: '/images/team/nesreen-hassanin.jpg',
+      image: '/images/eduhub/team/nesreen-hassanin.jpg',
       credentials: '30 years in early years · CACHE Levels 3 & 5 · M.Ed. Leadership',
       description: 'An early years leader who has supported children, families, educators, and learning settings across Egypt, Saudi Arabia, and Dubai. Nesreen co-founded two nurseries and the Early Years Company, bringing practical leadership, training, and start-up expertise to every EduHub programme.'
     },
     {
       name: 'Lamia Hassanin',
       role: 'Co-Founder & Training Manager',
-      image: '/images/team/lamia-hassanin.jpg',
+      image: '/images/eduhub/team/lamia-hassanin.jpg',
       credentials: 'M.Ed. · SENCO · Parenting Coach · 23 years’ leadership',
       description: 'Lamia oversees educational quality and training with more than two decades of early years management experience. Her work centres on inclusive, child-led learning and practical support for educators, families, and children with diverse learning needs.'
     },
     {
       name: 'Ann Osman',
       role: 'Trainer and Assessor',
-      image: '/images/team/ann-osman.jpg',
+      image: '/images/eduhub/team/ann-osman.jpg',
       credentials: '27 years in education · Montessori · Child Psychology',
       description: 'Ann brings extensive British and American curriculum experience, including early years leadership and inclusive education. Her workshops cover classroom management, Montessori practice, special educational needs, and confident staff development.'
     },
     {
       name: 'Bassent Barsoum',
       role: 'Centre Coordinator & Assessor',
-      image: '/images/team/bassent-barsoum.jpg',
+      image: '/images/eduhub/team/bassent-barsoum.jpg',
       credentials: 'B.A. Psychology, AUC · Professional Educator Diploma',
       description: 'Bassent began as an early years educator after studying Psychology at AUC and joined Early Years in 2017. She now coordinates the centre and supports learners through assessment, helping educators turn their knowledge into confident professional practice.'
     },
     {
       name: 'Robert Mitton',
       role: 'Internal Quality Assurance Officer',
-      image: '/images/team/robert-mitton.jpg',
+      image: '/images/eduhub/team/robert-mitton.jpg',
       credentials: 'Qualified Assessor & IQA · Vocational Training Specialist',
       description: 'Robert combines vocational assessment, moderation, and quality-assurance expertise with first-hand knowledge of early years settings. He safeguards the consistency and UK-aligned quality of EduHub’s training and assessment.'
     }

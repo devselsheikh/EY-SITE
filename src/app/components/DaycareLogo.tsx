@@ -1,4 +1,4 @@
-import daycareLogo from '../../imports/EY_Daycare.png';
+const daycareLogo = '/images/daycare/logo.png';
 
 export default function DaycareLogo({ className = 'h-10 w-auto', company = false }: { className?: string; company?: boolean }) {
   return (

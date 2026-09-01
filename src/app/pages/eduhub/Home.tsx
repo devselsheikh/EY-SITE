@@ -10,10 +10,11 @@ import {
 import { Link } from 'react-router';
 import EduHubNav from '../../components/EduHubNav';
 import EduHubFooter from '../../components/EduHubFooter';
-import { ImageWithFallback } from '../../components/figma/ImageWithFallback';
+import { ImageWithFallback } from '../../components/media/ImageWithFallback';
 import ManagedImage from '../../components/ManagedImage';
 import { JsonLd, organizationSchema, educationalOrgSchema } from '../../components/JsonLd';
 import { ALUMNI_KEYS } from '../../data/assetManifest';
+import { SitePopup } from '../../components/SitePopup';
 
 // ─── Courses ──────────────────────────────────────────────────────
 const COURSES = [
@@ -170,6 +171,7 @@ export default function EduHubHome() {
         organizationSchema({ name: s.companyName, url: siteUrl, phone: s.mainPhone, email: s.mainEmail }),
         educationalOrgSchema({ name: `${s.companyName} — EduHub Teacher Training`, url: `${siteUrl}/eduhub`, phone: s.mainPhone, email: s.eduhubEmail || s.mainEmail, description: heroH.subheadline || 'UK-accredited CACHE teacher training in Egypt and the Middle East.' }),
       ]} />
+      <SitePopup site="eduhub" />
       <EduHubNav />
 
       <main>

@@ -1,4 +1,4 @@
-import image_IMG_20211012_WA0027 from "../../../imports/IMG-20211012-WA0027.jpg";
+const image_IMG_20211012_WA0027 = '/images/daycare/campus-original.jpg';
 import {
   motion,
   useScroll,
@@ -349,7 +349,7 @@ const EDUCATORS = [
     title: "Managing Director",
     cert: "M.Ed. (in progress) | CACHE Level 3 | 30 Years Experience",
     bio: "Early Years expert with 30 years across the Middle East, co-founder of Early Years Company and two nursery schools in Egypt. Career spans direct childcare, nursery management, staff training, and startup advisory. Holds a CACHE Level 3 in Early Childhood Education and is completing a Master's in Leadership in Education — driven by a lifelong belief that quality Early Years care shapes every child's future.",
-    img: "/images/team/nesreen-hassanin.jpg",
+    img: "/images/daycare/team/nesreen-hassanin.jpg",
     badge: "🏛️ EYC Co-Founder",
   },
   {
@@ -357,7 +357,7 @@ const EDUCATORS = [
     title: "Educational Coordinator",
     cert: "AUC Early Years Education | SENCo (LRC) | Parenting Coach (Intellect)",
     bio: "A founding member of Early Years Company with 18+ years at Cairo's most reputable nursery, where she rose to Deputy Head. Holds an Early Years Education degree from AUC, SENCo certification from LRC, and a Parenting Coach qualification from Intellect. Passionate advocate for child-led, play-based learning at every child's own pace.",
-    img: "/images/team/lamia-hassanin.jpg",
+    img: "/images/daycare/team/lamia-hassanin.jpg",
     badge: "🏛️ EYC Co-Founder",
   },
   {
@@ -729,7 +729,7 @@ export default function DaycareHome() {
         title: e.title,
         cert: e.qualification,
         bio: e.bio,
-        img: e.name === 'Lamia Hassanin' ? '/images/team/lamia-hassanin.jpg' : '/images/team/nesreen-hassanin.jpg',
+        img: e.name === 'Lamia Hassanin' ? '/images/daycare/team/lamia-hassanin.jpg' : '/images/daycare/team/nesreen-hassanin.jpg',
         badge: e.specialtyBadge,
         leadership: e.leadership,
       }));

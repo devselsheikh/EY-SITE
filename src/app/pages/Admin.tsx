@@ -6,7 +6,7 @@ import {
   Pencil, Trash2, Check, X, Search,
   BarChart3, Link2, Megaphone, AlertTriangle, Copy, Globe, Upload, Bell,
   CloudUpload, CheckCircle2, AlertCircle, Loader2,
-  Shield, Activity, Package, ScrollText, Calendar, ClipboardList, Rocket, Download,
+  Shield, Activity, Package, Calendar, ClipboardList, Rocket, Download,
   ArrowRight, LockKeyhole, Sparkles,
 } from 'lucide-react';
 import {
@@ -25,7 +25,6 @@ import type { Session } from '@supabase/supabase-js';
 import { invalidateCMSCache } from '../hooks/useCMS';
 import { invalidateAssetCache } from '../hooks/useAssets';
 import { AssetsSection } from '../components/admin/AssetsSection';
-import { ClaimsSection } from '../components/admin/ClaimsSection';
 import { LaunchChecklistSection } from '../components/admin/LaunchChecklistSection';
 import { ContentHealthSection } from '../components/admin/ContentHealthSection';
 import { PublicationsSection } from '../components/admin/PublicationsSection';
@@ -1879,7 +1878,7 @@ type SectionId = 'overview' | 'settings' | 'media' | 'assets' | 'seo' | 'cta' | 
   'educators' | 'testimonials' | 'gallery' | 'programs' | 'schedule' | 'meals' | 'faq' |
   'calendar-events' | 'portal-files' | 'daycare-hero' |
   'courses' | 'alumni' | 'accreditation' | 'eduhub-hero' | 'blog' | 'popups' |
-  'claims' | 'content-health' | 'publications' | 'audit-log' | 'launch-checklist';
+  'content-health' | 'publications' | 'launch-checklist';
 
 const NAV_GROUPS = [
   {
@@ -1897,10 +1896,8 @@ const NAV_GROUPS = [
       { id: 'cta' as SectionId, label: 'CTA Settings', icon: Megaphone },
       { id: 'forms' as SectionId, label: 'Form Settings', icon: Mail },
       { id: 'submissions' as SectionId, label: 'Submissions', icon: Inbox },
-      { id: 'claims' as SectionId, label: 'Claims & Verification', icon: Shield },
       { id: 'content-health' as SectionId, label: 'Content Health', icon: Activity },
       { id: 'publications' as SectionId, label: 'Publications', icon: Package },
-      { id: 'audit-log' as SectionId, label: 'Audit Log', icon: ScrollText },
       { id: 'launch-checklist' as SectionId, label: 'Launch Checklist', icon: Rocket },
     ],
   },
@@ -2420,10 +2417,8 @@ function AdminDashboard({ onLogout, localMode = false }: { onLogout: () => void;
     blog: 'Parent Blog and Educator Blog articles.',
     assets: 'Manage image assets and replacements.',
     popups: 'Announcement popups shown to site visitors.',
-    claims: 'Claims and verification.',
     'content-health': 'Content health overview.',
     publications: 'Publications and asset publishing.',
-    'audit-log': 'Audit log of CMS actions.',
     'launch-checklist': 'Pre-launch checklist for going live.',
   };
 
@@ -2439,7 +2434,7 @@ function AdminDashboard({ onLogout, localMode = false }: { onLogout: () => void;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex text-gray-900">
+    <div className="admin-console min-h-screen bg-gray-50 flex text-gray-900">
       {sidebarOpen && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setSidebarOpen(false)} />}
 
       {/* Sidebar */}
@@ -2568,17 +2563,9 @@ function AdminDashboard({ onLogout, localMode = false }: { onLogout: () => void;
             {active === 'accreditation' && <AccreditationSection cms={cms} onChange={handleChange} />}
             {active === 'blog' && <BlogSection cms={cms} onChange={handleChange} initialNew={pendingAction === 'new'} key={active + pendingAction} />}
             {active === 'popups' && <PopupSection />}
-            {active === 'claims' && <ClaimsSection />}
             {active === 'launch-checklist' && <LaunchChecklistSection />}
             {active === 'content-health' && <ContentHealthSection cms={cms} onNavigate={id => setActive(id as SectionId)} />}
             {active === 'publications' && <PublicationsSection />}
-            {active === 'audit-log' && (
-              <div className="text-center py-16 text-gray-400">
-                <ScrollText className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                <p className="text-sm font-medium">Audit Log</p>
-                <p className="text-xs mt-1">Requires server-side audit logging integration. All CMS actions are currently tracked in Supabase row-level history.</p>
-              </div>
-            )}
           </div>
         </main>
       </div>
