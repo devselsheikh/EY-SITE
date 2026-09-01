@@ -7,6 +7,7 @@ import {
   BarChart3, Link2, Megaphone, AlertTriangle, Copy, Globe, Upload, Bell,
   CloudUpload, CheckCircle2, AlertCircle, Loader2,
   Shield, Activity, Package, ScrollText, Calendar, ClipboardList, Rocket, Download,
+  ArrowRight, LockKeyhole, Sparkles,
 } from 'lucide-react';
 import {
   CMSContent, CMSStatus, CMSEducator, CMSTestimonial, CMSGalleryItem,
@@ -30,6 +31,7 @@ import { ContentHealthSection } from '../components/admin/ContentHealthSection';
 import { PublicationsSection } from '../components/admin/PublicationsSection';
 import { PopupSection } from '../components/admin/PopupSection';
 import { useProfileRole } from '../auth/useProfileRole';
+import DaycareLogo from '../components/DaycareLogo';
 
 // ─── Brand colours ────────────────────────────────────────────────────────────
 // peach-600 ≈ #ea7c4b  |  coral ≈ #f06b5d  |  blue-600 = #2563eb
@@ -58,6 +60,16 @@ const btnBlue = 'inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-whi
 const btnSecondary = 'inline-flex items-center gap-1.5 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors';
 const btnDanger = 'inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-semibold hover:bg-red-100 transition-colors';
 const btnGhost = 'inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg text-xs font-semibold hover:bg-gray-50 transition-colors';
+
+function AdminEntryShell({ children }: { children: React.ReactNode }) {
+  return <main className="ey-gate admin-gate">
+    <header className="ey-gate__header"><a href="/daycare" aria-label="Early Years Daycare home"><DaycareLogo /></a><a className="ey-gate__back" href="/workspace">Back to workspace <ArrowRight aria-hidden="true" /></a></header>
+    <div className="ey-gate__layout">
+      <section className="ey-gate__welcome" aria-labelledby="admin-entry-title"><div className="ey-gate__art" aria-hidden="true"><span>●</span><span>★</span><span>♥</span><Sparkles /></div><div className="ey-gate__welcome-copy"><p className="platform-eyebrow">Owner Console</p><h1 id="admin-entry-title">Your website, carefully managed.</h1><p>Publishing, enquiries, images, security checks, and system health—reserved for the Early Years owner.</p></div><div className="ey-gate__trust"><Shield aria-hidden="true" /><span><strong>Owner-only controls</strong><small>Operational accounts continue through the separate workspace.</small></span></div></section>
+      <section className="ey-gate__entry">{children}</section>
+    </div>
+  </main>;
+}
 
 function Toggle({ value, onChange, label }: { value: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
@@ -2277,7 +2289,7 @@ export default function Admin() {
     setSigningIn(true);
     setAuthError('');
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setAuthError(error.message);
+    if (error) setAuthError('That email or password was not recognised. Check your details and try again.');
     setSigningIn(false);
   };
 
@@ -2285,62 +2297,15 @@ export default function Admin() {
     await supabase.auth.signOut();
   };
 
-  if (authLoading || (!!session && roleLoading)) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
-      </div>
-    );
-  }
+  if (authLoading || (!!session && roleLoading)) return <AdminEntryShell><div className="ey-gate__loading" role="status"><span aria-hidden="true" /><strong>Opening the Owner Console</strong><small>Verifying secure access…</small></div></AdminEntryShell>;
 
   if (localOwnerPreview) {
     return <AdminDashboard onLogout={() => window.location.assign('/workspace')} localMode />;
   }
 
-  if (!session) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm">
-          <div className="text-center mb-7">
-            <div className="w-14 h-14 bg-gradient-to-br from-orange-400 to-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <Settings className="w-7 h-7 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">Early Years CMS</h1>
-            <p className="text-sm text-gray-500 mt-1">Database Status</p>
-          </div>
-          <form onSubmit={handleSignIn} className="space-y-4">
-            <Field label="Email" required>
-              <input className={inputCls} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@example.com" autoFocus autoComplete="email" />
-            </Field>
-            <Field label="Password" required>
-              <input className={inputCls + (authError ? ' border-red-400 ring-1 ring-red-400' : '')} type="password" value={password} onChange={e => { setPassword(e.target.value); setAuthError(''); }} placeholder="Password" autoComplete="current-password" />
-              {authError && <p className="text-xs text-red-500 mt-1">{authError}</p>}
-            </Field>
-            <button type="submit" disabled={signingIn} className={btnPrimary + ' w-full justify-center'}>
-              {signingIn ? <><Loader2 className="w-4 h-4 animate-spin" />Signing in…</> : 'Sign In'}
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  if (!session) return <AdminEntryShell><div className="ey-gate__entry-heading"><span className="ey-gate__icon"><LockKeyhole aria-hidden="true" /></span><p className="platform-eyebrow">Owner-only access</p><h2>Owner Console</h2><p>Sign in with the owner account provided for Early Years. Teachers, administrators, and families should use the main workspace.</p></div><form onSubmit={handleSignIn} className="ey-gate__form"><label htmlFor="owner-email">Email address</label><input id="owner-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" autoFocus autoComplete="email" required /><label htmlFor="owner-password">Password</label><input id="owner-password" type="password" value={password} onChange={e => { setPassword(e.target.value); setAuthError(''); }} placeholder="Your password" autoComplete="current-password" required />{authError && <p className="platform-error" role="alert">{authError}</p>}<button type="submit" disabled={signingIn} className="platform-button ey-gate__submit">{signingIn ? 'Signing in…' : 'Sign in securely'} {!signingIn && <ArrowRight aria-hidden="true" />}</button></form><a href="/workspace" className="admin-gate__workspace"><Users aria-hidden="true" /><span><strong>Not managing the website?</strong><small>Open the everyday staff and family workspace.</small></span><ArrowRight aria-hidden="true" /></a></AdminEntryShell>;
 
-  if (accountRole !== 'owner') {
-    return (
-      <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <section className="bg-white border border-slate-200 rounded-3xl shadow-xl p-8 w-full max-w-md text-center">
-          <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><Shield className="w-7 h-7 text-slate-600" /></div>
-          <h1 className="text-2xl font-bold text-slate-900">Owner access required</h1>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">{roleError || 'This console contains publishing, infrastructure, security, and technical controls. Your account workspace remains available separately.'}</p>
-          <div className="grid gap-2 mt-6">
-            {roleError && <button type="button" onClick={() => void refreshRole()} className={btnPrimary + ' justify-center'}>Try verification again</button>}
-            <a href="/workspace" className={btnPrimary + ' justify-center'}>Return to workspace</a>
-            <button type="button" onClick={handleSignOut} className="min-h-11 text-sm font-semibold text-slate-600">Sign out</button>
-          </div>
-        </section>
-      </main>
-    );
-  }
+  if (accountRole !== 'owner') return <AdminEntryShell><div className="ey-gate__entry-heading"><span className="ey-gate__icon"><Shield aria-hidden="true" /></span><p className="platform-eyebrow">Protected controls</p><h2>Owner access required</h2><p>This account cannot open website publishing or infrastructure controls. No restricted information was displayed.</p></div><div className="admin-gate__actions">{roleError && <button type="button" onClick={() => void refreshRole()} className="platform-button">Try verification again</button>}<a href="/workspace" className="platform-button">Return to workspace <ArrowRight aria-hidden="true" /></a><button type="button" onClick={handleSignOut} className="platform-button platform-button--quiet">Sign out</button></div></AdminEntryShell>;
 
   return <AdminDashboard onLogout={handleSignOut} />;
 }

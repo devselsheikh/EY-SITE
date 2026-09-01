@@ -1041,3 +1041,28 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .family-gate__form button, .family-gate__account, .family-portal__tabs button { transition-duration: 0.01ms; }
 }
+
+/* Owner Console entry keeps the warm brand while signalling elevated access. */
+.admin-gate .ey-gate__welcome { background: linear-gradient(145deg, #392d4b 0%, #65446f 58%, #9a5f73 100%); }
+.admin-gate .ey-gate__welcome::after { border-color: rgb(255 255 255 / 0.075); }
+.admin-gate .ey-gate__icon { color: #7c4b72; background: #f3e8f2; }
+.admin-gate .ey-gate__form > input { min-height: 3.25rem; padding: 0.78rem 0.9rem; border: 1px solid #e9ddd5; border-radius: 0.95rem; outline: 0; background: #fffdfa; font: inherit; font-size: 0.8rem; transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease; }
+.admin-gate .ey-gate__form > input:focus { border-color: #a77aa3; background: white; box-shadow: 0 0 0 3px rgb(139 91 167 / 0.12); }
+.admin-gate__workspace { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.65rem; margin-top: 1rem; padding: 0.85rem; border-radius: 0.95rem; color: inherit; background: #f4f0f7; text-decoration: none; transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease; }
+.admin-gate__workspace > svg { width: 1rem; color: #765886; }
+.admin-gate__workspace span { display: grid; gap: 0.12rem; }
+.admin-gate__workspace strong { font-size: 0.65rem; }
+.admin-gate__workspace small { color: #6e6473; font-size: 0.57rem; line-height: 1.4; }
+.admin-gate__workspace > svg:last-child { width: 0.85rem; color: #96869e; }
+.admin-gate__workspace:active { transform: scale(0.97); }
+.admin-gate__actions { display: grid; gap: 0.65rem; margin-top: 1.6rem; }
+.admin-gate__actions .platform-button { justify-content: center; text-decoration: none; }
+
+@media (max-width: 820px) {
+  .admin-gate .ey-gate__entry { order: -1; }
+  .admin-gate .ey-gate__welcome { min-height: 17rem; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .admin-gate__workspace:hover { background: #eee7f2; }
+}

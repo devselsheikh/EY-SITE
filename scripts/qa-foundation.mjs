@@ -45,6 +45,7 @@ requireCheck(!routeErrorPage.includes('error.message') && !routeErrorPage.includ
 
 const admin = read('src/app/pages/Admin.tsx');
 requireCheck(admin.includes("accountRole !== 'owner'") && admin.includes('useProfileRole(session)'), 'Owner Console verifies its owner route guard against the database profile');
+requireCheck(admin.includes('AdminEntryShell') && !admin.includes('setAuthError(error.message)'), 'Owner Console entry uses branded recovery states without exposing provider errors');
 const profileRoleHook = read('src/app/auth/useProfileRole.ts');
 requireCheck(profileRoleHook.includes("from('profiles')") && profileRoleHook.includes("select('role, active')"), 'authenticated role resolution uses the active database profile');
 
