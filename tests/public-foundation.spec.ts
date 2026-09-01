@@ -68,7 +68,7 @@ for (const route of staticImageRoutes) {
     const images = page.locator('main img');
     await expect(images.first()).toBeVisible();
     const sources = await images.evaluateAll(elements => elements.map(element => (element as HTMLImageElement).getAttribute('src') ?? ''));
-    expect(sources.every(source => source.includes('/images/slots/')), `non-local image on ${route}: ${sources.join(', ')}`).toBe(true);
+    expect(sources.every(source => source.startsWith('/images/')), `non-local image on ${route}: ${sources.join(', ')}`).toBe(true);
   });
 }
 
@@ -77,6 +77,22 @@ test('shared Parent Portal remains separate from child-linked accounts', async (
   await expect(page.getByRole('heading', { name: 'Family Portal' })).toBeVisible();
   await expect(page.getByLabel('Parent Portal PIN')).toBeVisible();
   await expect(page.getByText('No individual child profile is required')).toBeVisible();
+});
+
+test('parent guides and facilities resolve to the locked family portal', async ({ page }) => {
+  for (const route of ['/daycare/parent-info', '/daycare/calendar']) {
+    await page.goto(route);
+    await expect(page).toHaveURL(/\/daycare\/parents$/);
+    await expect(page.getByRole('heading', { name: 'Family Portal' })).toBeVisible();
+  }
+});
+
+test('EduHub team uses the supplied named portraits', async ({ page }) => {
+  await page.goto('/eduhub/about');
+  await page.getByRole('heading', { name: 'Meet The Training Team' }).scrollIntoViewIfNeeded();
+  for (const name of ['Nesreen Hassanin', 'Lamia Hassanin', 'Ann Osman', 'Bassent Barsoum', 'Robert Mitton']) {
+    await expect(page.getByRole('img', { name: new RegExp(name) })).toBeVisible();
+  }
 });
 
 test('unknown links receive a useful, private recovery page', async ({ page }) => {

@@ -65,9 +65,7 @@ export default function Landing() {
           className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 text-center mb-3 max-w-3xl leading-[1.04] tracking-[-0.045em]"
         >
           Growth Begins with the{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-blue-600">
-            Right Foundations
-          </span>
+          <span className="landing-foundations">Right Foundations</span>
         </motion.h1>
 
         <motion.p

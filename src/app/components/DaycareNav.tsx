@@ -7,10 +7,8 @@ import DaycareLogo from './DaycareLogo';
 const NAV_ITEMS = [
   { path: '/daycare', label: 'Home' },
   { path: '/daycare/programs', label: 'Programs' },
-  { path: '/daycare/parent-info', label: 'Parent Guide' },
-  { path: '/daycare/calendar', label: 'Facilities & Meals' },
   { path: '/blog?stream=parents', label: 'Blog' },
-  { path: '/daycare/parents', label: '🔒 Families' },
+  { path: '/daycare/parents', label: '🔒 Families · Guides & Menus' },
   { path: '/eduhub', label: 'EduHub ↗' },
 ];
 

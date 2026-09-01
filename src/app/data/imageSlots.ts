@@ -18,8 +18,7 @@ export function isDynamicProfileSlot(key: string): boolean {
 }
 
 export function imageSlotPath(key: string): string {
-  const extension = key === 'daycare.educator.lamia' ? 'png' : 'jpg';
-  return `/images/slots/${key}.${extension}`;
+  return `/images/slots/${key}.jpg`;
 }
 
 export const IMAGE_SLOTS: Record<string, ImageSlot> = Object.fromEntries(
@@ -36,4 +35,3 @@ export const IMAGE_SLOTS: Record<string, ImageSlot> = Object.fromEntries(
 export function getImageSlot(key: string): ImageSlot | null {
   return IMAGE_SLOTS[key] ?? null;
 }
-

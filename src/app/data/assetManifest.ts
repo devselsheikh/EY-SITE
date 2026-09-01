@@ -320,8 +320,7 @@ const ASSET_DEFINITIONS: Record<string, AssetEntry> = {
   },
 };
 
-const localFallbackPath = (key: string) =>
-  `/images/slots/${key}.${key === 'daycare.educator.lamia' ? 'png' : 'jpg'}`;
+const localFallbackPath = (key: string) => `/images/slots/${key}.jpg`;
 
 /** Public static fallbacks are always bundled semantic slots. */
 export const ASSET_MANIFEST: Record<string, AssetEntry> = Object.fromEntries(

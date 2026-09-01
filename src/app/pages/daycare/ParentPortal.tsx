@@ -8,6 +8,7 @@ import {
 import DaycareNav from '../../components/DaycareNav';
 import DaycareFooter from '../../components/DaycareFooter';
 import DaycareLogo from '../../components/DaycareLogo';
+import ManagedImage from '../../components/ManagedImage';
 import { supabase, supabaseConfigured } from '../../utils/supabase/client';
 import { useCMS } from '../../hooks/useCMS';
 import type { CMSCalendarEvent, CMSPortalFile, CMSMeals } from '../../data/cms';
@@ -62,8 +63,8 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
       <motion.div initial={{ opacity: 0, transform: 'translateY(10px)' }} animate={{ opacity: 1, transform: 'translateY(0)' }} transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }} className="family-gate__layout">
         <section className="family-gate__story" aria-labelledby="family-portal-title">
           <div className="family-gate__art" aria-hidden="true"><span>●</span><span>★</span><span>♥</span><Heart /></div>
-          <div><p className="platform-eyebrow">For Early Years families</p><h1 id="family-portal-title">The useful bits, always close by.</h1><p>Menus, calendars, newsletters, and nursery forms—all gathered into one simple family space.</p></div>
-          <div className="family-gate__features" aria-label="Available family information">{[{ icon: FileText, label: 'Newsletters' }, { icon: UtensilsCrossed, label: 'Lunch menu' }, { icon: Calendar, label: 'Calendar' }].map(({ icon: Icon, label }) => <span key={label}><Icon aria-hidden="true" />{label}</span>)}</div>
+          <div><p className="platform-eyebrow">For Early Years families</p><h1 id="family-portal-title">The useful bits, always close by.</h1><p>Parent guides, facilities, menus, calendars, newsletters, and nursery forms—all gathered into one secure family space.</p></div>
+          <div className="family-gate__features" aria-label="Available family information">{[{ icon: BookOpen, label: 'Parent guide' }, { icon: UtensilsCrossed, label: 'Lunch menu' }, { icon: Camera, label: 'Facilities' }].map(({ icon: Icon, label }) => <span key={label}><Icon aria-hidden="true" />{label}</span>)}</div>
         </section>
         <section className="family-gate__entry">
           <span className="family-gate__lock"><Lock aria-hidden="true" /></span>
@@ -86,15 +87,15 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
 
 // ─── Section types ────────────────────────────────────────────────────────────
 
-type Section = 'home' | 'newsletters' | 'classroom' | 'menu' | 'calendar' | 'forms';
+type Section = 'home' | 'newsletters' | 'facilities' | 'menu' | 'calendar' | 'forms';
 
 const SECTIONS: { id: Section; label: string; icon: React.FC<{ className?: string }>; desc: string }[] = [
   { id: 'home',        label: 'Overview',     icon: Star,           desc: 'Your family hub' },
   { id: 'newsletters', label: 'Newsletters',   icon: FileText,       desc: 'Monthly updates' },
   { id: 'menu',        label: 'Lunch Menu',    icon: UtensilsCrossed,desc: 'Full seasonal menu' },
   { id: 'calendar',    label: 'Calendar',      icon: Calendar,       desc: 'Term dates & events' },
-  { id: 'forms',       label: 'Forms & Files', icon: ClipboardList,  desc: 'Downloads' },
-  { id: 'classroom',   label: 'Classroom',     icon: Camera,         desc: 'Photos & updates' },
+  { id: 'forms',       label: 'Parent Guide',  icon: BookOpen,       desc: 'Guides & downloads' },
+  { id: 'facilities',  label: 'Facilities',    icon: Camera,         desc: 'Private spaces' },
 ];
 
 const EVENT_COLORS: Record<CMSCalendarEvent['type'], string> = {
@@ -193,7 +194,7 @@ function PortalContent({ onLogout }: { onLogout: () => void }) {
             {activeSection === 'menu'        && <MenuSection meals={meals} menuFiles={menuFiles} />}
             {activeSection === 'calendar'    && <CalendarSection events={calendarEvents} />}
             {activeSection === 'forms'       && <FormsSection files={[...forms, ...menuFiles]} />}
-            {activeSection === 'classroom'   && <ClassroomSection />}
+            {activeSection === 'facilities'  && <FacilitiesSection />}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -225,7 +226,7 @@ function HomeOverview({
         <div>
           <h2 className="font-bold text-gray-900 text-lg">Welcome to your Family Portal</h2>
           <p className="text-sm text-gray-600 mt-1 leading-relaxed">
-            Everything you need — newsletters, full menus, the term calendar, and downloadable forms — all in one private place.
+            Everything you need — the parent guide, facilities, full menus, term calendar, newsletters, and forms — all in one private place.
           </p>
         </div>
       </div>
@@ -236,7 +237,7 @@ function HomeOverview({
           { id: 'newsletters' as Section, icon: FileText,        label: 'Newsletters',   color: 'from-blue-50 to-indigo-50', border: 'border-blue-100', iconColor: 'text-blue-500', count: newsletters.length },
           { id: 'menu'        as Section, icon: UtensilsCrossed, label: 'Lunch Menus',   color: 'from-emerald-50 to-teal-50', border: 'border-emerald-100', iconColor: 'text-emerald-600', count: 4 },
           { id: 'calendar'    as Section, icon: Calendar,        label: 'Calendar',      color: 'from-purple-50 to-violet-50', border: 'border-purple-100', iconColor: 'text-purple-500', count: upcomingEvents.length },
-          { id: 'forms'       as Section, icon: ClipboardList,   label: 'Forms & Files', color: 'from-amber-50 to-orange-50', border: 'border-amber-100', iconColor: 'text-amber-600', count: forms.length },
+          { id: 'forms'       as Section, icon: BookOpen,         label: 'Parent Guide',  color: 'from-amber-50 to-orange-50', border: 'border-amber-100', iconColor: 'text-amber-600', count: forms.length },
         ] as const).map(item => {
           const Icon = item.icon;
           return (
@@ -684,19 +685,29 @@ function FormsSection({ files }: { files: CMSPortalFile[] }) {
   );
 }
 
-// ─── Classroom ────────────────────────────────────────────────────────────────
+// ─── Facilities ───────────────────────────────────────────────────────────────
 
-function ClassroomSection() {
+function FacilitiesSection() {
+  const spaces = [
+    { key: 'daycare.gallery.classroom', label: 'Learning classrooms' },
+    { key: 'daycare.gallery.sensory', label: 'Sensory activity areas' },
+    { key: 'daycare.gallery.playground', label: 'Outdoor playground' },
+    { key: 'daycare.gallery.dining', label: 'Dining area' },
+    { key: 'daycare.gallery.reading', label: 'Reading corner' },
+  ];
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Classroom Updates</h2>
-        <p className="text-sm text-gray-500 mt-0.5">Photos and updates from your child's room.</p>
+        <h2 className="text-xl font-bold text-gray-900">Facilities & Learning Spaces</h2>
+        <p className="text-sm text-gray-500 mt-0.5">A closer look at the spaces used by enrolled children.</p>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+        {spaces.map((space, index) => <figure key={space.key} className={`overflow-hidden rounded-2xl bg-white border border-peach-100 ${index === 0 ? 'col-span-2' : ''}`}><ManagedImage assetKey={space.key} alt={space.label} className="w-full aspect-[4/3] object-cover" /><figcaption className="px-3 py-2 text-xs font-semibold text-gray-700">{space.label}</figcaption></figure>)}
       </div>
       <div className="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center space-y-3">
         <Camera className="w-10 h-10 text-gray-300 mx-auto" />
         <div>
-          <p className="font-semibold text-gray-600 mb-1">Private gallery — coming soon</p>
+          <p className="font-semibold text-gray-600 mb-1">Classroom updates are coming next</p>
           <p className="text-sm text-gray-400 leading-relaxed max-w-sm mx-auto">
             A private photo gallery for each classroom is in development. Photos are currently shared via class WhatsApp groups.
           </p>

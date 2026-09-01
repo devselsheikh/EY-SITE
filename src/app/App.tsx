@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { MotionConfig } from 'motion/react';
-import { RouterProvider, createBrowserRouter } from 'react-router';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
 import PageTransition from './components/PageTransition';
@@ -13,9 +13,7 @@ const StickyMobileCTA = lazy(() => import('./components/StickyMobileCTA'));
 const DaycareHome = lazy(() => import('./pages/daycare/Home'));
 const DaycareAbout = lazy(() => import('./pages/daycare/About'));
 const DaycarePrograms = lazy(() => import('./pages/daycare/Programs'));
-const DaycareParentInfo = lazy(() => import('./pages/daycare/ParentInfo'));
 const DaycareContact = lazy(() => import('./pages/daycare/Contact'));
-const DaycareCalendar = lazy(() => import('./pages/daycare/Calendar'));
 const ParentPortal = lazy(() => import('./pages/daycare/ParentPortal'));
 const EduHubHome = lazy(() => import('./pages/eduhub/Home'));
 const EduHubPrograms = lazy(() => import('./pages/eduhub/Programs'));
@@ -73,11 +71,11 @@ const routes = [
   },
   {
     path: '/daycare/parent-info',
-    element: <AppLayout><DaycareParentInfo /></AppLayout>,
+    element: <Navigate to="/daycare/parents" replace />,
   },
   {
     path: '/daycare/calendar',
-    element: <AppLayout><DaycareCalendar /></AppLayout>,
+    element: <Navigate to="/daycare/parents" replace />,
   },
   {
     path: '/daycare/contact',

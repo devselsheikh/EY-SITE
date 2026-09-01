@@ -10,27 +10,37 @@ export default function EduHubAbout() {
     {
       name: 'Nesreen Hassanin',
       role: 'Founder & Managing Director',
-      description: 'Visionary leader with decades of experience in early years education and teacher training.'
+      image: '/images/team/nesreen-hassanin.jpg',
+      credentials: '30 years in early years · CACHE Levels 3 & 5 · M.Ed. Leadership',
+      description: 'An early years leader who has supported children, families, educators, and learning settings across Egypt, Saudi Arabia, and Dubai. Nesreen co-founded two nurseries and the Early Years Company, bringing practical leadership, training, and start-up expertise to every EduHub programme.'
     },
     {
       name: 'Lamia Hassanin',
       role: 'Co-Founder & Training Manager',
-      description: 'Expert trainer specializing in CACHE qualifications and professional development programs.'
+      image: '/images/team/lamia-hassanin.jpg',
+      credentials: 'M.Ed. · SENCO · Parenting Coach · 23 years’ leadership',
+      description: 'Lamia oversees educational quality and training with more than two decades of early years management experience. Her work centres on inclusive, child-led learning and practical support for educators, families, and children with diverse learning needs.'
     },
     {
       name: 'Ann Osman',
       role: 'Trainer and Assessor',
-      description: 'Experienced educator providing training and assessment for CACHE qualifications.'
+      image: '/images/team/ann-osman.jpg',
+      credentials: '27 years in education · Montessori · Child Psychology',
+      description: 'Ann brings extensive British and American curriculum experience, including early years leadership and inclusive education. Her workshops cover classroom management, Montessori practice, special educational needs, and confident staff development.'
     },
     {
       name: 'Bassent Barsoum',
-      role: 'Center Coordinator & Assessor',
-      description: 'Manages day-to-day operations and conducts workplace assessments for learners.'
+      role: 'Centre Coordinator & Assessor',
+      image: '/images/team/bassent-barsoum.jpg',
+      credentials: 'B.A. Psychology, AUC · Professional Educator Diploma',
+      description: 'Bassent began as an early years educator after studying Psychology at AUC and joined Early Years in 2017. She now coordinates the centre and supports learners through assessment, helping educators turn their knowledge into confident professional practice.'
     },
     {
       name: 'Robert Mitton',
       role: 'Internal Quality Assurance Officer',
-      description: 'Ensures all programs meet UK standards and NCFE quality requirements.'
+      image: '/images/team/robert-mitton.jpg',
+      credentials: 'Qualified Assessor & IQA · Vocational Training Specialist',
+      description: 'Robert combines vocational assessment, moderation, and quality-assurance expertise with first-hand knowledge of early years settings. He safeguards the consistency and UK-aligned quality of EduHub’s training and assessment.'
     }
   ];
 
@@ -41,7 +51,7 @@ export default function EduHubAbout() {
       <main>
 
       {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 py-20 lg:py-32">
+      <div className="relative overflow-hidden bg-[#f5f8ff] py-16 sm:py-20 lg:py-28 border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -233,7 +243,7 @@ export default function EduHubAbout() {
       </div>
 
       {/* Meet The Team */}
-      <div className="py-20 lg:py-28 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="py-16 sm:py-20 lg:py-28 bg-[#f5f8ff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -250,22 +260,25 @@ export default function EduHubAbout() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-5 lg:gap-6">
             {team.map((member, index) => (
               <motion.div
-                key={index}
+                key={member.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-8 shadow-lg text-center"
+                transition={{ duration: 0.45, delay: index * 0.06 }}
+                className={`group overflow-hidden bg-white rounded-[1.4rem] border border-blue-100 shadow-[0_12px_36px_rgba(19,73,209,0.08)] ${index < 2 ? 'lg:col-span-3' : 'lg:col-span-2'}`}
               >
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-12 h-12 text-white" />
+                <div className={`overflow-hidden bg-blue-100 ${index < 2 ? 'aspect-[16/10]' : 'aspect-[4/3]'}`}>
+                  <img src={member.image} alt={`${member.name}, ${member.role}`} className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" loading="lazy" decoding="async" />
                 </div>
-                <h3 className="text-2xl text-gray-900 mb-2">{member.name}</h3>
-                <div className="text-[#1349D1] mb-4">{member.role}</div>
-                <p className="text-gray-600 leading-relaxed">{member.description}</p>
+                <div className="p-5 sm:p-6 text-left">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-950 mb-1">{member.name}</h3>
+                  <div className="text-[#1349D1] font-semibold text-sm mb-3">{member.role}</div>
+                  <p className="text-xs font-semibold text-slate-500 mb-3 leading-relaxed">{member.credentials}</p>
+                  <p className="text-sm text-gray-600 leading-6">{member.description}</p>
+                </div>
               </motion.div>
             ))}
           </div>

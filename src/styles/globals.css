@@ -1107,6 +1107,7 @@ body {
 
 .landing-hero-actions a { transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease, background-color 160ms ease; }
 .landing-hero-actions a:active { transform: scale(0.97); }
+.landing-foundations { color: #e8643f; text-decoration: underline; text-decoration-color: #f2c765; text-decoration-thickness: 0.12em; text-underline-offset: 0.12em; }
 @media (hover: hover) and (pointer: fine) { .landing-hero-actions a:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgb(60 45 35 / 0.08); } }
 @media (max-width: 639px) {
   .landing-main { justify-content: flex-start; }
