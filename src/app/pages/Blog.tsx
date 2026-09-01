@@ -138,7 +138,7 @@ export default function Blog() {
   const rest = filtered.filter(p => !p.featured);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`${stream === 'parents' ? 'daycare-site' : 'eduhub-site'} editorial-hub min-h-screen bg-white`}>
       <DaycareNav />
 
       <main>

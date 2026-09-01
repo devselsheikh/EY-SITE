@@ -272,7 +272,7 @@ export default function BlogPost() {
   const s = cms.siteSettings;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`${post.stream === 'parents' ? 'daycare-site' : 'eduhub-site'} editorial-hub min-h-screen bg-white`}>
       <JsonLd data={[
         articleSchema({ title: post.metaTitle, description: post.metaDescription, url: `${siteUrl}/blog/${post.slug}`, publishDate: post.date, image: post.featuredImage, publisherName: s.companyName }),
         breadcrumbSchema([
