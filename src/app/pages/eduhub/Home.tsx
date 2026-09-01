@@ -165,7 +165,7 @@ export default function EduHubHome() {
   const siteUrl = 'https://theearlyyearscompany.com';
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="eduhub-site min-h-screen bg-white overflow-x-hidden">
       <JsonLd data={[
         organizationSchema({ name: s.companyName, url: siteUrl, phone: s.mainPhone, email: s.mainEmail }),
         educationalOrgSchema({ name: `${s.companyName} — EduHub Teacher Training`, url: `${siteUrl}/eduhub`, phone: s.mainPhone, email: s.eduhubEmail || s.mainEmail, description: heroH.subheadline || 'UK-accredited CACHE teacher training in Egypt and the Middle East.' }),

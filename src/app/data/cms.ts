@@ -480,9 +480,9 @@ export const DEFAULT_CMS: CMSContent = {
   educators: [
     { id: generateId(), displayOrder: 1, name: 'Nesrin Hassanin', title: 'Managing Director', qualification: 'M.Ed. Leadership | CACHE Levels 3 & 5 | 30 Years Experience', specialtyBadge: '🏛️ EYC Co-Founder', bio: 'Early years leader with 30 years of experience supporting children, families, educators, and learning settings across the Middle East. Co-founder of Early Years Company and two nursery schools in Egypt.', img: '/images/team/nesreen-hassanin.jpg', featured: true, leadership: true, status: 'published' },
     { id: generateId(), displayOrder: 2, name: 'Lamia Hassanin', title: 'Educational Coordinator', qualification: 'M.Ed. | SENCO | Parenting Coach | 23 Years Experience', specialtyBadge: '🏛️ EYC Co-Founder', bio: 'Educational leader with 23 years of early years management experience, focused on inclusive, child-led learning and practical support for educators and families.', img: '/images/team/lamia-hassanin.jpg', featured: true, leadership: true, status: 'published' },
-    { id: generateId(), displayOrder: 3, name: 'Sarah Al-Masri', title: 'Lead Early Years Educator', qualification: 'CACHE Level 3 | 12 Years Experience', specialtyBadge: '🏅 EYFS Specialist', bio: 'Sarah specialises in language development and EYFS play-based learning. Parents describe her as the teacher who \'makes every child feel seen\'.', img: 'https://images.unsplash.com/photo-1758685847967-c598c3b176b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400', featured: false, leadership: false, status: 'published' },
-    { id: generateId(), displayOrder: 4, name: 'Nadia Hassan', title: 'Nursery Room Leader', qualification: 'CACHE Level 3 | 8 Years Experience', specialtyBadge: '🎓 CACHE Certified', bio: 'Nadia\'s background in child psychology brings a uniquely nurturing approach to the toddler and nursery rooms. She leads our settling-in program.', img: 'https://images.unsplash.com/photo-1607746882042-944635dfe10e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400', featured: false, leadership: false, status: 'published' },
-    { id: generateId(), displayOrder: 5, name: 'Reem Fouad', title: 'Pre-K & School Readiness Lead', qualification: 'CACHE Level 5 | 15 Years Experience', specialtyBadge: '⭐ School Readiness', bio: 'Reem has prepared hundreds of children for primary school. Her pre-K graduates consistently receive excellent feedback from receiving schools.', img: 'https://images.unsplash.com/photo-1761604478724-13fe879468cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400', featured: false, leadership: false, status: 'published' },
+    { id: generateId(), displayOrder: 3, name: 'Ann Osman', title: 'Trainer and Assessor', qualification: '27 Years in Education | Montessori | Child Psychology', specialtyBadge: 'EduHub Training Team', bio: 'Ann brings extensive British and American curriculum experience, including early years leadership and inclusive education. Her workshops cover classroom management, Montessori practice, special educational needs, and confident staff development.', img: '/images/team/ann-osman.jpg', featured: false, leadership: false, status: 'published' },
+    { id: generateId(), displayOrder: 4, name: 'Bassent Barsoum', title: 'Centre Coordinator and Assessor', qualification: 'B.A. Psychology, AUC | Professional Educator Diploma', specialtyBadge: 'EduHub Training Team', bio: 'Bassent began as an early years educator after studying Psychology at AUC and joined Early Years in 2017. She coordinates the centre and supports learners through assessment and professional practice.', img: '/images/team/bassent-barsoum.jpg', featured: false, leadership: false, status: 'published' },
+    { id: generateId(), displayOrder: 5, name: 'Robert Mitton', title: 'Internal Quality Assurance Officer', qualification: 'Qualified Assessor and IQA | Vocational Training Specialist', specialtyBadge: 'EduHub Quality Team', bio: 'Robert combines vocational assessment, moderation, and quality-assurance expertise with first-hand knowledge of early years settings. He safeguards the consistency and UK-aligned quality of EduHub training.', img: '/images/team/robert-mitton.jpg', featured: false, leadership: false, status: 'published' },
   ],
 
   testimonials: [
@@ -729,7 +729,13 @@ function migrate(cms: CMSContent): CMSContent {
   };
   return {
     ...cms,
-    educators: cms.educators?.map(e => conv(e) as CMSEducator) ?? DEFAULT_CMS.educators,
+    educators: (() => {
+      const legacyPlaceholders = new Set(['Sarah Al-Masri', 'Nadia Hassan', 'Reem Fouad']);
+      const current = (cms.educators ?? []).map(e => conv(e) as CMSEducator).filter(e => !legacyPlaceholders.has(e.name));
+      const requiredNames = new Set(current.map(e => e.name));
+      for (const member of DEFAULT_CMS.educators) if (!requiredNames.has(member.name)) current.push(member);
+      return current.sort((a, b) => a.displayOrder - b.displayOrder);
+    })(),
     testimonials: cms.testimonials?.map(t => conv(t) as CMSTestimonial) ?? DEFAULT_CMS.testimonials,
     gallery: cms.gallery?.map(g => conv(g) as CMSGalleryItem) ?? DEFAULT_CMS.gallery,
     programs: cms.programs?.map(p => conv(p) as CMSProgram) ?? DEFAULT_CMS.programs,

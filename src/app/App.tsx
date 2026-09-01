@@ -78,6 +78,18 @@ const routes = [
     element: <Navigate to="/daycare/parents" replace />,
   },
   {
+    path: '/daycare/facilities',
+    element: <Navigate to="/daycare/parents" replace />,
+  },
+  {
+    path: '/daycare/meals',
+    element: <Navigate to="/daycare/parents" replace />,
+  },
+  {
+    path: '/daycare/parent-guide',
+    element: <Navigate to="/daycare/parents" replace />,
+  },
+  {
     path: '/daycare/contact',
     element: <AppLayout><DaycareContact /></AppLayout>,
   },
@@ -92,6 +104,10 @@ const routes = [
   {
     path: '/eduhub/programs',
     element: <AppLayout><EduHubPrograms /></AppLayout>,
+  },
+  {
+    path: '/eduhub/courses',
+    element: <Navigate to="/eduhub/programs" replace />,
   },
   {
     path: '/eduhub/programs/:id',

@@ -175,7 +175,7 @@ function OverviewSection({ cms, onNavigate, unreadCount }: { cms: CMSContent; on
   const warnings = getHealthWarnings(cms);
 
   const stats = [
-    { label: 'Educators', value: cms.educators.length, sub: `${cms.educators.filter(isPublished).length} published`, color: 'bg-orange-50 border-orange-100', icon: Users, section: 'educators' },
+    { label: 'Company Team', value: cms.educators.length, sub: `${cms.educators.filter(isPublished).length} published`, color: 'bg-orange-50 border-orange-100', icon: Users, section: 'educators' },
     { label: 'Testimonials', value: cms.testimonials.length, sub: `${cms.testimonials.filter(isPublished).length} published`, color: 'bg-rose-50 border-rose-100', icon: Star, section: 'testimonials' },
     { label: 'Gallery Images', value: cms.gallery.length, sub: `${cms.gallery.filter(isPublished).length} visible`, color: 'bg-teal-50 border-teal-100', icon: LayoutGrid, section: 'gallery' },
     { label: 'Blog Articles', value: cms.blog.length, sub: `${cms.blog.filter(isPublished).length} published`, color: 'bg-blue-50 border-blue-100', icon: FileText, section: 'blog' },
@@ -184,7 +184,7 @@ function OverviewSection({ cms, onNavigate, unreadCount }: { cms: CMSContent; on
   ];
 
   const quickActions = [
-    { label: 'Add Educator', icon: Users, section: 'educators', action: 'new' },
+    { label: 'Add Team Member', icon: Users, section: 'educators', action: 'new' },
     { label: 'Add Review', icon: Star, section: 'testimonials', action: 'new' },
     { label: 'Add Gallery Image', icon: LayoutGrid, section: 'gallery', action: 'new' },
     { label: 'Add Blog Article', icon: FileText, section: 'blog', action: 'new' },
@@ -571,19 +571,23 @@ function SitemapGenerator({ cms }: { cms: CMSContent }) {
     const staticRoutes = [
       { loc: base, changefreq: 'weekly', priority: '1.0' },
       { loc: `${base}/daycare`, changefreq: 'weekly', priority: '0.9' },
+      { loc: `${base}/daycare/about`, changefreq: 'monthly', priority: '0.8' },
       { loc: `${base}/daycare/programs`, changefreq: 'monthly', priority: '0.8' },
       { loc: `${base}/daycare/contact`, changefreq: 'monthly', priority: '0.8' },
-      { loc: `${base}/daycare/parent-info`, changefreq: 'monthly', priority: '0.7' },
-      { loc: `${base}/daycare/gallery`, changefreq: 'monthly', priority: '0.6' },
       { loc: `${base}/eduhub`, changefreq: 'weekly', priority: '0.9' },
       { loc: `${base}/eduhub/programs`, changefreq: 'monthly', priority: '0.8' },
+      { loc: `${base}/eduhub/programs/diploma`, changefreq: 'monthly', priority: '0.7' },
       { loc: `${base}/eduhub/about`, changefreq: 'monthly', priority: '0.7' },
       { loc: `${base}/eduhub/contact`, changefreq: 'monthly', priority: '0.8' },
       { loc: `${base}/blog`, changefreq: 'daily', priority: '0.8' },
+      { loc: `${base}/contact`, changefreq: 'monthly', priority: '0.7' },
+      { loc: `${base}/privacy`, changefreq: 'yearly', priority: '0.3' },
+      { loc: `${base}/terms`, changefreq: 'yearly', priority: '0.3' },
     ];
 
     const publishedBlogs = cms.blog.filter(isPublished);
-    const blogRoutes = publishedBlogs.map(b => ({ loc: `${base}/blog/${b.slug}`, changefreq: 'monthly', priority: '0.6' }));
+    const blogSlugs = new Set([...HARDCODED_BLOG_POSTS.map(post => post.slug), ...publishedBlogs.map(post => post.slug)]);
+    const blogRoutes = [...blogSlugs].map(slug => ({ loc: `${base}/blog/${slug}`, changefreq: 'monthly', priority: '0.6' }));
 
     const all = [...staticRoutes, ...blogRoutes];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -941,7 +945,7 @@ function EducatorsSection({ cms, onChange, initialNew }: { cms: CMSContent; onCh
 
   return (
     <div>
-      <SectionHeader title="Educators" description="The Team Behind the Magic. Shown in carousel on the Daycare page." />
+      <SectionHeader title="Company Team" description="Manage the verified team shown across Daycare and EduHub. Nesreen and Lamia appear in both; EduHub also displays its training and quality team." />
       <div className="flex flex-wrap gap-2 mb-4">
         <div className="relative flex-1 min-w-40"><Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" /><input className={inputCls + ' pl-9'} placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} /></div>
         {(['all', 'published', 'draft', 'hidden'] as const).map(s => <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded-full text-xs font-semibold capitalize transition-all ${statusFilter === s ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{s}</button>)}
@@ -1904,7 +1908,7 @@ const NAV_GROUPS = [
     label: 'Daycare',
     items: [
       { id: 'daycare-hero' as SectionId, label: 'Hero Section', icon: LayoutGrid },
-      { id: 'educators' as SectionId, label: 'Educators', icon: Users },
+      { id: 'educators' as SectionId, label: 'Company Team', icon: Users },
       { id: 'testimonials' as SectionId, label: 'Testimonials', icon: Star },
       { id: 'gallery' as SectionId, label: 'Gallery', icon: LayoutGrid },
       { id: 'programs' as SectionId, label: 'Programs', icon: BookOpen },
@@ -2401,7 +2405,7 @@ function AdminDashboard({ onLogout, localMode = false }: { onLogout: () => void;
     submissions: 'Form enquiries submitted through the public website.',
     'daycare-hero': 'Headline, subtitle, CTAs, and trust badges on the Daycare homepage.',
     'eduhub-hero': 'Headline, subtitle, CTAs, and stats strip on the EduHub homepage.',
-    educators: 'The Team Behind the Magic carousel on the Daycare page.',
+    educators: 'Verified team profiles shared by Daycare and EduHub, with brand-specific visibility.',
     testimonials: 'Parent reviews shown on the Daycare page.',
     gallery: 'Campus photos shown in the gallery section.',
     programs: 'Age-based classes on the Programs page.',

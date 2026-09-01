@@ -1113,3 +1113,26 @@ body {
   .landing-main { justify-content: flex-start; }
   .landing-hero-actions { margin-bottom: 1.35rem; }
 }
+
+/* Public brand systems: quiet materials, deliberate colour, responsive press feedback. */
+.daycare-site, .eduhub-site { color: #172033; }
+.daycare-site h1, .daycare-site h2, .eduhub-site h1, .eduhub-site h2 { letter-spacing: -0.035em; line-height: 1.06; text-wrap: balance; }
+.daycare-site h3, .eduhub-site h3 { letter-spacing: -0.018em; }
+.daycare-site main > div:first-child { background: #fff8ef !important; border-bottom: 1px solid #f5dfc7; }
+.daycare-site main > section:first-child { background-image: none !important; background-color: #fff8ef !important; }
+.eduhub-site main > div:first-child { background: #f3f7ff !important; border-bottom: 1px solid #dce7ff; }
+.eduhub-site main > section:first-child { background-image: none !important; background-color: #123c92 !important; }
+.daycare-site [class*="from-orange-50"][class*="to-teal-50"], .daycare-site [class*="from-orange-50/50"] { background-image: none !important; background-color: #fffaf4 !important; }
+.eduhub-site [class*="from-blue-50"][class*="to-indigo-50"] { background-image: none !important; background-color: #f5f8ff !important; }
+.daycare-site .shadow-lg, .daycare-site .shadow-xl, .daycare-site .shadow-2xl { box-shadow: 0 14px 40px rgb(94 61 34 / 0.09) !important; }
+.eduhub-site .shadow-lg, .eduhub-site .shadow-xl, .eduhub-site .shadow-2xl { box-shadow: 0 14px 42px rgb(19 60 146 / 0.10) !important; }
+.daycare-site a, .daycare-site button, .eduhub-site a, .eduhub-site button { -webkit-tap-highlight-color: transparent; }
+.daycare-site a:active, .daycare-site button:active, .eduhub-site a:active, .eduhub-site button:active { transform: scale(0.97); transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); }
+.daycare-nav, .eduhub-nav { background: rgb(255 255 255 / 0.82) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 1px 0 rgb(26 39 66 / 0.06), 0 10px 30px rgb(26 39 66 / 0.04) !important; }
+.eduhub-nav { border-color: rgb(19 73 209 / 0.10) !important; }
+.daycare-nav { border-color: rgb(232 100 63 / 0.12) !important; }
+.daycare-site a[class*="bg-gradient-to-r"][class*="text-white"], .daycare-site button[class*="bg-gradient-to-r"][class*="text-white"] { background-image: none !important; background-color: #96351f !important; }
+.eduhub-site a[class*="bg-gradient-to-r"][class*="text-white"], .eduhub-site button[class*="bg-gradient-to-r"][class*="text-white"] { background-image: none !important; background-color: #1349d1 !important; }
+@media (hover: hover) and (pointer: fine) { .daycare-site main a:hover, .eduhub-site main a:hover { transform: translateY(-1px); } }
+@media (prefers-reduced-transparency: reduce) { .daycare-nav, .eduhub-nav { background: #fff !important; backdrop-filter: none; } }
+@media (prefers-reduced-motion: reduce) { .daycare-site *, .eduhub-site * { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

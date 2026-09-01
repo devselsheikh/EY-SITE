@@ -80,11 +80,17 @@ test('shared Parent Portal remains separate from child-linked accounts', async (
 });
 
 test('parent guides and facilities resolve to the locked family portal', async ({ page }) => {
-  for (const route of ['/daycare/parent-info', '/daycare/calendar']) {
+  for (const route of ['/daycare/parent-info', '/daycare/calendar', '/daycare/facilities', '/daycare/meals', '/daycare/parent-guide']) {
     await page.goto(route);
     await expect(page).toHaveURL(/\/daycare\/parents$/);
     await expect(page.getByRole('heading', { name: 'Family Portal' })).toBeVisible();
   }
+});
+
+test('legacy EduHub courses link resolves to the current programmes page', async ({ page }) => {
+  await page.goto('/eduhub/courses');
+  await expect(page).toHaveURL(/\/eduhub\/programs$/);
+  await expect(page.getByRole('heading', { name: 'CACHE Qualification Programs' })).toBeVisible();
 });
 
 test('EduHub team uses the supplied named portraits', async ({ page }) => {

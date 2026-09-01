@@ -52,7 +52,7 @@ export default function EduHubProgramDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="eduhub-site min-h-screen bg-white">
       <EduHubNav />
 
       <main>

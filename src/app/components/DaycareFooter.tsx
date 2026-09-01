@@ -83,8 +83,7 @@ export default function DaycareFooter() {
               {[
                 { to: '/daycare/about', label: 'About Us' },
                 { to: '/daycare/programs', label: 'Programmes' },
-                { to: '/daycare/calendar', label: 'Calendar & Menu' },
-                { to: '/daycare/parent-info', label: 'Parent Information' },
+                { to: '/daycare/parents', label: '🔒 Family Guides & Menus' },
                 { to: '/daycare/contact', label: 'Contact' },
               ].map(({ to, label }) => (
                 <li key={to}>

@@ -101,6 +101,9 @@ requireCheck(existsSync(join(root, 'public', 'sitemap.xml')), 'public sitemap ex
 requireCheck(existsSync(join(root, 'public', 'favicon.png')), 'brand favicon exists');
 requireCheck(existsSync(join(root, 'public', 'apple-touch-icon.png')) && existsSync(join(root, 'public', 'site.webmanifest')), 'complete installable favicon set exists');
 requireCheck(['privacy', 'terms'].every(route => read('public/sitemap.xml').includes(`/${route}`)), 'sitemap includes public legal routes');
+const sitemap = read('public/sitemap.xml');
+requireCheck(!['/admin', '/workspace', '/daycare/parents', '/daycare/parent-info', '/daycare/calendar'].some(route => sitemap.includes(`<loc>https://theearlyyearscompany.com${route}</loc>`)), 'sitemap excludes private and redirected family routes');
+requireCheck(['when-should-my-child-start-nursery', 'cache-certification-explained', 'cache-level-3-vs-level-5'].every(slug => sitemap.includes(`/blog/${slug}`)), 'sitemap includes parent and educator editorial routes');
 const routeMetadata = read('src/app/components/RouteMetadata.tsx');
 requireCheck(['/daycare/about', '/daycare/programs', '/eduhub/about', '/eduhub/programs', '/privacy', '/terms'].every(route => routeMetadata.includes(`'${route}'`)), 'public routes have explicit metadata and social sharing defaults');
 requireCheck(read('src/app/components/PrivacyControls.tsx').includes('VITE_GA_MEASUREMENT_ID') && read('src/app/components/PrivacyControls.tsx').includes("choice === 'accepted'"), 'analytics loads only after explicit consent');

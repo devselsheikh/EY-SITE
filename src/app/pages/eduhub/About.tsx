@@ -4,9 +4,12 @@ import { Link } from 'react-router';
 import EduHubNav from '../../components/EduHubNav';
 import EduHubFooter from '../../components/EduHubFooter';
 import ManagedImage from '../../components/ManagedImage';
+import { useCMS } from '../../hooks/useCMS';
+import { isPublished } from '../../data/cms';
 
 export default function EduHubAbout() {
-  const team = [
+  const cms = useCMS();
+  const fallbackTeam = [
     {
       name: 'Nesreen Hassanin',
       role: 'Founder & Managing Director',
@@ -43,9 +46,18 @@ export default function EduHubAbout() {
       description: 'Robert combines vocational assessment, moderation, and quality-assurance expertise with first-hand knowledge of early years settings. He safeguards the consistency and UK-aligned quality of EduHub’s training and assessment.'
     }
   ];
+  const approvedNames = new Set(['Nesrin Hassanin', 'Nesreen Hassanin', 'Lamia Hassanin', 'Ann Osman', 'Bassent Barsoum', 'Robert Mitton']);
+  const managedTeam = cms.educators.filter(isPublished).filter(member => approvedNames.has(member.name)).sort((a, b) => a.displayOrder - b.displayOrder).map(member => ({
+    name: member.name === 'Nesrin Hassanin' ? 'Nesreen Hassanin' : member.name,
+    role: member.title,
+    image: member.img,
+    credentials: member.qualification,
+    description: member.bio,
+  }));
+  const team = managedTeam.length >= 5 ? managedTeam : fallbackTeam;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="eduhub-site min-h-screen bg-white">
       <EduHubNav />
 
       <main>

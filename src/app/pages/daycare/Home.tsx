@@ -739,7 +739,7 @@ export default function DaycareHome() {
   const siteUrl = 'https://theearlyyearscompany.com';
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="daycare-site min-h-screen bg-white overflow-x-hidden">
       <JsonLd data={[
         organizationSchema({ name: s.companyName, url: siteUrl, phone: s.mainPhone, email: s.mainEmail }),
         childCareSchema({ name: `${s.companyName} — Nursery & Daycare`, url: `${siteUrl}/daycare`, phone: s.daycarePhone || s.mainPhone, email: s.daycareEmail || s.mainEmail, description: hero.subtitle || 'Play-based EYFS nursery for children aged 1–5 in New Cairo.', openingHours: 'Su-Th 07:30-17:00' }),
@@ -841,11 +841,11 @@ export default function DaycareHome() {
 
               {/* Download brochure */}
               <Link
-                to="/daycare/parent-info"
+                to="/daycare/parents"
                 className="inline-flex items-center gap-1.5 mt-4 text-sm text-gray-500 hover:text-teal-600 transition-colors"
               >
                 <Download className="w-4 h-4" />
-                Download Parent Information Pack
+                Open Family Guide 🔒
               </Link>
             </motion.div>
 
@@ -1316,11 +1316,11 @@ export default function DaycareHome() {
                 Book a Free Consultation
               </Link>
               <Link
-                to="/daycare/parent-info"
+                to="/daycare/parents"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border-2 border-gray-200 text-gray-700 font-bold hover:border-peach-300 transition-all"
               >
                 <Download className="w-5 h-5" />
-                Download Program Guide
+                Open Family Guide 🔒
               </Link>
             </div>
           </div>
@@ -1567,10 +1567,10 @@ export default function DaycareHome() {
                 ))}
               </div>
               <Link
-                to="/daycare/parent-info"
+                to="/daycare/parents"
                 className="inline-flex items-center gap-2 text-teal-600 font-bold hover:text-teal-700 transition-colors"
               >
-                Download Parent Information Pack
+                Open Family Guide 🔒
                 <ChevronRight className="w-5 h-5" />
               </Link>
             </motion.div>
