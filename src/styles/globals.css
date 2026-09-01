@@ -1131,7 +1131,7 @@ body {
 .daycare-nav, .eduhub-nav { background: rgb(255 255 255 / 0.82) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 1px 0 rgb(26 39 66 / 0.06), 0 10px 30px rgb(26 39 66 / 0.04) !important; }
 .eduhub-nav { border-color: rgb(19 73 209 / 0.10) !important; }
 .daycare-nav { border-color: rgb(232 100 63 / 0.12) !important; }
-.daycare-site a[class*="bg-gradient-to-r"][class*="text-white"], .daycare-site button[class*="bg-gradient-to-r"][class*="text-white"] { background-image: linear-gradient(110deg, #c2410c 0%, #db2777 58%, #7c3aed 100%) !important; background-color: #c2410c !important; box-shadow: 0 12px 28px rgb(190 24 93 / 0.24) !important; }
+.daycare-site a[class*="bg-gradient-to-r"][class*="text-white"], .daycare-site button[class*="bg-gradient-to-r"][class*="text-white"] { background-image: linear-gradient(110deg, #eb5f3d 0%, #f58245 52%, #efa847 100%) !important; background-color: #c94a23 !important; box-shadow: 0 12px 28px rgb(226 101 50 / 0.24) !important; }
 .eduhub-site a[class*="bg-gradient-to-r"][class*="text-white"], .eduhub-site button[class*="bg-gradient-to-r"][class*="text-white"] { background-image: none !important; background-color: #1349d1 !important; }
 @media (hover: hover) and (pointer: fine) { .daycare-site main a:hover, .eduhub-site main a:hover { transform: translateY(-1px); } }
 @media (prefers-reduced-transparency: reduce) { .daycare-nav, .eduhub-nav { background: #fff !important; backdrop-filter: none; } }
