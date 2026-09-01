@@ -7,8 +7,8 @@ import PageTransition from './components/PageTransition';
 import RouteErrorPage from './components/RouteErrorPage';
 import RouteMetadata from './components/RouteMetadata';
 import PrivacyControls from './components/PrivacyControls';
+import Landing from './pages/Landing';
 
-const Landing = lazy(() => import('./pages/Landing'));
 const StickyMobileCTA = lazy(() => import('./components/StickyMobileCTA'));
 const DaycareHome = lazy(() => import('./pages/daycare/Home'));
 const DaycareAbout = lazy(() => import('./pages/daycare/About'));

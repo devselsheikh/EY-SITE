@@ -24,6 +24,16 @@ const publicRoutes = [
   '/workspace',
 ];
 
+test('homepage is available on a fresh direct visit', async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { level: 1, name: /Growth Begins with the Right Foundations/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /The Daycare/i }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: /EduHub/i }).first()).toBeVisible();
+  await context.close();
+});
+
 test('every named public route receives unique launch metadata', async ({ page }) => {
   const routes = ['/', '/daycare', '/daycare/about', '/daycare/programs', '/eduhub', '/eduhub/programs', '/contact', '/privacy', '/terms'];
   const titles = new Set<string>();
