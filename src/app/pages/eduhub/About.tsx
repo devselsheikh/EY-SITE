@@ -63,20 +63,29 @@ export default function EduHubAbout() {
       <main>
 
       {/* Hero */}
-      <div className="relative overflow-hidden bg-[#f5f8ff] py-16 sm:py-20 lg:py-28 border-b border-blue-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="eduhub-page-hero relative overflow-hidden py-16 sm:py-20 lg:py-28">
+        <div className="eduhub-page-hero__halo" aria-hidden="true" />
+        <div className="eduhub-page-hero__ring" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-5xl lg:text-6xl text-gray-900 mb-6">
+            <div className="eduhub-page-hero__eyebrow">
+              <Award className="w-4 h-4" />
+              Egypt’s first CACHE-approved centre
+            </div>
+            <h1 className="text-[2.65rem] sm:text-5xl lg:text-6xl text-white mb-5 font-bold">
               About EduHub
             </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <p className="text-base sm:text-xl text-white/84 leading-relaxed max-w-3xl mx-auto">
               First CACHE-approved training centre in Egypt, providing UK-accredited professional development for early years educators across Egypt and the Middle East.
             </p>
+            <div className="eduhub-page-hero__proof">
+              <span>UK recognition</span><span>Regional expertise</span><span>Quality-led training</span>
+            </div>
           </motion.div>
         </div>
       </div>
