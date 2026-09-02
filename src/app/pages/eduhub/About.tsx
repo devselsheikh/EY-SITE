@@ -215,18 +215,21 @@ export default function EduHubAbout() {
               {
                 name: 'NCFE',
                 role: 'Accrediting Organization',
+                logo: '/images/eduhub/accreditation/ncfe.png',
                 description: 'UK awarding organization recognized by UK regulators (Ofqual, CCEA Regulation, Qualifications Wales). NCFE provides official accreditation for all CACHE qualifications offered at EduHub.',
                 highlight: 'Official UK Awarding Body'
               },
               {
                 name: 'BriteThink UK',
                 role: 'Quality Assurance Partner',
+                logo: '/images/eduhub/accreditation/britethink.png',
                 description: 'BriteThink provides comprehensive support including quality assurance, educational content development, and assessment services for all EduHub programs.',
                 highlight: 'Assessment & QA Support'
               },
               {
                 name: 'CACHE',
                 role: 'Qualification Provider',
+                logo: '/images/eduhub/accreditation/cache.png',
                 description: 'Leading awarding organization for qualifications in early years, childcare, and education. CACHE qualifications are respected throughout the UK and internationally.',
                 highlight: 'Industry-Leading Qualifications'
               }
@@ -237,10 +240,10 @@ export default function EduHubAbout() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8"
+                className="eduhub-accreditation-card bg-white rounded-2xl p-6 sm:p-8 border border-blue-100"
               >
-                <div className="w-16 h-16 rounded-full bg-[#1349D1] flex items-center justify-center mb-6">
-                  <Award className="w-8 h-8 text-white" />
+                <div className="h-16 rounded-xl bg-[#F4F7FF] border border-[#DFE8FF] flex items-center px-5 mb-6">
+                  <img src={partner.logo} alt={`${partner.name} accreditation logo`} className="max-h-9 max-w-[12rem] w-auto object-contain" />
                 </div>
                 <h3 className="text-2xl text-gray-900 mb-2">{partner.name}</h3>
                 <div className="text-sm px-3 py-1 rounded-full bg-white text-[#1349D1] inline-block mb-4">
