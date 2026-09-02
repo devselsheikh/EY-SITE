@@ -122,32 +122,28 @@ export default function EduHubPrograms() {
       <main>
 
       {/* Hero */}
-      <div className="eduhub-page-hero relative overflow-hidden py-16 sm:py-20 lg:py-28">
-        <div className="eduhub-page-hero__halo" aria-hidden="true" />
-        <div className="eduhub-page-hero__ring" aria-hidden="true" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="editorial-hero editorial-hero--educators relative py-16 sm:py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <div className="eduhub-page-hero__eyebrow">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md text-gray-700 text-sm mb-5">
               <GraduationCap className="w-4 h-4" />
-              UK-accredited early years training
+              <span className="font-semibold">UK-Accredited Qualifications</span>
             </div>
-            <h1 className="text-[2.65rem] sm:text-5xl lg:text-6xl text-white mb-5 font-bold">
-              CACHE Qualification Programs
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white font-bold mb-4">
+              CACHE Qualification{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-violet-200">Programs</span>
             </h1>
-            <p className="text-base sm:text-xl text-white/84 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-blue-50 leading-relaxed max-w-3xl mx-auto">
               UK-accredited CACHE qualifications from Level 2 to Level 5 leadership, recognized across Egypt and the Middle East.
             </p>
-            <div className="eduhub-page-hero__proof">
-              <span>Levels 2, 3 & 5</span><span>Flexible study</span><span>Dedicated assessor support</span>
-            </div>
           </motion.div>
         </div>
-      </div>
+      </section>
 
       {/* Programs Detail */}
       <div className="py-20 lg:py-28">

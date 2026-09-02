@@ -63,32 +63,28 @@ export default function EduHubAbout() {
       <main>
 
       {/* Hero */}
-      <div className="eduhub-page-hero relative overflow-hidden py-16 sm:py-20 lg:py-28">
-        <div className="eduhub-page-hero__halo" aria-hidden="true" />
-        <div className="eduhub-page-hero__ring" aria-hidden="true" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="editorial-hero editorial-hero--educators relative py-16 sm:py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <div className="eduhub-page-hero__eyebrow">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md text-gray-700 text-sm mb-5">
               <Award className="w-4 h-4" />
-              Egypt’s first CACHE-approved centre
+              <span className="font-semibold">Egypt’s First CACHE-Approved Centre</span>
             </div>
-            <h1 className="text-[2.65rem] sm:text-5xl lg:text-6xl text-white mb-5 font-bold">
-              About EduHub
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white font-bold mb-4">
+              About{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-violet-200">EduHub</span>
             </h1>
-            <p className="text-base sm:text-xl text-white/84 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-blue-50 leading-relaxed max-w-3xl mx-auto">
               First CACHE-approved training centre in Egypt, providing UK-accredited professional development for early years educators across Egypt and the Middle East.
             </p>
-            <div className="eduhub-page-hero__proof">
-              <span>UK recognition</span><span>Regional expertise</span><span>Quality-led training</span>
-            </div>
           </motion.div>
         </div>
-      </div>
+      </section>
 
       {/* Our Story */}
       <div className="py-20 lg:py-28">

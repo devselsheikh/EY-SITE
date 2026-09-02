@@ -1177,19 +1177,6 @@ body {
     radial-gradient(circle at 8% 92%, rgb(91 80 220 / 0.48), transparent 30rem),
     linear-gradient(128deg, #173bb8 0%, #1c46d7 48%, #315ce7 100%) !important;
 }
-.eduhub-site main > .eduhub-page-hero {
-  color: white;
-  background:
-    radial-gradient(circle at 84% 0%, rgb(104 213 255 / 0.25), transparent 23rem),
-    radial-gradient(circle at 10% 100%, rgb(91 80 220 / 0.44), transparent 29rem),
-    linear-gradient(128deg, #173bb8 0%, #1c46d7 50%, #315ce7 100%) !important;
-  border-color: rgb(255 255 255 / 0.20);
-}
-.eduhub-page-hero__halo { position: absolute; top: -16rem; right: -8rem; width: 34rem; height: 34rem; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.15); box-shadow: 0 0 0 5.5rem rgb(255 255 255 / 0.035), 0 0 0 11rem rgb(255 255 255 / 0.024); }
-.eduhub-page-hero__ring { position: absolute; bottom: -11rem; left: -4rem; width: 22rem; height: 22rem; border-radius: 999px; border: 4.5rem solid rgb(107 218 255 / 0.07); }
-.eduhub-page-hero__eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1.35rem; padding: 0.55rem 0.9rem; border: 1px solid rgb(255 255 255 / 0.22); border-radius: 999px; color: rgb(255 255 255 / 0.92); background: rgb(255 255 255 / 0.10); font-size: 0.78rem; font-weight: 600; backdrop-filter: blur(12px); }
-.eduhub-page-hero__proof { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.55rem; margin-top: 1.8rem; }
-.eduhub-page-hero__proof span { padding: 0.48rem 0.8rem; border-radius: 999px; color: rgb(255 255 255 / 0.78); background: rgb(8 30 108 / 0.23); font-size: 0.75rem; font-weight: 600; }
 .eduhub-home-hero__halo { position: absolute; top: -11rem; right: -7rem; width: 30rem; height: 30rem; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.16); box-shadow: 0 0 0 5rem rgb(255 255 255 / 0.035), 0 0 0 10rem rgb(255 255 255 / 0.025); }
 .eduhub-home-hero__ring { position: absolute; bottom: -8rem; left: 42%; width: 20rem; height: 20rem; border-radius: 999px; border: 4rem solid rgb(107 218 255 / 0.08); }
 .eduhub-home-hero__visual { padding: 0.55rem; border-radius: 2rem; background: rgb(255 255 255 / 0.11); box-shadow: 0 28px 80px rgb(4 20 77 / 0.34); }
