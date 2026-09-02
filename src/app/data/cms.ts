@@ -586,9 +586,9 @@ export const DEFAULT_CMS: CMSContent = {
   ],
 
   accreditations: [
-    { id: generateId(), displayOrder: 1, name: 'CACHE', description: 'UK-recognised qualifications', detail: 'Leading awarding organisation for early years', logoUrl: '', externalLink: 'https://www.ncfe.org.uk', status: 'published' },
-    { id: generateId(), displayOrder: 2, name: 'NCFE', description: 'Official UK recognition', detail: 'Recognised by UK education regulators', logoUrl: '', externalLink: 'https://www.ncfe.org.uk', status: 'published' },
-    { id: generateId(), displayOrder: 3, name: 'BriteThink UK', description: 'Quality assurance partner', detail: 'Provides assessment and content support', logoUrl: '', externalLink: '', status: 'published' },
+    { id: generateId(), displayOrder: 1, name: 'CACHE', description: 'UK-recognised qualifications', detail: 'Leading awarding organisation for early years', logoUrl: '/images/eduhub/accreditation/cache.png', externalLink: 'https://www.ncfe.org.uk', status: 'published' },
+    { id: generateId(), displayOrder: 2, name: 'NCFE', description: 'Official UK recognition', detail: 'Recognised by UK education regulators', logoUrl: '/images/eduhub/accreditation/ncfe.png', externalLink: 'https://www.ncfe.org.uk', status: 'published' },
+    { id: generateId(), displayOrder: 3, name: 'BriteThink UK', description: 'Quality assurance partner', detail: 'Provides assessment and content support', logoUrl: '/images/eduhub/accreditation/britethink.png', externalLink: '', status: 'published' },
   ],
 
   blog: [
