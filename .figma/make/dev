@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+echo "Starting Early Years preview on port ${PORT:-5173}"
+npm run dev -- --host 0.0.0.0 --port "${PORT:-5173}"
+

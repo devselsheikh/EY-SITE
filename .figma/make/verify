@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+HEALTHCHECK_ENDPOINT="${FIGMA_MAKE_URL:-http://localhost:5173}"
+MAX_WAIT=120
+INTERVAL=2
+ELAPSED=0
+
+echo "Waiting for the Early Years preview"
+while [ "$ELAPSED" -lt "$MAX_WAIT" ]; do
+  if curl -sf "$HEALTHCHECK_ENDPOINT" >/dev/null 2>&1; then
+    echo "Preview is ready"
+    exit 0
+  fi
+  sleep "$INTERVAL"
+  ELAPSED=$((ELAPSED + INTERVAL))
+done
+
+echo "Preview did not start within ${MAX_WAIT} seconds"
+exit 1
+

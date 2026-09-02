@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+echo "Installing project dependencies"
+npm ci --no-audit --no-fund
+
